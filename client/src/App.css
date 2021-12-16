@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 
 :root {
   --pink: #ED8E76;
@@ -12,7 +12,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'NanumGothic', 'serif';
+  font-family: 'Nanum Gothic', 'serif';
 }
 
 ul {
@@ -22,4 +22,3 @@ ul {
 a {
   text-decoration: none;
 }
-
