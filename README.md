@@ -16,6 +16,20 @@ pink-devsaurus는 개발자의 궁금증을 해결할 수 있는 사이트 입�
 - 사용자가 답변을 채택할 수 있습니다.
 - 좋아요 기능으로 질문자가 채택한 답변 외에 많은 사용자의 추천을 받은 게시글을 볼 수 있습니다.
 
+## Front-end tech stacks 
+![](https://img.shields.io/badge/html-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![](https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![](https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![](https://img.shields.io/badge/react_styled-DB7093?style=for-the-badge&logo=styled-components&logoColor=pink)
+![](https://img.shields.io/badge/axios-A100FF?style=for-the-badge&logo=Accenture&logoColor=lightgreen)
+![](https://img.shields.io/badge/dotenv-172B4D?style=for-the-badge&logo=Confluence&logoColor=yellow)
+
+## Back-end tech stacks 
+
+
+
+
 # Team: Bug Life
 |Name|Position|Github|
 |----|--------|------|
