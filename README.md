@@ -23,10 +23,16 @@ pink-devsaurus는 개발자의 궁금증을 해결할 수 있는 사이트 입�
 ![](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![](https://img.shields.io/badge/react_styled-DB7093?style=for-the-badge&logo=styled-components&logoColor=pink)
 ![](https://img.shields.io/badge/axios-A100FF?style=for-the-badge&logo=Accenture&logoColor=lightgreen)
-![](https://img.shields.io/badge/dotenv-172B4D?style=for-the-badge&logo=Confluence&logoColor=yellow)
 
 ## Back-end tech stacks 
-
+![](https://img.shields.io/badge/Node.JS-339933?style=for-the-badge&logo=Node.js&logoColor=white)
+![](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white)
+![](https://img.shields.io/badge/Mysql-4479A1?style=for-the-badge&logo=MySQL&logoColor=white)
+![](https://img.shields.io/badge/sequelize-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white)
+![](https://img.shields.io/badge/jsonwebtoken-000000?style=for-the-badge&logo=JSON-Web-Tokens&logoColor=purple)
+![](https://img.shields.io/badge/cookie_Parser-D4AA00?style=for-the-badge&logo=Cookiecutter&logoColor=white)
+![](https://img.shields.io/badge/cors-F24C53?style=for-the-badge&logo=Corona-Engine&logoColor=white)
+![](https://img.shields.io/badge/dotenv-172B4D?style=for-the-badge&logo=Confluence&logoColor=yellow)
 
 
 
