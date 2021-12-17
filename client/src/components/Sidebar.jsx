@@ -1,3 +1,6 @@
+// 담당자 : 김경봉 (Front-end)
+// 2021-12-17 23:38:34
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
