@@ -1,3 +1,6 @@
+// #10 Editor 컴포넌트
+// 담당자 : 최민우 (Front-end)
+
 import { useState } from 'react';
 import styled from 'styled-components';
 import MDEditor from '@uiw/react-md-editor';

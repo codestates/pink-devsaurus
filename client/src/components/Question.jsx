@@ -1,3 +1,6 @@
+// #18 Quesiton 컴포넌트
+// 담당자 : 최민우 (Front-end)
+
 import { useState } from 'react';
 import styled from 'styled-components';
 import Editor from './Editor.jsx';
@@ -76,10 +79,10 @@ const DropdownButton = styled.span`
     background-color: lightgreen;
     color: black;
   }
-  &:active {
+  /* &:active {
     background-color: var(--pink);
     color: black;
-  }
+  } */
 `;
 
 const NameEditbox = styled.input`
