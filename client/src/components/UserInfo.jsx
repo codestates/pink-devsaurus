@@ -1,5 +1,5 @@
-// #18 Quesiton -> Userinfo 컴포넌트
 // 담당자 : 최민우 (Front-end)
+// 2021-12-17 17:11:28
 
 import styled from 'styled-components';
 
