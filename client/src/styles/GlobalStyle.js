@@ -7,7 +7,15 @@ const GlobalStyle = createGlobalStyle`
   --white: whitesmoke;
   --black: black;
   --gray: gray;
-}
+  }
+
+  body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: var(--pink);
+  }
 `;
 
 export default GlobalStyle;
