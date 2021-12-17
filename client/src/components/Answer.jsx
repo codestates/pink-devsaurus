@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
 import Userinfo from './UserInfo.jsx';
+import DropdownEditCancel from './DropdownEditCancel.jsx';
 
 const fetchResult = {
   answer_username: 'rihanna',
@@ -54,6 +55,7 @@ const DropdownButton = styled.span`
   background-color: lightgray;
   border-radius: 0.5rem;
   padding: 0.1rem 0.5rem;
+  cursor: pointer;
   &:hover {
     background-color: lightgreen;
     color: black;
@@ -82,10 +84,12 @@ const Answer = () => {
   const result = fetchResult;
 
   const [answerContent, setAnswerContent] = useState(result.answer_content);
+  const [dropDownClick, setDropDownClick] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   const intoEditMode = (e) => {
-    if (editMode) return;
+    setDropDownClick(false);
+    if( editMode ) return ;    
     setEditMode(true);
   };
 
@@ -104,6 +108,16 @@ const Answer = () => {
     setAnswerContent(newContent);
   };
 
+  const handleDropDownClick = (e) => {
+    setDropDownClick(!dropDownClick);
+  };
+
+  const handleDelete = (e) => {
+    //need modal confirm
+    //fetch and delete content
+    setDropDownClick(false);
+  };
+
   return (
     <AnswerContainer>
       <AnswerInfoWrapper>
@@ -116,7 +130,11 @@ const Answer = () => {
           </IsModified>
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
-          <DropdownButton onClick={intoEditMode}>...</DropdownButton>
+          <DropdownButton onClick={handleDropDownClick}>...</DropdownButton>
+          { dropDownClick
+            ? <DropdownEditCancel handleModify={intoEditMode} handleDelete={handleDelete}/>
+            : false 
+          }
         </DropdownButtonWrapper>
       </AnswerInfoWrapper>
       <EditorWrapper>
