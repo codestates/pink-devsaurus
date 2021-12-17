@@ -116,6 +116,10 @@ const LikesWrapper = styled.div`
   flex: 1 1 auto;
 `;
 
+const UserInfoWrapper = styled.div`
+  padding: 1rem;
+`;
+
 const Question = (props) => {
   const { result } = fetchResult;
 
@@ -165,7 +169,9 @@ const Question = (props) => {
           <DropdownButton onClick={intoEditMode}>...</DropdownButton>
         </DropdownButtonWrapper>
       </QuestionNameWrapper>
-      <Userinfo user={result} />
+      <UserInfoWrapper>
+        <Userinfo user={result} />
+      </UserInfoWrapper>
       {editMode ? (
         <Editor text={questionContent} handleEditFinish={handleEditFinish} handleCancel={cancelEditMode} />
       ) : (
