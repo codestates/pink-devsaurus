@@ -1,121 +1,107 @@
+// 담당자 : 김경봉 (Front-end)
+// 2021-12-17 15:10:14
+
 import React from 'react';
-import styled from "styled-components";
-import '../App.css';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import SearchBar from './SearchBar';
+import DropdownProfile from './DropdownProfile';
 
 const Head = styled.header`
   width: 100%;
+  display: flex;
   position: fixed;
   top: 0;
-  display: flex;
   justify-content: space-between;
-  background-color: whitesmoke;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--black);
   align-items: center;
-  border-bottom: 1px solid black;
   padding: 0.2rem;
 `;
 
 const Img = styled.img`
-  width: 4%;
+  width: 6%;
   min-width: 85px;
   margin-left: 1%;
 `;
 
 const Button = styled.div`
-  min-width: 140px;
-  color: white;
+  color: var(--pure-white);
+  min-width: 220px;
   background-color: var(--pink);
-  padding: 0.8rem 1.5rem;
+  padding: 1.2rem 3rem;
   border-radius: 40px;
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   font-weight: 500;
   text-align: center;
-  /* flex: 0.1 0 0; */
-  
+  flex: 0.1 0 0;
+
   :hover {
-    /* color: var(--pink); */
-    background-color: pink;
+    opacity: 0.8;
     cursor: pointer;
-  }
-`;
-
-const SearchBar = styled.div`
-  display: flex;
-  width: 100%;
-  height: 3.2rem;
-  align-items: center;
-  border-radius: 50px;
-  border: 1px solid black;
-  flex: 0.5 0 0;
-  min-width: 240px;
-
-  > span {
-    margin-left: 2%;
-    margin-right: 2%;
-  }
-`;
-
-const Input = styled.input`
-  flex: 1 0 0;
-  height: 70%;
-  margin-right: 3%;
-  border: none;
-  font-size: 1rem;
-  background-color: whitesmoke;
-
-  :focus-within {
-    outline: transparent;
   }
 `;
 
 const WrapperSign = styled.div`
   display: flex;
   margin-right: 1%;
-`
+  min-width: 240px;
+`;
 
-const ButtonSignIn = styled(Button)`
-  background-color: whitesmoke;
-  color: black;
+const ButtonSignIn = styled.div`
+  color: #fa7570;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--white);
   border: 2px solid transparent;
   font-weight: 400;
   min-width: 80px;
   margin-left: 5px;
-`
+  border-radius: 10px;
 
-const ButtonSignUp = styled(Button)`
-  background-color: whitesmoke;
-  color: black;
+  :hover {
+    background-color: #ffd3c2;
+    cursor: pointer;
+  }
+`;
+
+const ButtonSignUp = styled.div`
+  padding: 0.8rem 1.5rem;
+  background-color: var(--white);
+  color: #fa7570;
   font-weight: 400;
   border-radius: 10px;
-  border: 2px solid pink;
+  border: 2px solid #ffd3c2;
   min-width: 80px;
   margin-left: 5px;
-`
+  border-radius: 10px;
 
-const Header = (props) => {
-  const search = (e) => {
-    // Enter 누르면 서치
-    console.log('search')
+  :hover {
+    background-color: #ffd3c2;
+    cursor: pointer;
   }
+`;
 
+const Header = ({ isLogin }) => {
   return (
     <Head>
-      <Img src='https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png'/>
+      <Img src="https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png" />
       <Button>Q &amp; A' s</Button>
       <Button>My Q &amp; A</Button>
-      <SearchBar>
-        <span>
-          <img src="https://img.icons8.com/ios-glyphs/30/000000/search--v1.png"/>
-        </span>
-        <Input
-          onKeyUp={(e) => e.key === 'Enter' ? search(e) : null}
-          placeholder='검색 키워드를 입력하세요.'
-        ></Input>
-      </SearchBar>
+      <SearchBar></SearchBar>
       <Button>질문하기</Button>
-      <WrapperSign>
-        <ButtonSignIn>로그인</ButtonSignIn>
-        <ButtonSignUp>회원가입</ButtonSignUp>
-      </WrapperSign>
+      {/* 로그인 했으면 프로필 아이콘 / 로그인 안했으면 로그인, 회원가입 버튼 */}
+      {!isLogin ? (
+        <DropdownProfile></DropdownProfile>
+      ) : (
+        <WrapperSign>
+          <Link to="/login">
+            <ButtonSignIn>로그인</ButtonSignIn>
+          </Link>
+          <Link to="/signup">
+            <ButtonSignUp>회원가입</ButtonSignUp>
+          </Link>
+        </WrapperSign>
+      )}
     </Head>
   );
 };
