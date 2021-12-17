@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import GlobalStyle from '../styles/GlobalStyle';
 // import { Link } from 'react-router-dom';
 
 const Container = styled.div`
@@ -73,15 +72,6 @@ const Form = styled.div`
   }
 `;
 
-const ErrorMsg = styled.div`
-  width: 100%;
-  color: red;
-  font-size: 13px;
-  font-weight: bold;
-  margin-top: -30px;
-  margin-bottom: 30px;
-`;
-
 export default function Login() {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -99,7 +89,6 @@ export default function Login() {
 
   return (
     <>
-      <GlobalStyle />
       <Container>
         <Form>
           <div className='title'>로그인</div>
