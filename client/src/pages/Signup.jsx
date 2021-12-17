@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import GlobalStyle from '../styles/GlobalStyle';
 // import { Link } from 'react-router-dom';
 
 const Container = styled.div`
@@ -143,7 +142,6 @@ export default function Login() {
 
   return (
     <>
-      <GlobalStyle />
       <Container>
         <Form>
           <div className='title'>회원 가입</div>
