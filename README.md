@@ -23,6 +23,7 @@ pink-devsaurus는 개발자의 궁금증을 해결할 수 있는 사이트 입�
 ![](https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![](https://img.shields.io/badge/react_styled-DB7093?style=for-the-badge&logo=styled-components&logoColor=pink)
 ![](https://img.shields.io/badge/axios-A100FF?style=for-the-badge&logo=Accenture&logoColor=lightgreen)
+![](https://img.shields.io/badge/Markdown_Editor-000000?style=for-the-badge&logo=Markdown&logoColor=lightgreen)
 
 ## Back-end tech stacks 
 ![](https://img.shields.io/badge/Node.JS-339933?style=for-the-badge&logo=Node.js&logoColor=white)
