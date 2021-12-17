@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
 import Userinfo from './UserInfo.jsx';
+import DropdownEditCancel from './DropdownEditCancel.jsx';
 
 const fetchResult = {
   result: {
@@ -71,6 +72,7 @@ const DropdownButton = styled.span`
   background-color: lightgray;
   border-radius: 0.5rem;
   padding: 0.1rem 0.5rem;
+  cursor: pointer;
   &:hover {
     background-color: lightgreen;
     color: black;    
@@ -86,8 +88,11 @@ const DropdownButton = styled.span`
 `;
 
 const NameEditbox = styled.input`
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
+  color: rgba(32, 20, 20, 0.884);
+  padding: 0.2rem 0.5rem;
+  border: 1px solid #dfdfe0;
   flex: 80 80 auto;
   type: text;
 `;
@@ -124,11 +129,13 @@ const Question = (props) => {
   const { result } = fetchResult;
 
   const [editMode, setEditMode] = useState(false);
+  const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
   const [questionContent, setQuestionContent] = useState(result.content);
 
   const intoEditMode = (e) => {
-    if( editMode ) return ;
+    setDropDownClick(false);
+    if( editMode ) return ;    
     setEditMode(true);
   };
 
@@ -149,6 +156,17 @@ const Question = (props) => {
     setQuestionContent(newContent);    
   };
 
+  const handleDropDownClick = (e) => {
+    setDropDownClick(!dropDownClick);
+  };
+
+  const handleDelete = (e) => {
+    //need modal confirm
+    //fetch and delete content
+    setDropDownClick(false);
+  };
+
+
   return (
     <QuestionContainer>
       <QuestionNameWrapper>
@@ -166,7 +184,11 @@ const Question = (props) => {
           <IsModified cDate={result.created_date} mDate={result.modify_date}>modified</IsModified>
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
-          <DropdownButton onClick={intoEditMode}>...</DropdownButton>
+          <DropdownButton onClick={handleDropDownClick}>...</DropdownButton>
+          { dropDownClick
+            ? <DropdownEditCancel handleModify={intoEditMode} handleDelete={handleDelete}/>
+            : false 
+          }
         </DropdownButtonWrapper>
       </QuestionNameWrapper>
       <UserInfoWrapper>
