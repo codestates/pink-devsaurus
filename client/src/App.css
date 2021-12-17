@@ -1,5 +1,13 @@
 @import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 
+:root {
+  --pink: #ED8E76;
+  --pure-white: white;
+  --white: whitesmoke;
+  --black: black;
+  --gray: gray;
+}
+
 * {
   margin: 0;
   padding: 0;
