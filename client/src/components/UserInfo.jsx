@@ -1,3 +1,6 @@
+// #18 Quesiton -> Userinfo 컴포넌트
+// 담당자 : 최민우 (Front-end)
+
 import styled from 'styled-components';
 
 // const fetchResult = {
