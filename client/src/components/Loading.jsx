@@ -1,7 +1,7 @@
 // 담당자 : 최민우 (Front-end)
 // 2021-12-17 16:41:26
 
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 
 const LoadingWrapper = styled.div`
@@ -16,43 +16,67 @@ const LoadingWrapper = styled.div`
 `;
 
 const LoadingImg = styled.img`
+  animation-name: rollin;
+  animation-duration: 1.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+
+  @keyframes rollin {
+    0% {
+      transform: rotate(0deg) scale(1.0);
+      
+    }
+    50% {
+      transform: rotate(180deg) scale(0.8);
+    }
+    100% {
+      transform: rotate(360deg) scale(1.0);
+    }
+  }
 
 `;
 
 const LoadingText = styled.div`
+  margin-top: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
   color: whitesmoke;
 `;
 
-const Loading = () => {
+const dino = require('../assets/pinkDevelopSaurus.png');
 
-  const [loadingString, setLoadingString] = useState('로딩중...');
+const Loading = () => {
+  
+  const [loadingString, setLoadingString] = useState('.');
+  const previousString = useRef();
 
   const loadHandler = () => {
-    console.log('called');
-    switch (loadingString) {
-      case '로딩중...':
-        setLoadingString('로딩중.');
-        break;
-      case '로딩중.':
-        setLoadingString('로딩중..');
-        break;
-      case '로딩중..': 
-        setLoadingString('로딩중...');
-        break;
-      default:
+    if (previousString.current) {
+      setLoadingString(previousString.current + '.');
     }
-    //setTimeout(loadHandler, 500);
-  };
+    if (previousString.current === '...') {
+      setLoadingString('.');
+    }
+  };  
+  
+  useEffect(() => {
+    previousString.current = loadingString;
+  });
+
+  useEffect(() => {
+    const loadingTextTimer = setInterval(loadHandler, 200);
+    return () => {
+      clearInterval(loadingTextTimer);
+    };
+  }, []);
+
 
   return (
     <LoadingWrapper>
-      <LoadingImg src={require('../assets/pinkDevelopSaurus.png')} />
-      <LoadingText onLoad={() => { console.log('shit'); loadHandler() }}>{loadingString}</LoadingText>
+      <LoadingImg src={dino} />
+      <LoadingText>{`로딩중${loadingString}`}</LoadingText>
     </LoadingWrapper>
   );
 };
 
 export default Loading;
-
