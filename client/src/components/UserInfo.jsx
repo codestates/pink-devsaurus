@@ -29,10 +29,9 @@ import styled from 'styled-components';
 // };
 
 const UserinfoContainer = styled.div`
-  margin: 0.5rem;
-  padding: 0.5rem;
-  width: 40%;
+  width: 100%;
   display: flex;
+  justify-content: flex-start;
   align-items: center;
 `;
 
@@ -48,7 +47,7 @@ const ProfileImage = styled.img`
 `;
 
 const UserMetadataWrapper = styled.div`
-  flex: 80 80 auto;
+  flex: 1 1 auto;
 `;
 
 const UserName = styled.div`
@@ -61,6 +60,21 @@ const CreatedAt = styled.div`
   font-size: 0.9rem;
   color: rgb(32, 20, 20);
   margin-top: 0.3rem;
+`;
+
+const SelectedByUserWrapper = styled.div`
+  flex: 80 80 auto;
+`;
+
+const SelectedByUser = styled.span`
+  
+  border-radius: 5px;
+  background-color: lightgreen;
+  font-weight: bold;
+  color: darkgreen;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.8rem;
+  margin-left: 3rem;
 `;
 
 //const 
@@ -92,6 +106,9 @@ const Userinfo = ({ user }) => {
         <UserName>{userInfo.name}</UserName>
         <CreatedAt>{new Date(userInfo.createdAt).toLocaleDateString()}</CreatedAt>
       </UserMetadataWrapper>
+      <SelectedByUserWrapper>
+        {userInfo.selected ? <SelectedByUser>답변으로 체크됨</SelectedByUser> : <></>}
+      </SelectedByUserWrapper>
     </UserinfoContainer>
   );
 };
