@@ -2,11 +2,20 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 // import { Link } from 'react-router-dom';
 
-const Container = styled.div`
+const Body = styled.body`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+`;
+
+const SignupContainer = styled.div`
+  display: flex;
+  justify-content: center;
   width: 330px;
-  background-color: var(--white);
   padding: 35px;
   border-radius: 15px;
+  background-color: var(--white);
 `;
 
 const Form = styled.div`
@@ -43,9 +52,9 @@ const Form = styled.div`
     background-color: var(--pink);
     font-weight: 500;
     border: none;
-    cursor: pointer;
     font-size: 18px;
     margin-bottom: 10px;
+    cursor: pointer;
   }
 
   button:hover {
@@ -72,12 +81,12 @@ const Form = styled.div`
   }
 `;
 
-const ErrorMsg = styled.div`
+const ErrorMsg = styled.span`
   width: 100%;
   color: red;
   font-size: 13px;
   font-weight: bold;
-  margin-top: -30px;
+  margin-top: -27px;
   margin-bottom: 30px;
 `;
 
@@ -86,6 +95,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userNameMsg, setUserNameMsg] = useState('');
+  const [emailMsg, setEmailMsg] = useState('');
   const [passwordMsg, setPasswordMsg] = useState('');
   const [confirmPasswordMsg, setConfirmPasswordMsg] = useState('');
 
@@ -97,6 +107,17 @@ export default function Login() {
       setUserNameMsg(
         '5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.'
       );
+    }
+  };
+
+  const isValidEmail = (email) => {
+    const regExp = new RegExp(
+      /^([\w!#$%&'*+\-\/=?^`{|}~]+(\.[\w!#$%&'*+\-\/=?^`{|}~]+)*|"([\w!#$%&'*+\-\/=?^`{|}~. ()<>\[\]:;@,]|\\[\\"])+")@(([a-zA-Z\d\-]+\.)+[a-zA-Z]+|\[(\d{1,3}(\.\d{1,3}){3}|IPv6:[\da-fA-F]{0,4}(:[\da-fA-F]{0,4}){1,5}(:\d{1,3}(\.\d{1,3}){3}|(:[\da-fA-F]{0,4}){0,2}))\])$/
+    );
+    if (regExp.test(email)) {
+      setEmailMsg('');
+    } else {
+      setEmailMsg('올바른 이메일 형식이 아닙니다.');
     }
   };
 
@@ -120,7 +141,9 @@ export default function Login() {
   };
 
   const handleEmail = (e) => {
-    setEmail(e.target.value);
+    const text = e.target.value;
+    setEmail(text);
+    isValidEmail(text);
   };
 
   const handlePassword = (e) => {
@@ -142,39 +165,42 @@ export default function Login() {
 
   return (
     <>
-      <Container>
-        <Form>
-          <div className='title'>회원 가입</div>
-          <input
-            type='text'
-            placeholder='유저네임(가입 후 변경 불가)'
-            onChange={handleUserName}
-          ></input>
-          {userNameMsg ? <ErrorMsg>{userNameMsg}</ErrorMsg> : <></>}
-          <input
-            type='email'
-            placeholder='이메일'
-            onChange={handleEmail}
-          ></input>
-          <input
-            type='password'
-            placeholder='비밀번호'
-            onChange={handlePassword}
-          ></input>
-          {passwordMsg ? <ErrorMsg>{passwordMsg}</ErrorMsg> : <></>}
-          <input
-            type='password'
-            placeholder='비밀번호 재입력'
-            onChange={handleConfirmPassword}
-          ></input>
-          {confirmPasswordMsg ? (
-            <ErrorMsg>{confirmPasswordMsg}</ErrorMsg>
-          ) : (
-            <></>
-          )}
-          <button onClick={handleClick}>가입하기</button>
-        </Form>
-      </Container>
+      <Body>
+        <SignupContainer>
+          <Form>
+            <div className='title'>회원 가입</div>
+            <input
+              type='text'
+              placeholder='유저네임 (가입 후 변경 불가)'
+              onChange={handleUserName}
+            ></input>
+            {userNameMsg ? <ErrorMsg>{userNameMsg}</ErrorMsg> : <></>}
+            <input
+              type='email'
+              placeholder='이메일'
+              onChange={handleEmail}
+            ></input>
+            {emailMsg ? <ErrorMsg>{emailMsg}</ErrorMsg> : <></>}
+            <input
+              type='password'
+              placeholder='비밀번호'
+              onChange={handlePassword}
+            ></input>
+            {passwordMsg ? <ErrorMsg>{passwordMsg}</ErrorMsg> : <></>}
+            <input
+              type='password'
+              placeholder='비밀번호 재입력'
+              onChange={handleConfirmPassword}
+            ></input>
+            {confirmPasswordMsg ? (
+              <ErrorMsg>{confirmPasswordMsg}</ErrorMsg>
+            ) : (
+              <></>
+            )}
+            <button onClick={handleClick}>가입하기</button>
+          </Form>
+        </SignupContainer>
+      </Body>
     </>
   );
 }
