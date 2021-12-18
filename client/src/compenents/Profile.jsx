@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const ProfileContainer = styled.div`
   width: 80%;
   height: 100vh;
   background: var(--white);
@@ -39,7 +39,7 @@ const MyImage = styled.div`
     cursor: pointer;
     margin-bottom: 10px;
   }
-  
+
   label:hover {
     color: hotpink;
     font-weight: bold;
@@ -89,11 +89,16 @@ const Button = styled.button`
   width: 100px;
   border-radius: 5px;
   background-color: var(--pink);
+  color: var(--pure-white);
   font-weight: bold;
   border: none;
   cursor: pointer;
   font-size: 15px;
   margin-bottom: 10px;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const Profile = () => {
@@ -101,6 +106,7 @@ const Profile = () => {
   const [email, setEmail] = useState('test@gmail.com');
   const [password, setPassword] = useState('Test1234?');
   const [passwordMsg, setPasswordMsg] = useState('');
+  const [emailMsg, setEmailMsg] = useState('');
   const [confirmPasswordMsg, setConfirmPasswordMsg] = useState('');
 
   const handleImage = (e) => {
@@ -117,8 +123,15 @@ const Profile = () => {
     }
   };
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
+  const isValidEmail = (email) => {
+    const regExp = new RegExp(
+      /^([\w!#$%&'*+\-\/=?^`{|}~]+(\.[\w!#$%&'*+\-\/=?^`{|}~]+)*|"([\w!#$%&'*+\-\/=?^`{|}~. ()<>\[\]:;@,]|\\[\\"])+")@(([a-zA-Z\d\-]+\.)+[a-zA-Z]+|\[(\d{1,3}(\.\d{1,3}){3}|IPv6:[\da-fA-F]{0,4}(:[\da-fA-F]{0,4}){1,5}(:\d{1,3}(\.\d{1,3}){3}|(:[\da-fA-F]{0,4}){0,2}))\])$/
+    );
+    if (regExp.test(email)) {
+      setEmailMsg('');
+    } else {
+      setEmailMsg('올바른 이메일 형식이 아닙니다.');
+    }
   };
 
   const isValidPassword = (password) => {
@@ -132,6 +145,12 @@ const Profile = () => {
         '8자 이상이어야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.'
       );
     }
+  };
+
+  const handleEmail = (e) => {
+    const text = e.target.value;
+    setEmail(text);
+    isValidEmail(text);
   };
 
   const handlePassword = (e) => {
@@ -152,7 +171,7 @@ const Profile = () => {
   const handleBtn = () => {};
 
   return (
-    <Container>
+    <ProfileContainer>
       <MyImage>
         <img src={profileImg} alt='' id='' className='' />
         <input
@@ -173,6 +192,7 @@ const Profile = () => {
         <li>
           <Title>이메일</Title>
           <EditInput type='email' defaultValue={email} onChange={handleEmail} />
+          {emailMsg ? <ErrorMsg>{emailMsg}</ErrorMsg> : <></>}
         </li>
         <li>
           <Title>비밀번호</Title>
@@ -180,17 +200,21 @@ const Profile = () => {
             type='password'
             defaultValue={password}
             onChange={handlePassword}
-            />
-            {passwordMsg ? <ErrorMsg>{passwordMsg}</ErrorMsg> : <></>}
+          />
+          {passwordMsg ? <ErrorMsg>{passwordMsg}</ErrorMsg> : <></>}
         </li>
         <li>
           <Title>비밀번호 재입력</Title>
           <EditInput type='password' onChange={handleConfirmPassword} />
-        {confirmPasswordMsg ? <ErrorMsg>{confirmPasswordMsg}</ErrorMsg> : <></>}
+          {confirmPasswordMsg ? (
+            <ErrorMsg>{confirmPasswordMsg}</ErrorMsg>
+          ) : (
+            <></>
+          )}
         </li>
       </MyInfo>
       <Button onClick={handleBtn}>변경하기</Button>
-    </Container>
+    </ProfileContainer>
   );
 };
 
