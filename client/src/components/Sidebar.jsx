@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const Side = styled.ul`
+  flex: 2.5 0 0;
   background-color: var(--white);
   width: 100%;
   height: 100%;
