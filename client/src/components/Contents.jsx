@@ -3,10 +3,11 @@ import Content from './Content';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  flex: 8 0 0;
+  width: 100%;
+  flex: 7.5 0 0;
   background-color: var(--white);
-  background-color: pink;
-`
+  padding: 1% 5%;
+`;
 
 const Contents = () => {
   const dummy = {
@@ -19,7 +20,8 @@ const Contents = () => {
         created_at: '2020-04-01T00:00:00.000Z',
         answers: 4,
         answered_user_id: 20,
-        category: 'https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png'
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
       },
       {
         board_id: 2,
@@ -29,7 +31,8 @@ const Contents = () => {
         created_at: '2020-04-01T00:00:00.000Z',
         answers: 4,
         answered_user_id: 20,
-        category: 'https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png'
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
       },
       {
         board_id: 3,
@@ -39,7 +42,8 @@ const Contents = () => {
         created_at: '2020-04-01T00:00:00.000Z',
         answers: 4,
         answered_user_id: 20,
-        category: 'https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png'
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
       },
       {
         board_id: 4,
@@ -48,7 +52,9 @@ const Contents = () => {
         author: 'Nickname',
         created_at: '2020-04-01T00:00:00.000Z',
         answers: 4,
-        answered_user_id: 20
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
       },
       {
         board_id: 5,
@@ -58,19 +64,17 @@ const Contents = () => {
         created_at: '2020-04-01T00:00:00.000Z',
         answers: 4,
         answered_user_id: 20,
-        category: 'https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png'
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
       },
-    ]
-  }
+    ],
+  };
 
   return (
     <Wrapper>
-      {dummy.result.map((item, idx) => {
-        <Content
-        key={idx}
-        data={item}
-        ></Content>
-      })}
+      {dummy.result.map((item, idx) => (
+        <Content key={idx} data={item}></Content>
+      ))}
     </Wrapper>
   );
 };
