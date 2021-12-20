@@ -6,14 +6,13 @@ import Header from '../components/Header.jsx';
 import Footer from '../components/Footer.jsx';
 
 const MainWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
   background-color: var(--white);
 `;
 
 const BodyWrapper = styled.div`
+  max-width: 1900px;
   display: flex;
-  padding-top: 12vh;
+  padding-top: 6vmax;
   background-color: var(--white);
 `;
 
@@ -37,7 +36,6 @@ const categories = {
   ],
 };
 
-// 헤더, 사이드바, 푸터 추가
 const Main = () => {
   return (
     <MainWrapper>

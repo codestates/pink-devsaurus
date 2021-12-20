@@ -11,8 +11,8 @@ const Dropdown = styled.div`
 `;
 
 const Profile = styled.button`
-  width: 5rem;
-  height: 5rem;
+  width: 5vmax;
+  height: 5vmax;
   background-color: pink;
   border-radius: 100%;
   border: none;
@@ -21,7 +21,7 @@ const Profile = styled.button`
 
 const DropdownContents = styled.ul`
   display: ${(props) => (props.show ? 'block' : 'none')};
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   font-size: 1.3rem;
   position: absolute;
   right: 1%;
@@ -37,7 +37,7 @@ const DropdownContents = styled.ul`
     right: 10%;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-bottom: 20px solid #F9F9F9;
+    border-bottom: 20px solid #f9f9f9;
   }
 `;
 
@@ -52,7 +52,7 @@ const DropdownContent = styled.li`
   text-align: center;
 
   :hover {
-    background-color: #FFD3C2;
+    background-color: #ffd3c2;
     cursor: pointer;
   }
 `;
