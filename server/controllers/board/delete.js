@@ -1,22 +1,62 @@
+const { BOARD_QA } = require("../../models");
 const pool = require("../../DB/mysql");
+const { isAuthorized } = require("../TokenFunction");
 
 module.exports = async (req,res) => {
     console.log('./controllers/board/delete');
+    // 정상적인 데이터를 받지 못한 경우 (필수 데이터가 없는 경우)
+    if(!req.params['boardId']){
+        return res.status(400).send({ message: "It has an empty value" })
+    }
+    
+    const { boardId } = req.params;
+
+    const accessTokenData = isAuthorized(req);
+    // 잘못된 accessToken을 받았을 경우
+    if (!accessTokenData) {
+        return res.status(401).send({ message: "Unauthorized" });
+    }
+
     try {
-        const data = pool.query(
-  
-            function(err,result,fields){
-                if(err)
-                    console.error(err)
-                else{
-                    console.log(result[0]);
-                    res.json({result})            
-                }
+        const check_403_Sql = `SELECT BOARD_ID,USER_ID FROM BOARD_QA WHERE USER_ID = ${accessTokenData.USER_ID} AND BOARD_ID = ${boardId}; `
+        const check_404_Sql = `SELECT * FROM BOARD_QA WHERE BOARD_ID = ${boardId}; `
+
+        pool.query(check_403_Sql + check_404_Sql, (err, result) => {
+            if(err){
+                console.error(err);
+                return res.status(501).json({message:"DB Query Fail"})
             }
-        )
-        
+            // check_403_Sql Error
+            if(result[0].length === 0){
+                return res.status(403).json({message:"Forbidden"})
+            }
+            // check_404_Sql Error
+            if(result[1].length === 0){
+                return res.status(404).json({message:"Not found - mysql2"})
+            }
+        })
+
+        BOARD_QA
+            .destroy({
+                where:{
+                    BOARD_ID:boardId,
+                    USER_ID:accessTokenData.USER_ID
+                }
+            })
+            .then( destoryed => {
+                if(!destoryed){
+                    return res.status(501).json({message : 'DB Quey Fail - destory fail'})
+                }
+                return res.status(204).json({message:'destory success'})
+            })
+            .catch(err => {
+                console.error(err)
+                return res.status(404).json({message:'Not found - sequelize'})
+            })
+        // end BOARD_QA
     } catch (err) {
-        return res.status(500).json(err)
+        console.error(err);
+        return res.status(500).json({message: "Internal Server Error"});
     }
 
 }
