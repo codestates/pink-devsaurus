@@ -30,13 +30,13 @@ module.exports = async (req,res) => {
             const {QUESTIONS} = result[0][0]
             const {ANSWER} = result[1][0]           
 
-            return res.status(200).json({
+            return res.status(200).json({result:{
                 email: EMAIL,
                 username: USERNAME,
                 questions: QUESTIONS,
                 answer: ANSWER,
                 profile_image: PROFILE_IMG
-            })
+            }})
         })
     } catch(err) {
         return res.status(500).json({message: "Internal Server Error"});
