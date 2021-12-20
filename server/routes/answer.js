@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const sessionController;
+const Controller = require('../controllers')
 
 /* session Router page */
 router.post('/', (req,res) => {

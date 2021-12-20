@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
-// const sessionController;
+const Controller = require('../controllers')
 
 /* users modify/delete Router page */
-router.put('/:userId', (req,res) => {
-    res.send(req.params);
-})
+router.put('/:userId', Controller.user.modify)
 router.delete('/:userId', (req,res) => {
     res.send(req.params);
 })
