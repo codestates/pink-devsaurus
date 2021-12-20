@@ -118,7 +118,7 @@ const Answer = ({ result, handleAnswerEdit }) => {
       <AnswerInfoWrapper>
         <UserInfoWrapper>
           <Userinfo user={result} />
-        </UserInfoWrapper>햣 git 
+        </UserInfoWrapper>
         <IsModifiedWrapper>
           <IsModified cDate={result.created_date} mDate={result.modify_date}>
             수정됨
