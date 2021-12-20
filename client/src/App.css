@@ -1,13 +1,5 @@
 @import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 
-:root {
-  --pink: #ED8E76;
-  --pure-white: white;
-  --white: whitesmoke;
-  --black: black;
-  --gray: gray;
-}
-
   :root {
   --pink: #ED8E76;
   --pure-white: white;
@@ -23,13 +15,9 @@
   font-family: 'Nanum Gothic', 'serif';
 }
 
-  body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+body {
   background: var(--pink);
-  }
+}
 
 ul {
   list-style: none;
