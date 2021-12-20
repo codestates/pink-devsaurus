@@ -3,11 +3,13 @@ import Content from './Content';
 import styled from 'styled-components';
 
 const ContentsWrapper = styled.div`
-  flex: 7.5 0 0;
+  width: 75%;
+  margin-left: 25%;
+  right: 0;
   background-color: var(--white);
   padding: 1% 5%;
 
-  > div:nth-child(4) {
+  > div:nth-child(10) {
     border-bottom: none;
   }
 `;
@@ -15,13 +17,13 @@ const ContentsWrapper = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  padding: 0.2vmax 0;
 `;
 
 const Button = styled.button`
-  font-size: 1rem;
-  margin-right: 1rem;
-  padding: 0 0.4rem;
-  border-color: ;
+  font-size: 1vmax;
+  margin-right: 1vmax;
+  padding: 0 0.4vmax;
 `;
 
 const Contents = () => {
@@ -62,6 +64,72 @@ const Contents = () => {
       },
       {
         board_id: 4,
+        title: 'How do yadsfdou use coronasadassd',
+        likes: 3,
+        author: 'Nickname',
+        created_at: '2020-04-01T00:00:00.000Z',
+        answers: 4,
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+      },
+      {
+        board_id: 5,
+        title: 'How do yadsfdou use coronasadassd',
+        likes: 3,
+        author: 'Nickname',
+        created_at: '2020-04-01T00:00:00.000Z',
+        answers: 4,
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+      },
+      {
+        board_id: 6,
+        title: 'How do yadsfdou use coronasadassd',
+        likes: 3,
+        author: 'Nickname',
+        created_at: '2020-04-01T00:00:00.000Z',
+        answers: 4,
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+      },
+      {
+        board_id: 7,
+        title: 'How do yadsfdou use coronasadassd',
+        likes: 3,
+        author: 'Nickname',
+        created_at: '2020-04-01T00:00:00.000Z',
+        answers: 4,
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+      },
+      {
+        board_id: 8,
+        title: 'How do yadsfdou use coronasadassd',
+        likes: 3,
+        author: 'Nickname',
+        created_at: '2020-04-01T00:00:00.000Z',
+        answers: 4,
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+      },
+      {
+        board_id: 9,
+        title: 'How do yadsfdou use coronasadassd',
+        likes: 3,
+        author: 'Nickname',
+        created_at: '2020-04-01T00:00:00.000Z',
+        answers: 4,
+        answered_user_id: 20,
+        category:
+          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+      },
+      {
+        board_id: 10,
         title: 'How do yadsfdou use coronasadassd',
         likes: 3,
         author: 'Nickname',
