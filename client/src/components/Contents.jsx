@@ -3,8 +3,7 @@ import Content from './Content';
 import styled from 'styled-components';
 
 const ContentsWrapper = styled.div`
-  width: 75%;
-  margin-left: 25%;
+  width: 100%;
   right: 0;
   background-color: var(--white);
   padding: 1% 5%;
