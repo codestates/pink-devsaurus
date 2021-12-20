@@ -1,13 +1,22 @@
 // 담당자 : 최민우 (Front-end)
-// 2021-12-17 16:41:26
+// 오전 2:54 2021-12-18
 
 import { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 
+// const LoadingContainer = styled.div`
+//   position: fixed;
+//   width: 100vw;
+//   height: 100vh;
+// `;
+
 const LoadingWrapper = styled.div`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000 !important;
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.7);
@@ -23,17 +32,15 @@ const LoadingImg = styled.img`
 
   @keyframes rollin {
     0% {
-      transform: rotate(0deg) scale(1.0);
-      
+      transform: rotate(0deg) scale(1);
     }
     50% {
       transform: rotate(180deg) scale(0.8);
     }
     100% {
-      transform: rotate(360deg) scale(1.0);
+      transform: rotate(360deg) scale(1);
     }
   }
-
 `;
 
 const LoadingText = styled.div`
@@ -46,7 +53,6 @@ const LoadingText = styled.div`
 const dino = require('../assets/pinkDevelopSaurus.png');
 
 const Loading = () => {
-  
   const [loadingString, setLoadingString] = useState('.');
   const previousString = useRef();
 
@@ -57,8 +63,8 @@ const Loading = () => {
     if (previousString.current === '...') {
       setLoadingString('.');
     }
-  };  
-  
+  };
+
   useEffect(() => {
     previousString.current = loadingString;
   });
@@ -69,7 +75,6 @@ const Loading = () => {
       clearInterval(loadingTextTimer);
     };
   }, []);
-
 
   return (
     <LoadingWrapper>
