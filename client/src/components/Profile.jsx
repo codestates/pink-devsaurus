@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ProfileContainer = styled.div`
-  width: 80%;
-  height: 100vh;
-  background: var(--white);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: var(--white);
+  width: 100%;
+  min-height: 100vh;
 `;
 
 const MyImage = styled.div`
@@ -16,10 +16,9 @@ const MyImage = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
   img {
-    width: 150px;
-    height: 150px;
+    max-width: 150px;
+    max-height: 150px;
     border-radius: 50%;
     margin-bottom: 10px;
     border: 1px solid lightgray;
@@ -51,12 +50,11 @@ const MyInfo = styled.ul`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 300px;
 
   li {
     display: flex;
     flex-direction: column;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
 `;
 
@@ -66,7 +64,7 @@ const Title = styled.span`
 `;
 
 const EditInput = styled.input`
-  width: 350px;
+  width: 25em;
   height: 30px;
   outline: none;
   border: 1px solid lightgray;
@@ -94,7 +92,7 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   font-size: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 
   &:hover {
     opacity: 0.8;
