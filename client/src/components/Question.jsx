@@ -8,33 +8,6 @@ import MDEditor from '@uiw/react-md-editor';
 import Userinfo from './UserInfo.jsx';
 import DropdownEditCancel from './DropdownEditCancel.jsx';
 
-const fetchResult = {
-  result: {
-    title: 'How do you use coronavirus API into action?',
-    content: `I'm loooking for the best way to let users export and download data in xml and csv format.
-
-I have found a maatwebsite package to export excel and csv file.`,
-    likes: 10,
-    username: 'johndoe',
-    userprofile_img: 'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-    created_date: '2020-04-01T00:00:00.000Z',
-    modify_date: '2020-04-02T00:00:00.000Z',
-    answers: [
-      {
-        answer_username: 'rihanna',
-        userprofile_img:
-          'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-        answer_id: 1,
-        answer_content: 'blah blah blah',
-        created_date: '2020-04-01T00:00:00.000Z',
-        modified_date: '2020-04-01T00:00:00.000Z',
-        answer_likes: 12,
-      },
-    ],
-    answered: 0,
-  },
-};
-
 const QuestionContainer = styled.div`
   padding: 1rem;
 `;
@@ -125,8 +98,7 @@ const UserInfoWrapper = styled.div`
   padding: 1rem;
 `;
 
-const Question = (props) => {
-  const { result } = fetchResult;
+const Question = ({ result, handleQuestionEdit }) => {
 
   const [editMode, setEditMode] = useState(false);
   const [dropDownClick, setDropDownClick] = useState(false);
@@ -147,12 +119,7 @@ const Question = (props) => {
 
   const handleEditFinish = ( newContent ) => {
     setEditMode(false);
-    //setQuestionName();
-
-    //fetch and edit content
-    fetchResult.result.title = questionName;
-    fetchResult.result.content = newContent;
-
+    handleQuestionEdit( questionName, newContent );
     setQuestionContent(newContent);    
   };
 
@@ -181,7 +148,7 @@ const Question = (props) => {
           <QuestionName>{questionName}</QuestionName>
         )}
         <IsModifiedWrapper>
-          <IsModified cDate={result.created_date} mDate={result.modify_date}>modified</IsModified>
+          <IsModified cDate={result.created_date} mDate={result.modify_date}>수정됨</IsModified>
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
           <DropdownButton onClick={handleDropDownClick}>...</DropdownButton>
