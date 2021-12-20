@@ -92,7 +92,7 @@ const Login = () => {
         <Form>
           <div className='title'>로그인</div>
           <input placeholder='유저네임' onChange={handleUserName}></input>
-          <input placeholder='패스워드' onChange={handlePassword}></input>
+          <input placeholder='비밀번호' onChange={handlePassword}></input>
           <button onClick={handleClick}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
