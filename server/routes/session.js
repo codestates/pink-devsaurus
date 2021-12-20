@@ -1,22 +1,12 @@
 const express = require('express');
 const router = express.Router();
-// const sessionController;
+const Controller = require('../controllers')
 
 /* session Router page */
-router.post('/login', (req,res) => {
-    res.send("login");
-})
-router.get('/logout', (req,res) => {
-    res.send("logout");
-})
-router.post('/sign-up', (req,res) => {
-    res.send("sign-up");
-})
-router.get('/userinfo', (req,res) => {
-    res.send("userinfo");
-})
-router.get('/auth', (req,res) => {
-    res.send("auth");
-})
+router.post('/login', Controller.session.logIn);
+router.get('/logout', Controller.session.logOut);
+router.post('/sign-up', Controller.session.signUp);
+router.get('/userinfo', Controller.session.userInfo)
+router.get('/auth', Controller.session.auth)
 
 module.exports = router;
