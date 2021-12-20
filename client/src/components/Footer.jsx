@@ -5,10 +5,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Foot = styled.footer`
-  position: fixed;
+  position: relative;
+  color: var(--gray);
   bottom: 0;
   width: 100%;
-  text-align: center;
+  text-align: left;
+  background-color: var(--white);
 `;
 
 const Footer = () => {

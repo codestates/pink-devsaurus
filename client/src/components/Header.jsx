@@ -14,9 +14,10 @@ const Head = styled.header`
   top: 0;
   justify-content: space-between;
   background-color: var(--white);
-  border-bottom: 1px solid var(--black);
+  border-bottom: 1px solid rgba(168, 168, 168, 0.7);
   align-items: center;
   padding: 0.2rem;
+  z-index: 999;
 `;
 
 const Img = styled.img`
@@ -32,7 +33,7 @@ const Button = styled.div`
   padding: 1.2rem 3rem;
   border-radius: 40px;
   font-size: 1.6rem;
-  font-weight: 500;
+  font-weight: 700;
   text-align: center;
   flex: 0.1 0 0;
 
