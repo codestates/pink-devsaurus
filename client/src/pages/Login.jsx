@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 // import { Link } from 'react-router-dom';
 
-const Container = styled.div`
+const LoginContainer = styled.div`
   width: 330px;
   background-color: var(--white);
   padding: 35px;
@@ -72,7 +72,7 @@ const Form = styled.div`
   }
 `;
 
-export default function Login() {
+const Login = () => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
@@ -88,8 +88,7 @@ export default function Login() {
   };
 
   return (
-    <>
-      <Container>
+      <LoginContainer>
         <Form>
           <div className='title'>로그인</div>
           <input placeholder='유저네임' onChange={handleUserName}></input>
@@ -100,7 +99,8 @@ export default function Login() {
             <li className='signup'>회원 가입</li>
           </ul>
         </Form>
-      </Container>
-    </>
+      </LoginContainer>
   );
 }
+
+export default Login;
