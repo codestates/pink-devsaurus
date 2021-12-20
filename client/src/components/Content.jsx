@@ -87,7 +87,7 @@ const Content = ({ data }) => {
   } = data;
 
   return (
-    <Link to={`/read/${board_id}`} style={{ textDecoration: 'none' }}>
+    <Link to={`/read/${board_id}`}>
       <Wrapper>
         <Icon>
           <img src={category}></img>
