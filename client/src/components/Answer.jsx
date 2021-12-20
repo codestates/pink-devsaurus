@@ -8,16 +8,16 @@ import MDEditor from '@uiw/react-md-editor';
 import Userinfo from './UserInfo.jsx';
 import DropdownEditCancel from './DropdownEditCancel.jsx';
 
-const fetchResult = {
-  answer_username: 'rihanna',
-  userprofile_img: 'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-  answer_id: 1,
-  answer_content: 'blah blah blah',
-  created_date: '2020-04-01T00:00:00.000Z',
-  modified_date: '2020-04-01T00:00:00.000Z',
-  answer_likes: 12,
-  selected: true,
-};
+// const fetchResult = {
+//   answer_username: 'rihanna',
+//   userprofile_img: 'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
+//   answer_id: 1,
+//   answer_content: 'blah blah blah',
+//   created_date: '2020-04-01T00:00:00.000Z',
+//   modified_date: '2020-04-01T00:00:00.000Z',
+//   answer_likes: 12,
+//   selected: true,
+// };
 
 const AnswerContainer = styled.div`
   padding: 1rem;
@@ -76,12 +76,11 @@ const EditorWrapper = styled.div`
 
 const LikesWrapper = styled.div`
   font-weight: bold;
-  float: right;
+  text-align: right;
   margin-right: 1rem;
 `;
 
-const Answer = () => {
-  const result = fetchResult;
+const Answer = ({ result, handleAnswerEdit }) => {
 
   const [answerContent, setAnswerContent] = useState(result.answer_content);
   const [dropDownClick, setDropDownClick] = useState(false);
@@ -100,11 +99,7 @@ const Answer = () => {
 
   const handleEditFinish = (newContent) => {
     setEditMode(false);
-    //setQuestionName();
-
-    //fetch and edit content
-    fetchResult.answer_content = newContent;
-
+    handleAnswerEdit(newContent);
     setAnswerContent(newContent);
   };
 
@@ -123,10 +118,10 @@ const Answer = () => {
       <AnswerInfoWrapper>
         <UserInfoWrapper>
           <Userinfo user={result} />
-        </UserInfoWrapper>
+        </UserInfoWrapper>햣 git 
         <IsModifiedWrapper>
           <IsModified cDate={result.created_date} mDate={result.modify_date}>
-            modified
+            수정됨
           </IsModified>
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
