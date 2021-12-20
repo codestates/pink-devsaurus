@@ -2,6 +2,7 @@
 // 2021-12-17 15:10:14
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Dropdown = styled.div`
@@ -57,7 +58,7 @@ const DropdownContent = styled.li`
   }
 `;
 
-const DropdownProfile = () => {
+const DropdownProfile = ({ setIsLogin }) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -66,10 +67,12 @@ const DropdownProfile = () => {
         onClick={() => setShow(!show)}
         onBlur={() => setShow(false)}
       ></Profile>
-      <DropdownContents show={show}>
+      <DropdownContents show={show} onMouseDown={(e) => e.preventDefault()}>
         <DropdownLable>{`Signed in as ${'유저'}`}</DropdownLable>
-        <DropdownContent>마이페이지</DropdownContent>
-        <DropdownContent>로그아웃</DropdownContent>
+        <Link to="/mypage">
+          <DropdownContent>마이페이지</DropdownContent>
+        </Link>
+        <DropdownContent onClick={() => setIsLogin(false)}>로그아웃</DropdownContent>
       </DropdownContents>
     </Dropdown>
   );

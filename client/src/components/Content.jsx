@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -86,23 +87,25 @@ const Content = ({ data }) => {
   } = data;
 
   return (
-    <Wrapper>
-      <Icon>
-        <img src={category}></img>
-      </Icon>
-      <Title>
-        <div>{title}</div>
-        <div>
-          <span>{author}</span>
-          <span>{created_at.slice(0, 10)}</span>
-        </div>
-        <div>{likes} Likes</div>
-      </Title>
-      <AnswerNumber>
-        <div>답변</div>
-        <div>{answers}</div>
-      </AnswerNumber>
-    </Wrapper>
+    <Link to={`/read/${board_id}`} style={{ textDecoration: 'none' }}>
+      <Wrapper>
+        <Icon>
+          <img src={category}></img>
+        </Icon>
+        <Title>
+          <div>{title}</div>
+          <div>
+            <span>{author}</span>
+            <span>{created_at.slice(0, 10)}</span>
+          </div>
+          <div>{likes} Likes</div>
+        </Title>
+        <AnswerNumber>
+          <div>답변</div>
+          <div>{answers}</div>
+        </AnswerNumber>
+      </Wrapper>
+    </Link>
   );
 };
 

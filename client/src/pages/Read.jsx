@@ -45,25 +45,25 @@ const fetchResult = {
   },
 };
 
-const categories = {
-  result: [
-    {
-      category_name: 'View all',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-    {
-      category_name: 'Database',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-    {
-      category_name: 'JavaScript',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-  ],
-};
+// const categories = {
+//   result: [
+//     {
+//       category_name: 'View all',
+//       category_image:
+//         'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+//     },
+//     {
+//       category_name: 'Database',
+//       category_image:
+//         'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+//     },
+//     {
+//       category_name: 'JavaScript',
+//       category_image:
+//         'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+//     },
+//   ],
+// };
 
 // const MainScreen = styled.div`
 //   margin-top: ${({ headerHeight }) => headerHeight.header}px;
@@ -130,21 +130,21 @@ const Read = ({ articleID }) => {
         <Sidebar list={categories.result}></Sidebar>
       </div> */}
       {/* <MainScreen headerHeight={headerSize}> */}
-        <Question result={result} handleQuestionEdit={handleQuestionEdit} />
-        <HorizontalLine bottom={1.5} />
-        {result['answers']?.map((answer, index) => {
-          return (
-            <Left key={index}>
-              <Answer
-                key={index}
-                result={answer}
-                handleAnswerEdit={handleAnswerEdit}
-              />
-              <HorizontalLine />
-            </Left>
-          );
-        })}
-        <Write isQuestion={false} handleWriteSuccess={handleNewAnswer} />
+      <Question result={result} handleQuestionEdit={handleQuestionEdit} />
+      <HorizontalLine bottom={1.5} />
+      {result['answers']?.map((answer, index) => {
+        return (
+          <Left key={index}>
+            <Answer
+              key={index}
+              result={answer}
+              handleAnswerEdit={handleAnswerEdit}
+            />
+            <HorizontalLine />
+          </Left>
+        );
+      })}
+      <Write isQuestion={false} handleWriteSuccess={handleNewAnswer} />
       {/* </MainScreen> */}
       {/* <Footer /> */}
     </>
