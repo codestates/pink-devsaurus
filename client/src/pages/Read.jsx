@@ -65,12 +65,12 @@ const categories = {
   ],
 };
 
-const MainScreen = styled.div`
-  margin-top: ${({ headerHeight }) => headerHeight.header}px;
-  margin-left: ${({ headerHeight }) => headerHeight.sidebar}px;
-  background-color: var(--white);
-  /* margin-bottom: 3rem; */
-`;
+// const MainScreen = styled.div`
+//   margin-top: ${({ headerHeight }) => headerHeight.header}px;
+//   margin-left: ${({ headerHeight }) => headerHeight.sidebar}px;
+//   background-color: var(--white);
+//   /* margin-bottom: 3rem; */
+// `;
 
 const HorizontalLine = styled.div`
   border-left-width: 0;
@@ -89,9 +89,9 @@ const Left = styled.div`
 const Read = ({ articleID }) => {
   //const result = axios.get(`/api/articles/${articleID}`);
   const { result } = fetchResult;
-  const [headerSize, setHeaderSize] = useState({ header: 0, sidebar: 0 });
-  const headerRef = useRef();
-  const sidebarRef = useRef();
+  // const [headerSize, setHeaderSize] = useState({ header: 0, sidebar: 0 });
+  // const headerRef = useRef();
+  // const sidebarRef = useRef();
 
   const handleQuestionEdit = (questionName, newContent) => {
     fetchResult.result.title = questionName;
@@ -109,27 +109,27 @@ const Read = ({ articleID }) => {
     console.log(newContent);
   };
 
-  useLayoutEffect(() => {
-    function updateSize() {
-      setHeaderSize({
-        header: headerRef.current.firstChild.clientHeight,
-        sidebar: sidebarRef.current.firstChild.clientWidth,
-      });
-    }
-    window.addEventListener('resize', updateSize);
-    updateSize();
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
+  // useLayoutEffect(() => {
+  //   function updateSize() {
+  //     setHeaderSize({
+  //       header: headerRef.current.firstChild.clientHeight,
+  //       sidebar: sidebarRef.current.firstChild.clientWidth,
+  //     });
+  //   }
+  //   window.addEventListener('resize', updateSize);
+  //   updateSize();
+  //   return () => window.removeEventListener('resize', updateSize);
+  // }, []);
 
   return (
     <>
-      <div ref={headerRef}>
+      {/* <div ref={headerRef}>
         <Header />
       </div>
       <div ref={sidebarRef}>
         <Sidebar list={categories.result}></Sidebar>
-      </div>
-      <MainScreen headerHeight={headerSize}>
+      </div> */}
+      {/* <MainScreen headerHeight={headerSize}> */}
         <Question result={result} handleQuestionEdit={handleQuestionEdit} />
         <HorizontalLine bottom={1.5} />
         {result['answers']?.map((answer, index) => {
@@ -145,8 +145,8 @@ const Read = ({ articleID }) => {
           );
         })}
         <Write isQuestion={false} handleWriteSuccess={handleNewAnswer} />
-      </MainScreen>
-      <Footer />
+      {/* </MainScreen> */}
+      {/* <Footer /> */}
     </>
   );
 };
