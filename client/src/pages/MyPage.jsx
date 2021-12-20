@@ -1,8 +1,6 @@
 import React, { useState, useRef, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import Profile from '../components/Profile';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
 
 const Wrapper = styled.div`
@@ -14,14 +12,12 @@ const Wrapper = styled.div`
 `;
 
 const MyPage = () => {
-  const [sizingInfo, setSizingInfo] = useState({ header: 0, sidebar: 0 });
-  const headerRef = useRef();
+  const [sizingInfo, setSizingInfo] = useState({ sidebar: 0 });
   const sidebarRef = useRef();
 
   useLayoutEffect(() => {
     function updateSize() {
       setSizingInfo({
-        header: headerRef.current.firstChild.clientHeight,
         sidebar: sidebarRef.current.firstChild.clientWidth,
       });
     }
@@ -33,9 +29,6 @@ const MyPage = () => {
   }, []);
   return (
     <>
-      <div ref={headerRef}>
-        <Header />
-      </div>
       <div ref={sidebarRef}>
         <Sidebar
           list={[{ category_name: '나의 정보' }, { category_name: 'My Q & A' }]}
@@ -44,7 +37,6 @@ const MyPage = () => {
       <Wrapper headerSize={sizingInfo}>
         <Profile />
       </Wrapper>
-      <Footer />
     </>
   );
 };
