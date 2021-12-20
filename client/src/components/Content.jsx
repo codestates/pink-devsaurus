@@ -4,11 +4,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid rgba(168, 168, 168, 0.7);
   padding: 1%;
 
   > div {
-    padding: 1rem;
+    padding: 1%;
   }
 
   :hover {
@@ -21,7 +21,7 @@ const Icon = styled.div`
   min-width: 175px;
 
   > img {
-    width: 100%;
+    width: 80%;
     max-height: 240px;
   }
 `;
@@ -36,12 +36,12 @@ const Title = styled.div`
     /* white-space: nowrap; */
 
     :first-child {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: 700;
     }
 
     :nth-child(2) {
-      font-size: 2rem;
+      font-size: 1.5rem;
       color: #494949;
       font-weight: 600;
 
@@ -52,7 +52,7 @@ const Title = styled.div`
 
     :last-child {
       color: var(--gray);
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 600;
     }
   }
@@ -67,7 +67,7 @@ const AnswerNumber = styled.div`
   justify-content: center;
 
   > div {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 5%;
   }
