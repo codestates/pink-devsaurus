@@ -3,24 +3,24 @@ import styled from 'styled-components';
 
 const Side = styled.ul`
   position: fixed;
-  top: 6vmax;
   left: 0;
   width: 25%;
   height: 100%;
   background-color: var(--white);
   overflow-x: hidden;
   white-space: nowrap;
-  padding: 2% 2%;
+  padding: 1% 2%;
+  z-index: 10;
 `;
 
 const Item = styled.li`
   display: flex;
   color: var(--pure-white);
-  font-weight: 500;
-  font-size: 1.8vmax;
+  font-weight: 700;
+  font-size: 1vmax;
   border-radius: 20px;
-  margin-bottom: 10%;
-  padding: 1vmax 0;
+  margin-bottom: 5%;
+  padding: 0.5vmax 0;
   background-color: var(--pink);
 
   :hover {
@@ -36,8 +36,8 @@ const CircleWrapper = styled.div`
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 2.5vmax;
-    height: 2.5vmax;
+    width: 2.3vmax;
+    height: 2.3vmax;
     border-radius: 100%;
     background-color: ${(props) => (props.selected ? '#A3250C' : 'white')};
     background-image: ${(props) => props.src};
