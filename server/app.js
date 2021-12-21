@@ -48,5 +48,9 @@ app.use("/likes", likeRouter);
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(8080);
-httpsServer.listen(8443);
+httpServer.listen(8080, () => {
+  console.log("http Server - http://pinkdevsaurus.tk/:8080");
+});
+httpsServer.listen(8443, () => {
+  console.log("https Server - https://pinkdevsaurus.tk/8443");
+});
