@@ -7,6 +7,7 @@ import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
 import Userinfo from './UserInfo.jsx';
 import DropdownEditCancel from './DropdownEditCancel.jsx';
+import DeleteConfirm from './DeleteConfirm.jsx'
 
 const QuestionContainer = styled.div`
   padding: 1rem;
@@ -37,7 +38,8 @@ const IsModified = styled.span`
   border-radius: 0.5rem;
   padding: 0.1rem 0.5rem;
   margin-right: 0.5rem;
-  visibility: ${(props) => (props.cDate !== props.mDate ? 'visible' : 'hidden')};
+  visibility: ${(props) =>
+    props.cDate !== props.mDate ? 'visible' : 'hidden'};
 `;
 
 const DropdownButton = styled.span`
@@ -48,7 +50,7 @@ const DropdownButton = styled.span`
   cursor: pointer;
   &:hover {
     background-color: lightgreen;
-    color: black;    
+    color: black;
   }
   &:focus {
     background-color: lightgreen;
@@ -99,43 +101,45 @@ const UserInfoWrapper = styled.div`
 `;
 
 const Question = ({ result, handleQuestionEdit }) => {
-
   const [editMode, setEditMode] = useState(false);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
   const [questionContent, setQuestionContent] = useState(result.content);
+  const [isOpen, setIsOpen] = useState(false);
 
   const intoEditMode = (e) => {
     setDropDownClick(false);
-    if( editMode ) return ;    
+    if (editMode) return;
     setEditMode(true);
   };
 
   const cancelEditMode = (e) => {
-    setQuestionName( result.title );
-    setQuestionContent( result.content );
+    setQuestionName(result.title);
+    setQuestionContent(result.content);
     setEditMode(false);
   };
 
-  const handleEditFinish = ( newContent ) => {
+  const handleEditFinish = (newContent) => {
     setEditMode(false);
-    handleQuestionEdit( questionName, newContent );
-    setQuestionContent(newContent);    
+    handleQuestionEdit(questionName, newContent);
+    setQuestionContent(newContent);
   };
 
   const handleDropDownClick = (e) => {
     setDropDownClick(!dropDownClick);
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = (result) => {
     //need modal confirm
     //fetch and delete content
+    setIsOpen(false);
     setDropDownClick(false);
+    if (result === false) return;
   };
-
 
   return (
     <QuestionContainer>
+      {isOpen ? <DeleteConfirm handleDelete={handleDelete}></DeleteConfirm> : null}
       <QuestionNameWrapper>
         {editMode ? (
           <NameEditbox
@@ -148,21 +152,32 @@ const Question = ({ result, handleQuestionEdit }) => {
           <QuestionName>{questionName}</QuestionName>
         )}
         <IsModifiedWrapper>
-          <IsModified cDate={result.created_date} mDate={result.modify_date}>수정됨</IsModified>
+          <IsModified cDate={result.created_date} mDate={result.modify_date}>
+            수정됨
+          </IsModified>
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
           <DropdownButton onClick={handleDropDownClick}>...</DropdownButton>
-          { dropDownClick
-            ? <DropdownEditCancel handleModify={intoEditMode} handleDelete={handleDelete}/>
-            : false 
-          }
+          {dropDownClick ? (
+            <DropdownEditCancel
+              handleModify={intoEditMode}
+              handleDelete={handleDelete}
+              setIsOpen={setIsOpen}
+            />
+          ) : (
+            false
+          )}
         </DropdownButtonWrapper>
       </QuestionNameWrapper>
       <UserInfoWrapper>
         <Userinfo user={result} />
       </UserInfoWrapper>
       {editMode ? (
-        <Editor text={questionContent} handleEditFinish={handleEditFinish} handleCancel={cancelEditMode} />
+        <Editor
+          text={questionContent}
+          handleEditFinish={handleEditFinish}
+          handleCancel={cancelEditMode}
+        />
       ) : (
         <EditorWrapper>
           <MDEditor.Markdown source={questionContent} />
@@ -173,7 +188,6 @@ const Question = ({ result, handleQuestionEdit }) => {
         <AnswerAndLikesMiddleWrapper />
         <LikesWrapper>❤️ {result.likes} likes</LikesWrapper>
       </AnwerAndLikesContainer>
-
     </QuestionContainer>
   );
 };
