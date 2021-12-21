@@ -36,7 +36,7 @@ app.use("/likes", likeRouter);
 
 /* example http server run */
 let server;
-if (fs.existsSync("./privkey.pem") && fs.existsSync("./fullchain.pem")) {
+try {
   server = https
     .createServer(
       {
@@ -48,7 +48,7 @@ if (fs.existsSync("./privkey.pem") && fs.existsSync("./fullchain.pem")) {
     .listen(443, () => {
       console.log("https Server Running : https://pinkdevsaurus.tk/:" + 443);
     });
-} else {
+} catch {
   server = app.listen(80, () =>
     console.log("http Server Running : http://pinkdevsaurus.tk/:" + 80)
   );
