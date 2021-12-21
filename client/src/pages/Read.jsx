@@ -26,19 +26,24 @@ const Left = styled.div`
 `;
 
 const Read = () => {
-
   const location = useLocation();
   const [result, setResult] = useState(null);
 
   useLayoutEffect(() => {
     async function fetchData() {
       const parsed = location.pathname.split('/')[2];
-      const fetchResult = await axios.get(`http://39.122.166.33:8000/questions/${parsed}`, { withCredentials : true });
-      const answerResult = await axios.get(`http://39.122.166.33:8000/questions/answers/${parsed}`, { withCredentials : true });
-      const { answer:answers } = answerResult.data;
+      const fetchResult = await axios.get(
+        `http://39.122.166.33:8000/questions/${parsed}`,
+        { withCredentials: true }
+      );
+      const answerResult = await axios.get(
+        `http://39.122.166.33:8000/questions/answers/${parsed}`,
+        { withCredentials: true }
+      );
+      const { answer: answers } = answerResult.data;
       setResult({
         ...fetchResult.data.result,
-        answers
+        answers,
       });
     }
     fetchData();
@@ -60,7 +65,7 @@ const Read = () => {
     console.log(newContent);
   };
 
-  if( !result ) return <Loading />;
+  if (!result) return <Loading />;
   return (
     <>
       <Question result={result} handleQuestionEdit={handleQuestionEdit} />

@@ -28,7 +28,7 @@ const ModalLable = styled.div`
   font-size: 2vmax;
   font-weight: bold;
   text-align: center;
-`
+`;
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -46,10 +46,9 @@ const Button = styled.button`
   padding: 1.5vmax;
   background-color: var(--pink);
   cursor: pointer;
-`
+`;
 
 const SimpleOKModal = ({ handleOK, Message }) => {
-
   return (
     <ModalWrapper>
       <ModalBackdrop onClick={handleOK}>

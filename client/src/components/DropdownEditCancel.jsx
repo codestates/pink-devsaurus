@@ -46,9 +46,7 @@ const DropdownEditCancel = ({ handleModify, handleDelete }) => {
     <DropdownContents>
       <Triangle />
       <DropdownContent onClick={handleModify}>수정</DropdownContent>
-      <DropdownContent onClick={handleDelete}>
-        삭제
-      </DropdownContent>
+      <DropdownContent onClick={handleDelete}>삭제</DropdownContent>
     </DropdownContents>
   );
 };

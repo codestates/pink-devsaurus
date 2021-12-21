@@ -92,10 +92,10 @@ const Answer = ({ result, handleAnswerEdit }) => {
       return setNoAuthDialog(true);
     }
 
-    if( checkAuth.data.result.username !== result.username ) {
+    if (checkAuth.data.result.username !== result.username) {
       return setNoAuthDialog(true);
     }
-    
+
     setEditMode(true);
   };
 
@@ -129,7 +129,10 @@ const Answer = ({ result, handleAnswerEdit }) => {
   return (
     <AnswerContainer>
       {noAuthDialog ? (
-        <SimpleOKModal handleOK={() => setNoAuthDialog(false)} Message="요청하신 게시물을 수정할 권한이 없습니다." />
+        <SimpleOKModal
+          handleOK={() => setNoAuthDialog(false)}
+          Message="요청하신 게시물을 수정할 권한이 없습니다."
+        />
       ) : (
         false
       )}
