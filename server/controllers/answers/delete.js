@@ -41,25 +41,6 @@ module.exports = async (req, res) => {
   */
 
   try {
-    const check_403_Sql = `SELECT ANSWER_ID,USER_ID FROM ANSWER WHERE USER_ID = ${accessTokenData.USER_ID} AND ANSWER_ID = ${answerId}; `;
-    const check_404_Sql = `SELECT * FROM ANSWER WHERE ANSWER_ID = ${answerId}; `;
-
-    pool.query(check_403_Sql + check_404_Sql, (err, result) => {
-      if (err) {
-        console.error(err);
-        return res.status(501).json({ message: "DB Query Fail" });
-      }
-      // check_403_Sql Error
-      if (result[0].length === 0) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-      // check_404_Sql Error
-      if (result[1].length === 0) {
-        return res
-          .status(404)
-          .json({ message: "Bad Request - mysql2 [ ANSWER_ID ]" });
-      }
-    });
     /*
       answer_id를 이용하여 answer 글 삭제
        - delete from ANSWER WHERE answer_id = ${answerId} AND user_id = ${accessTokenData.USER_ID}
@@ -93,10 +74,10 @@ module.exports = async (req, res) => {
       { transaction: t }
     );
 
-    await t.commit();
+    // await t.commit();
     return res.status(204).send();
   } catch (error) {
-    await t.rollback();
+    // await t.rollback();
     console.dir(error);
     return res.status(500).json(error);
   }

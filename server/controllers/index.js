@@ -1,9 +1,9 @@
 module.exports = {
   answer: {
-    wirte: require("./answer/write"),
-    modify: require("./answer/modify"),
-    delete: require("./answer/delete"),
-    bestAnswer: require("./answer/bestAnswer"),
+    write: require("./answers/write"),
+    modify: require("./answers/modify"),
+    delete: require("./answers/delete"),
+    bestAnswer: require("./answers/bestAnswer"),
   },
   board: {
     allQuestions: require("./board/allQuestions"),
@@ -26,5 +26,11 @@ module.exports = {
   user: {
     delete: require("./user/delete"),
     modify: require("./user/modify"),
+  },
+  like: {
+    questionsLikeUp: require("./like/questionsLikeUp"),
+    questionsLikeDown: require("./like/questionsLikeDown"),
+    answersLikeUp: require("./like/answersLikeUp"),
+    answersLikeDown: require("./like/answersLikeDown"),
   },
 };
