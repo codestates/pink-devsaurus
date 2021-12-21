@@ -20,13 +20,13 @@ const ModalView = styled.div`
   flex-direction: column;
   justify-content: center;
   background-color: var(--white);
-  border-radius: 50px;
-  width: 50vmax;
-  height: 30vmax;
+  border-radius: 30px;
+  width: 40vmax;
+  height: 20vmax;
 `;
 
 const ModalLable = styled.div`
-  font-size: 2.5vmax;
+  font-size: 2vmax;
   font-weight: bold;
   text-align: center;
 `
@@ -46,7 +46,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  font-size: 2vmax;
+  font-size: 1.5vmax;
   font-weight: bold;
   text-align: center;
   margin: 5vmax 3vmax 0 3vmax;
