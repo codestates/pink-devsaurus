@@ -114,7 +114,9 @@ const Login = () => {
           <button onClick={handleClick}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
-            <li className='signup'>회원 가입</li>
+            <Link to='/signup'>
+              <li className='signup'>회원 가입</li>
+            </Link>
           </ul>
         </Form>
       </LoginContainer>
