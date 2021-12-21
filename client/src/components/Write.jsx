@@ -87,7 +87,7 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
   useLayoutEffect(() => {
     async function fetchData() {
       const fetchResult = await axios.get(
-        `http://39.122.166.33:8000/categories`,
+        `https://pinkdevsaurus.tk/categories`,
         { withCredentials: true }
       );
       setCategoryList(fetchResult.data.result);
