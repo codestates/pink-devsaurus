@@ -34,8 +34,6 @@ const Title = styled.div`
   justify-content: space-around;
 
   > div {
-    /* white-space: nowrap; */
-
     :first-child {
       font-size: 2vmax;
       font-weight: 700;

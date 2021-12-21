@@ -8,8 +8,8 @@ const ContentsWrapper = styled.div`
   background-color: var(--white);
   padding: 1% 5%;
 
-  > div:nth-child(10) {
-    border-bottom: none;
+  > a:nth-child(10) > div {
+    border-bottom: none !important;
   }
 `;
 

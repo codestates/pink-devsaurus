@@ -7,19 +7,19 @@ import styled from 'styled-components';
 const Bar = styled.div`
   display: flex;
   width: 100%;
-  height: 4vmax;
+  height: 3vmax;
   align-items: center;
   border-radius: 50px;
-  border: 2px solid gray;
+  border: 1px solid lightgray;
   flex: 0.4 0 0;
   min-width: 20vmax;
 
   > span {
-    margin-left: 3%;
+    margin-left: 5%;
     margin-right: 2%;
 
     > img {
-      width: 2vmax;
+      width: 1.5vmax;
     }
   }
 `;
@@ -30,7 +30,7 @@ const Input = styled.input`
   margin-right: 3%;
   border: none;
   font-size: 1vmax;
-  background-color: whitesmoke;
+  background-color: #fafafa;
   white-space: nowrap;
 
   :focus-within {

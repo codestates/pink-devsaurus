@@ -1,13 +1,13 @@
 @import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css');
 
-  :root {
-  --pink: #ED8E76;
-  --hover-pink : #FFD3C2;
+:root {
+  --pink: rgba(229, 112, 106, 0.7);
+  --hover-pink: #ffd3c2;
   --pure-white: white;
   --white: whitesmoke;
   --black: black;
   --gray: gray;
-  }
+}
 
 * {
   margin: 0;
@@ -17,7 +17,9 @@
 }
 
 body {
-  background: var(--pink);
+  background: #f1d2d3;
+  /* background: #f1aaa9; */
+  /* background: #fac2c4; */
 }
 
 ul {
