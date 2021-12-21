@@ -7,8 +7,12 @@ const https = require("https");
 const fs = require("fs");
 
 /* SSL/TLS privateKey,certificate */
-const privateKey = fs.readFileSync("/etc/letsencrypt/live/privkey.pem");
-const certificate = fs.readFileSync("/etc/letsencrypt/live/fullchain.pem");
+const privateKey = fs.readFileSync(
+  "/etc/letsencrypt/live/pinkdevsaurus.tk/privkey.pem"
+);
+const certificate = fs.readFileSync(
+  "/etc/letsencrypt/live/pinkdevsaurus.tk/fullchain.pem"
+);
 const credentials = { key: privateKey, cert: certificate };
 
 /* route config */
