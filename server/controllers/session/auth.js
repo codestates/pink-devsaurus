@@ -14,25 +14,27 @@ module.exports = async (req,res) => {
     
     try {
         USER
-        .findOne({
-            where:{
-                USER_ID:user_info.USER_ID
-            }
-        })
-        .then( data => {
-            delete data.dataValues.password;
-            const {USER_ID ,EMAIL, USERNAME, CREATED_REG,PROFILE_IMG} = data.dataValues;
-            res.status(200).json({
-                result:{
-                    user_id:USER_ID,
-                    email:EMAIL,
-                    username:USERNAME,
-                    created_reg:CREATED_REG,
-                    profile_img:PROFILE_IMG
+            .findOne({
+                where:{
+                    USER_ID:user_info.USER_ID
                 }
             })
-        })
+            .then( data => {
+                delete data.dataValues.password;
+                const {USER_ID ,EMAIL, USERNAME, CREATED_REG,PROFILE_IMG} = data.dataValues;
+                res.status(200).json({
+                    result:{
+                        user_id:USER_ID,
+                        email:EMAIL,
+                        username:USERNAME,
+                        created_reg:CREATED_REG,
+                        profile_img:PROFILE_IMG
+                    }
+                })
+            })
+        // end UESR
     } catch (err) { 
-
+        console.error(err);
+        return res.status(500).json({message: "Internal Server Error"});
     }
 }

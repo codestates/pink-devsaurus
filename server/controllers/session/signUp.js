@@ -1,10 +1,13 @@
 const { USER } = require("../../models");
 const { genarateAccessToken, sendAccessToken } = require("../TokenFunction");
 
-// userInfoMsg - Craeted DATE how ???
-
 module.exports = async (req,res,next) => {
     console.log('./controllers/session/signUp');
+
+    // 정상적인 데이터를 받지 못한 경우 (필수 데이터가 없는 경우)
+    if(!req.body['email'] || !req.body['password'] || !req.body['username']){
+        return res.status(400).send({ message: "It has an empty value" })
+    }
 
     const { email, username, password } = req.body;
 
@@ -35,6 +38,7 @@ module.exports = async (req,res,next) => {
                 const accessToken = genarateAccessToken(userInfo);
                 sendAccessToken(201,res,accessToken,userInfoMsg)
            })
+        // end UESR
     } catch ( err ) {
         console.error(err);
         return res.status(500).json({message: "Internal Server Error"});

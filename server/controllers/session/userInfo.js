@@ -18,8 +18,6 @@ module.exports = async (req,res) => {
         const questionsSqls = pool.format(questionsSql,USER_ID)
         const answerSql = 'SELECT COUNT(USER_ID) AS ANSWER FROM `ANSWER` WHERE USER_ID=?;';
         const answerSqls = pool.format(answerSql,USER_ID);
-        console.log(questionsSqls)
-        console.log(answerSqls)
 
         pool.query(questionsSqls + answerSqls, function (err, result) {
             if(err){
@@ -39,6 +37,7 @@ module.exports = async (req,res) => {
             }})
         })
     } catch(err) {
+        console.error(err);
         return res.status(500).json({message: "Internal Server Error"});
     }
 }

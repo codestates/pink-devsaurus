@@ -26,32 +26,48 @@ module.exports = async (req, res) => {
   const selectedUserID = Number(req.body.selected_user_id);
 
   // Check validity
+  let validity;
   try {
-    const result = await ANSWER.findOne({
+    validity = await ANSWER.findOne({
       where: { ANSWER_ID: answerID },
       include: {
         model: BOARD_QA,
       },
     });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
+    console.dir(err);
+    return res.status(500).json("Internal Server Error");
   }
-  return res.status(403).json({ message: "Not enough rights" });
 
+  if (!validity) {
+    return res.status(404).json({ message: "Answer not found" });
+  }
+
+  if (validity.BOARD_QA.USER_ID !== token.USER_ID) {
+    return res.status(403).json({ message: "Not your question" });
+  }
+
+  if (validity.BOARD_QA.SELECTED_USER_ID) {
+    return res.status(409).json({ message: "Answer already selected" });
+  }
+
+  let result;
   try {
-    const result = await ANSWER.findOne({
-      where: { ANSWER_ID: answerID },
-      include: {
-        model: BOARD_QA,
+    result = await BOARD_QA.update(
+      {
+        SELECTED_USER_ID: token.USER_ID,
+        SELECTED_BREPLY_ID: answerID,
       },
-    });
-
-    return res.status(200).json(result);
-    //return res.status(204).send();
+      {
+        where: {
+          BOARD_ID: validity.BOARD_QA.BOARD_ID,
+        },
+      }
+    );
   } catch (err) {
-    console.log(err);
-    return res.status(500).json(err);
-    // return res.status(500).json({ message: "Internal Server Error" });
+    console.dir(err);
+    return res.status(500).json("Internal Server Error");
   }
+
+  return res.status(204).send();
 };
