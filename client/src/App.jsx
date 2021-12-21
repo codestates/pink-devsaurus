@@ -14,26 +14,6 @@ import Write from './components/Write';
 import MyQuestions from './pages/MyQuestions';
 import './App.css';
 
-const categories = {
-  result: [
-    {
-      category_name: 'View all',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-    {
-      category_name: 'Database',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-    {
-      category_name: 'JavaScript',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-  ],
-};
-
 const OutlineWrapper = styled.div``;
 
 const MainContainer = styled.div``;
@@ -47,8 +27,15 @@ const MainScreen = styled.div`
 const App = () => {
   const [headerSize, setHeaderSize] = useState({ header: 0, sidebar: 0 });
   const [isLogin, setIsLogin] = useState(false);
+  const [categories, setCategories] = useState([]);
   const headerRef = useRef();
   const sidebarRef = useRef();
+
+  useEffect(() => {
+    axios.get('http://39.122.166.33:8000/categories').then((res) => {
+      setCategories(res.data.result)
+    });
+  }, []);
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -108,7 +95,6 @@ const App = () => {
                 </div>
               } />
         </Route>
-
       </Routes>
 
       <MainContainer>
@@ -118,7 +104,7 @@ const App = () => {
             path="/"
             element={
               <div ref={sidebarRef}>
-                <Sidebar list={categories.result}></Sidebar>
+                <Sidebar list={categories}></Sidebar>
               </div>
             }
           />
@@ -127,11 +113,10 @@ const App = () => {
               path=":id"
               element={
                 <div ref={sidebarRef}>
-                  <Sidebar list={categories.result}></Sidebar>
+                  <Sidebar list={categories}></Sidebar>
                 </div>
               } />
           </Route>
-          {/* localhost:3000/read/30 */}
         </Routes>
 
         <Routes>
