@@ -33,7 +33,10 @@ app.use("/answers", answerRouter);
 app.use("/likes", likeRouter);
 
 /* example http server run */
-const HTTPS_PORT = 8000;
+const HTTPS_PORT = 80;
 app.listen(HTTPS_PORT, () =>
-  console.log("http Server Running : http://localhost:", HTTPS_PORT)
+  console.log(
+    "http Server Running : http://ec2-3-35-24-147.ap-northeast-2.compute.amazonaws.com:",
+    HTTPS_PORT
+  )
 );
