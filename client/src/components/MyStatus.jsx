@@ -9,7 +9,8 @@ const StatusContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 300px;
-  width: 80%;
+  width: 75%;
+  margin-left: 25%;
   align-items: center;
   background-color: var(--white);
 `;

@@ -2,6 +2,7 @@
 // 2021-12-17 15:10:14
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Dropdown = styled.div`
@@ -11,8 +12,8 @@ const Dropdown = styled.div`
 `;
 
 const Profile = styled.button`
-  width: 5rem;
-  height: 5rem;
+  width: 5vmax;
+  height: 5vmax;
   background-color: pink;
   border-radius: 100%;
   border: none;
@@ -21,7 +22,7 @@ const Profile = styled.button`
 
 const DropdownContents = styled.ul`
   display: ${(props) => (props.show ? 'block' : 'none')};
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   font-size: 1.3rem;
   position: absolute;
   right: 1%;
@@ -37,7 +38,7 @@ const DropdownContents = styled.ul`
     right: 10%;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-bottom: 20px solid #F9F9F9;
+    border-bottom: 20px solid #f9f9f9;
   }
 `;
 
@@ -52,12 +53,12 @@ const DropdownContent = styled.li`
   text-align: center;
 
   :hover {
-    background-color: #FFD3C2;
+    background-color: #ffd3c2;
     cursor: pointer;
   }
 `;
 
-const DropdownProfile = () => {
+const DropdownProfile = ({ setIsLogin }) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -66,10 +67,12 @@ const DropdownProfile = () => {
         onClick={() => setShow(!show)}
         onBlur={() => setShow(false)}
       ></Profile>
-      <DropdownContents show={show}>
+      <DropdownContents show={show} onMouseDown={(e) => e.preventDefault()}>
         <DropdownLable>{`Signed in as ${'유저'}`}</DropdownLable>
-        <DropdownContent>마이페이지</DropdownContent>
-        <DropdownContent>로그아웃</DropdownContent>
+        <Link to="/mypage">
+          <DropdownContent>마이페이지</DropdownContent>
+        </Link>
+        <DropdownContent onClick={() => setIsLogin(false)}>로그아웃</DropdownContent>
       </DropdownContents>
     </Dropdown>
   );

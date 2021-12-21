@@ -16,23 +16,24 @@ const Head = styled.header`
   background-color: var(--white);
   border-bottom: 1px solid rgba(168, 168, 168, 0.7);
   align-items: center;
-  padding: 0.2rem;
+  padding: 0.2vmax;
   z-index: 999;
 `;
 
 const Img = styled.img`
   width: 6%;
-  min-width: 85px;
+  min-width: 5vmax;
   margin-left: 1%;
 `;
 
 const Button = styled.div`
   color: var(--pure-white);
-  min-width: 220px;
+  min-width: 14vmax;
   background-color: var(--pink);
-  padding: 1.2rem 3rem;
+  padding: 1.2vmax 3vmax;
   border-radius: 40px;
-  font-size: 1.6rem;
+  font-size: 1.6vmax;
+  white-space: nowrap;
   font-weight: 700;
   text-align: center;
   flex: 0.1 0 0;
@@ -46,16 +47,15 @@ const Button = styled.div`
 const WrapperSign = styled.div`
   display: flex;
   margin-right: 1%;
-  min-width: 240px;
 `;
 
 const ButtonSignIn = styled.div`
   color: #fa7570;
-  padding: 0.8rem 1.5rem;
+  padding: 0.8vmax 1.5vmax;
   background-color: var(--white);
   border: 2px solid transparent;
   font-weight: 400;
-  min-width: 80px;
+  min-width: 75px;
   margin-left: 5px;
   border-radius: 10px;
 
@@ -66,13 +66,13 @@ const ButtonSignIn = styled.div`
 `;
 
 const ButtonSignUp = styled.div`
-  padding: 0.8rem 1.5rem;
+  padding: 0.8vmax 1.5vmax;
   background-color: var(--white);
   color: #fa7570;
   font-weight: 400;
   border-radius: 10px;
   border: 2px solid #ffd3c2;
-  min-width: 80px;
+  min-width: 90px;
   margin-left: 5px;
   border-radius: 10px;
 
@@ -82,17 +82,23 @@ const ButtonSignUp = styled.div`
   }
 `;
 
-const Header = ({ isLogin }) => {
+const Header = ({ isLogin, setIsLogin }) => {
   return (
     <Head>
       <Img src="https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png" />
-      <Button>Q &amp; A' s</Button>
-      <Button>My Q &amp; A</Button>
+      <Link to="/">
+        <Button>Q &amp; A' s</Button>
+      </Link>
+      <Link to="/myqna">
+        <Button>My Q &amp; A</Button>
+      </Link>
       <SearchBar></SearchBar>
-      <Button>질문하기</Button>
+      <Link to="/write">
+        <Button>질문하기</Button>
+      </Link>
       {/* 로그인 했으면 프로필 아이콘 / 로그인 안했으면 로그인, 회원가입 버튼 */}
-      {!isLogin ? (
-        <DropdownProfile></DropdownProfile>
+      {isLogin ? (
+        <DropdownProfile setIsLogin={setIsLogin} ></DropdownProfile>
       ) : (
         <WrapperSign>
           <Link to="/login">

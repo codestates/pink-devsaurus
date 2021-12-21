@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,11 +19,11 @@ const Wrapper = styled.div`
 
 const Icon = styled.div`
   flex: 1 0 0;
-  min-width: 175px;
+  min-width: 11vmax;
 
   > img {
     width: 80%;
-    max-height: 240px;
+    max-height: 18vmax;
   }
 `;
 
@@ -36,12 +37,12 @@ const Title = styled.div`
     /* white-space: nowrap; */
 
     :first-child {
-      font-size: 2rem;
+      font-size: 2vmax;
       font-weight: 700;
     }
 
     :nth-child(2) {
-      font-size: 1.5rem;
+      font-size: 1.5vmax;
       color: #494949;
       font-weight: 600;
 
@@ -52,7 +53,7 @@ const Title = styled.div`
 
     :last-child {
       color: var(--gray);
-      font-size: 1.5rem;
+      font-size: 1.5vmax;
       font-weight: 600;
     }
   }
@@ -61,13 +62,13 @@ const Title = styled.div`
 const AnswerNumber = styled.div`
   flex: 1 0 0;
   text-align: center;
-  min-width: 200px;
+  min-width: 12.5vmax;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   > div {
-    font-size: 2rem;
+    font-size: 2vmax;
     font-weight: bold;
     margin-bottom: 5%;
   }
@@ -86,23 +87,25 @@ const Content = ({ data }) => {
   } = data;
 
   return (
-    <Wrapper>
-      <Icon>
-        <img src={category}></img>
-      </Icon>
-      <Title>
-        <div>{title}</div>
-        <div>
-          <span>{author}</span>
-          <span>{created_at.slice(0, 10)}</span>
-        </div>
-        <div>{likes} Likes</div>
-      </Title>
-      <AnswerNumber>
-        <div>답변</div>
-        <div>{answers}</div>
-      </AnswerNumber>
-    </Wrapper>
+    <Link to={`/read/${board_id}`}>
+      <Wrapper>
+        <Icon>
+          <img src={category}></img>
+        </Icon>
+        <Title>
+          <div>{title}</div>
+          <div>
+            <span>{author}</span>
+            <span>{created_at.slice(0, 10)}</span>
+          </div>
+          <div>{likes} Likes</div>
+        </Title>
+        <AnswerNumber>
+          <div>답변</div>
+          <div>{answers}</div>
+        </AnswerNumber>
+      </Wrapper>
+    </Link>
   );
 };
 

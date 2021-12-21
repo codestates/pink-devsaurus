@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Body = styled.body`
   display: flex;
   justify-content: center;
   height: 100vh;
   align-items: center;
+`;
+
+const Icon = styled.img`
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  height: 80px;
+  width: 80px;
 `;
 
 const SignupContainer = styled.div`
@@ -166,6 +174,9 @@ export default function Login() {
   return (
     <>
       <Body>
+        <Link to='/'>
+          <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
+        </Link>
         <SignupContainer>
           <Form>
             <div className='title'>회원 가입</div>

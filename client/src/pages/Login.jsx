@@ -1,6 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+const Body = styled.body`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+`;
+
+const Icon = styled.img`
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  height: 80px;
+  width: 80px;
+`;
 
 const LoginContainer = styled.div`
   width: 330px;
@@ -84,11 +99,13 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleClick = () => {
-    
-  };
+  const handleClick = () => {};
 
   return (
+    <Body>
+      <Link to='/'>
+        <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
+      </Link>
       <LoginContainer>
         <Form>
           <div className='title'>로그인</div>
@@ -97,11 +114,14 @@ const Login = () => {
           <button onClick={handleClick}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
-            <li className='signup'>회원 가입</li>
+            <Link to='/signup'>
+              <li className='signup'>회원 가입</li>
+            </Link>
           </ul>
         </Form>
       </LoginContainer>
+    </Body>
   );
-}
+};
 
 export default Login;

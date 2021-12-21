@@ -7,33 +7,7 @@ import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
 import Userinfo from './UserInfo.jsx';
 import DropdownEditCancel from './DropdownEditCancel.jsx';
-
-const fetchResult = {
-  result: {
-    title: 'How do you use coronavirus API into action?',
-    content: `I'm loooking for the best way to let users export and download data in xml and csv format.
-
-I have found a maatwebsite package to export excel and csv file.`,
-    likes: 10,
-    username: 'johndoe',
-    userprofile_img: 'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-    created_date: '2020-04-01T00:00:00.000Z',
-    modify_date: '2020-04-02T00:00:00.000Z',
-    answers: [
-      {
-        answer_username: 'rihanna',
-        userprofile_img:
-          'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-        answer_id: 1,
-        answer_content: 'blah blah blah',
-        created_date: '2020-04-01T00:00:00.000Z',
-        modified_date: '2020-04-01T00:00:00.000Z',
-        answer_likes: 12,
-      },
-    ],
-    answered: 0,
-  },
-};
+import DeleteConfirm from './DeleteConfirm.jsx'
 
 const QuestionContainer = styled.div`
   padding: 1rem;
@@ -64,7 +38,8 @@ const IsModified = styled.span`
   border-radius: 0.5rem;
   padding: 0.1rem 0.5rem;
   margin-right: 0.5rem;
-  visibility: ${(props) => (props.cDate !== props.mDate ? 'visible' : 'hidden')};
+  visibility: ${(props) =>
+    props.cDate !== props.mDate ? 'visible' : 'hidden'};
 `;
 
 const DropdownButton = styled.span`
@@ -75,7 +50,7 @@ const DropdownButton = styled.span`
   cursor: pointer;
   &:hover {
     background-color: lightgreen;
-    color: black;    
+    color: black;
   }
   &:focus {
     background-color: lightgreen;
@@ -125,50 +100,46 @@ const UserInfoWrapper = styled.div`
   padding: 1rem;
 `;
 
-const Question = (props) => {
-  const { result } = fetchResult;
-
+const Question = ({ result, handleQuestionEdit }) => {
   const [editMode, setEditMode] = useState(false);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
   const [questionContent, setQuestionContent] = useState(result.content);
+  const [isOpen, setIsOpen] = useState(false);
 
   const intoEditMode = (e) => {
     setDropDownClick(false);
-    if( editMode ) return ;    
+    if (editMode) return;
     setEditMode(true);
   };
 
   const cancelEditMode = (e) => {
-    setQuestionName( result.title );
-    setQuestionContent( result.content );
+    setQuestionName(result.title);
+    setQuestionContent(result.content);
     setEditMode(false);
   };
 
-  const handleEditFinish = ( newContent ) => {
+  const handleEditFinish = (newContent) => {
     setEditMode(false);
-    //setQuestionName();
-
-    //fetch and edit content
-    fetchResult.result.title = questionName;
-    fetchResult.result.content = newContent;
-
-    setQuestionContent(newContent);    
+    handleQuestionEdit(questionName, newContent);
+    setQuestionContent(newContent);
   };
 
   const handleDropDownClick = (e) => {
     setDropDownClick(!dropDownClick);
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = (result) => {
     //need modal confirm
     //fetch and delete content
+    setIsOpen(false);
     setDropDownClick(false);
+    if (result === false) return;
   };
-
 
   return (
     <QuestionContainer>
+      {isOpen ? <DeleteConfirm handleDelete={handleDelete}></DeleteConfirm> : null}
       <QuestionNameWrapper>
         {editMode ? (
           <NameEditbox
@@ -181,21 +152,32 @@ const Question = (props) => {
           <QuestionName>{questionName}</QuestionName>
         )}
         <IsModifiedWrapper>
-          <IsModified cDate={result.created_date} mDate={result.modify_date}>modified</IsModified>
+          <IsModified cDate={result.created_date} mDate={result.modify_date}>
+            수정됨
+          </IsModified>
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
           <DropdownButton onClick={handleDropDownClick}>...</DropdownButton>
-          { dropDownClick
-            ? <DropdownEditCancel handleModify={intoEditMode} handleDelete={handleDelete}/>
-            : false 
-          }
+          {dropDownClick ? (
+            <DropdownEditCancel
+              handleModify={intoEditMode}
+              handleDelete={handleDelete}
+              setIsOpen={setIsOpen}
+            />
+          ) : (
+            false
+          )}
         </DropdownButtonWrapper>
       </QuestionNameWrapper>
       <UserInfoWrapper>
         <Userinfo user={result} />
       </UserInfoWrapper>
       {editMode ? (
-        <Editor text={questionContent} handleEditFinish={handleEditFinish} handleCancel={cancelEditMode} />
+        <Editor
+          text={questionContent}
+          handleEditFinish={handleEditFinish}
+          handleCancel={cancelEditMode}
+        />
       ) : (
         <EditorWrapper>
           <MDEditor.Markdown source={questionContent} />
@@ -206,7 +188,6 @@ const Question = (props) => {
         <AnswerAndLikesMiddleWrapper />
         <LikesWrapper>❤️ {result.likes} likes</LikesWrapper>
       </AnwerAndLikesContainer>
-
     </QuestionContainer>
   );
 };
