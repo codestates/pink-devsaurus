@@ -40,7 +40,7 @@ module.exports = async (req, res) => {
         return res.status(404).json({ message: "Not found - mysql2" });
       }
     });
-
+    // Managed Transaction
     const transaction = await models.sequelize
       .transaction(async (t) => {
         const destroyed_BOARD_QA = await BOARD_QA.destroy(
@@ -72,7 +72,6 @@ module.exports = async (req, res) => {
         );
       })
       .then((_) => {
-        console.log(_);
         return res
           .status(201)
           .json({ message: "BOARD_QA, LIKES_BOARD, ANSWER delete" });
@@ -81,25 +80,6 @@ module.exports = async (req, res) => {
         console.error(err);
         return res.status(404).json({ message: "Not found - sequelize" });
       });
-    // BOARD_QA.destroy({
-    //   where: {
-    //     BOARD_ID: boardId,
-    //     USER_ID: accessTokenData.USER_ID,
-    //   },
-    // })
-    //   .then((destoryed) => {
-    //     if (!destoryed) {
-    //       return res
-    //         .status(501)
-    //         .json({ message: "DB Quey Fail - destory fail" });
-    //     }
-    //     return res.status(204).json({ message: "destory success" });
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     return res.status(404).json({ message: "Not found - sequelize" });
-    //   });
-    // end BOARD_QA
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });

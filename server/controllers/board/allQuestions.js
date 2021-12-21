@@ -1,73 +1,68 @@
 const pool = require("../../DB/mysql");
-
+const { BOARD_QA } = require("../../models");
 module.exports = async (req, res) => {
   console.log("./controllers/board/allQuestions");
-  try {
-    // cateogry 별 게시물 목록 보기 boardSql에 WHERE CATEGORY_ID = ? 추가 예정중
-    let boardSql = `SELECT * FROM BOARD_QA;`;
-    const likeCountSql = `SELECT COUNT(BOARD_ID) AS LIKECOUNT FROM LIKES_BOARD WHERE BOARD_ID = ?;`;
-    const answerCountSql = `SELECT COUNT(BOARD_ID) AS ANSWERCOUNT FROM ANSWER WHERE BOARD_ID = ?;`;
-    const userSql = `SELECT USERNAME FROM USER WHERE USER_ID = ?;`;
+  /*
+    (필수) page=3 (Number / 10의 배수)
+    (( 특정 카테고리만 요청하기 ))
+    (선택) catagory=1 (category_id, Number)
+    (( 특정 유저의 질문 혹은 답변만 요청하기 ))
+  */
+  // 정상적인 데이터를 받지 못한 경우 (필수 데이터가 없는 경우)
+  //  if (!req) {
+  //   return res.status(400).send({ message: "It has an empty value" });
+  // }
+  let pageNum = req.query.page;
+  let categoryNum = req.query.category;
+  let offset = 0;
+  if (pageNum > 1) {
+    offset = 10 * (pageNum - 1);
+  }
+  const pageNationSql = `SELECT 
+  BQ.BOARD_ID, 
+  BQ.TITLE AS title,
+  US.USERNAME AS author,
+  BQ.MODIFY_DATE AS modified_at,
+  COUNT(AW.BOARD_ID) as answers,
+  BQ.SELECTED_USER_ID AS answered_user_id
+  FROM BOARD_QA BQ
+  LEFT JOIN USER AS US
+  ON BQ.USER_ID = US.USER_ID
+  LEFT JOIN ANSWER AS AW
+  ON BQ.BOARD_ID = AW.BOARD_ID
+  WHERE 1 ${
+    categoryNum ? "AND BQ.CATEGORY_ID = " + categoryNum + " " : ""
+  }GROUP BY BQ.BOARD_ID
+  LIMIT ${offset},10;`;
 
-    pool.query(boardSql, (err, result) => {
+  try {
+    const pageNationSqlQuery = pool.query(pageNationSql, (err, result) => {
       if (err) {
-        console.error(err);
-        return res.status(501).json({ message: "DB Query Fail" });
+        throw err;
       }
 
       Promise.all(
         result.map((element, index) => {
-          const likeCountSqls = pool.format(likeCountSql, element.BOARD_ID);
-          const answerCountSqls = pool.format(answerCountSql, element.BOARD_ID);
-          const userSqls = pool.format(userSql, element.USER_ID);
+          const likeCountSql = `SELECT COUNT(BOARD_ID) AS likes FROM LIKES_BOARD WHERE BOARD_ID = ${element.BOARD_ID}`;
 
           let promise = new Promise((resolve, reject) => {
-            pool.query(
-              likeCountSqls + answerCountSqls + userSqls,
-              (err, rows) => {
-                if (err) {
-                  console.error(err);
-                  return res.status(501).json({ message: "DB Query Fail" });
-                }
-                console.log(rows);
-                const { LIKECOUNT } = rows[0][0];
-                const { ANSWERCOUNT } = rows[1][0];
-                const { USERNAME } = rows[2][0];
-                resolve({ LIKECOUNT, ANSWERCOUNT, USERNAME, index });
+            const likeCountQuery = pool.query(
+              likeCountSql,
+              (err, likeCountResult) => {
+                const { likes } = likeCountResult[0];
+                resolve(likes);
               }
-            );
+            ); // end pool.query
+          }); // end promise
+          return promise.then((likes) => {
+            result[index].likes = likes;
           });
-          return promise.then((queryResult) => {
-            result[queryResult.index].board_id =
-              result[queryResult.index].BOARD_ID;
-            result[queryResult.index].title = result[queryResult.index].TITLE;
-            result[queryResult.index].likes = queryResult.LIKECOUNT;
-            result[queryResult.index].author = queryResult.USERNAME;
-            result[queryResult.index].modify_at =
-              result[queryResult.index].MODIFY_DATE;
-            result[queryResult.index].answers = queryResult.ANSWERCOUNT;
-            result[queryResult.index].answered_user_id =
-              result[queryResult.index].SELECTED_USER_ID;
-            delete result[queryResult.index].BOARD_ID;
-            delete result[queryResult.index].USER_ID;
-            delete result[queryResult.index].CATEGORY_ID;
-            delete result[queryResult.index].TITLE;
-            delete result[queryResult.index].CONTENT;
-            delete result[queryResult.index].CREATED_DATE;
-            delete result[queryResult.index].MODIFY_DATE;
-            delete result[queryResult.index].SELECTED_BREPLY_ID;
-            delete result[queryResult.index].SELECTED_USER_ID;
-          });
-        })
-      )
+        }) // end result.map
+      ) // end Promise.all
         .then(() => {
-          return res.status(200).json({ result });
-        })
-        .catch((err) => {
-          console.error(err);
-          return res.status(501).json({ message: "Promise Fail" });
-        }); // end Promise.all
-    }); // end poll.query
+          res.status(201).json({ result });
+        });
+    }); // end pool.query
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Internal Server Error" });
