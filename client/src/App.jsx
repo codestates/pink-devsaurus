@@ -33,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     axios.get('http://39.122.166.33:8000/categories').then((res) => {
-      setCategories(res.data.result)
+      setCategories(res.data.result);
     });
   }, []);
 
@@ -88,12 +88,13 @@ const App = () => {
         />
         <Route path="/read">
           <Route
-              path=":id"
-              element={
-                <div ref={headerRef}>
-                  <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-                </div>
-              } />
+            path=":id"
+            element={
+              <div ref={headerRef}>
+                <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+              </div>
+            }
+          />
         </Route>
       </Routes>
 
@@ -115,7 +116,8 @@ const App = () => {
                 <div ref={sidebarRef}>
                   <Sidebar list={categories}></Sidebar>
                 </div>
-              } />
+              }
+            />
           </Route>
         </Routes>
 
