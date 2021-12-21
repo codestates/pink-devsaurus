@@ -2,8 +2,14 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const http = require("http");
 const https = require("https");
 const fs = require("fs");
+
+/* SSL/TLS privateKey,certificate */
+const privateKey = fs.readFileSync("/etc/letsencrypt/live/privkey.pem");
+const certificate = fs.readFileSync("/etc/letsencrypt/live/fullchain.pem");
+const credentials = { key: privateKey, cert: certificate };
 
 /* route config */
 const sessionRouter = require("./routes/session");
@@ -34,22 +40,9 @@ app.use("/questions", questionRouter);
 app.use("/answers", answerRouter);
 app.use("/likes", likeRouter);
 
-/* example http server run */
-let server;
-try {
-  server = https
-    .createServer(
-      {
-        key: fs.readFileSync("/etc/letsencrypt/live/privkey.pem", "utf-8"),
-        cert: fs.readFileSync("/etc/letsencrypt/live/fullchain.pem", "utf-8"),
-      },
-      app
-    )
-    .listen(443, () => {
-      console.log("https Server Running : https://pinkdevsaurus.tk/:" + 443);
-    });
-} catch {
-  server = app.listen(80, () =>
-    console.log("http Server Running : http://pinkdevsaurus.tk/:" + 80)
-  );
-}
+/* http/https server */
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(8080);
+httpsServer.listen(8443);
