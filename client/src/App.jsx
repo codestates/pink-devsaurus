@@ -176,7 +176,7 @@ const App = () => {
               <MainScreen
                 headerHeight={{ header: headerSize.header, sidebar: 0 }}
               >
-                <Write />
+                <Write isQuestion={true} />
               </MainScreen>
             }
           />

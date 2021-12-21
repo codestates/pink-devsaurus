@@ -2,7 +2,7 @@
 // 2021-12-17 17:37:46
 // copied sources from 김경봉
 
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const DropdownContents = styled.ul`
@@ -41,12 +41,12 @@ const DropdownContent = styled.li`
   }
 `;
 
-const DropdownEditCancel = ({ handleModify, handleDelete, setIsOpen }) => {
+const DropdownEditCancel = ({ handleModify, handleDelete }) => {
   return (
     <DropdownContents>
       <Triangle />
       <DropdownContent onClick={handleModify}>수정</DropdownContent>
-      <DropdownContent onClick={handleDelete} onClick={() => setIsOpen(true)}>
+      <DropdownContent onClick={handleDelete}>
         삭제
       </DropdownContent>
     </DropdownContents>
