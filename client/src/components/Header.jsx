@@ -83,17 +83,23 @@ const ButtonSignUp = styled.div`
   }
 `;
 
-const Header = ({ isLogin }) => {
+const Header = ({ isLogin, setIsLogin }) => {
   return (
     <Head>
       <Img src="https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png" />
-      <Button>Q &amp; A' s</Button>
-      <Button>My Q &amp; A</Button>
+      <Link to="/">
+        <Button>Q &amp; A' s</Button>
+      </Link>
+      <Link to="/myqna">
+        <Button>My Q &amp; A</Button>
+      </Link>
       <SearchBar></SearchBar>
-      <Button>질문하기</Button>
+      <Link to="/write">
+        <Button>질문하기</Button>
+      </Link>
       {/* 로그인 했으면 프로필 아이콘 / 로그인 안했으면 로그인, 회원가입 버튼 */}
-      {!isLogin ? (
-        <DropdownProfile></DropdownProfile>
+      {isLogin ? (
+        <DropdownProfile setIsLogin={setIsLogin} ></DropdownProfile>
       ) : (
         <WrapperSign>
           <Link to="/login">

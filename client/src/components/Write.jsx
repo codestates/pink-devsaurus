@@ -9,7 +9,7 @@ const NewDiscussionContainer = styled.div`
   padding: 1.2rem;
 `;
 
-const NewDicussionName=styled.div`
+const NewDicussionName = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   color: rgba(32, 20, 20, 0.884);
@@ -45,8 +45,12 @@ const Title = styled.input`
   border: 1px solid #dfdfe0;
 `;
 
+const StartDiscussionWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const StartDiscussionButton = styled.button`
-  float: right;
   margin-top: 1rem;
   margin-right: 0.5rem;
   padding: 0.5rem 1rem;
@@ -64,39 +68,59 @@ const StartDiscussionButton = styled.button`
   }
 `;
 
-
-const Write = (props) => {
-
+const Write = ({ isQuestion, handleWriteSuccess }) => {
   const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');  
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
   const handleClick = (e) => {
     // check and fetch
     // console.log( category, title, content );
+    if (isQuestion) handleWriteSuccess( category, title, content );
+    else handleWriteSuccess( content );
   };
 
   return (
     <NewDiscussionContainer>
-      <NewDicussionName>질문 작성하기</NewDicussionName>
+      <NewDicussionName>
+        {isQuestion ? '질문' : '답변'} 작성하기
+      </NewDicussionName>
       <CategoryAndTitleWrapper>
-        <CategorySelect value={category} id="category" onChange={ (e) => { setCategory(e.target.value) }}>
-            <option value="">카테고리 선택</option>
-            {/* use map method  */}
-            <option value="Database">Database</option>
-            <option value="Javascript">Javascript</option>
-            <option value="Network">Network</option>
-        </CategorySelect>
-        <Title placeholder="제목" value={title} onChange={(e)=>{ setTitle(e.target.value) }} />
+        {isQuestion ? (
+          <>
+            <CategorySelect
+              value={category}
+              id="category"
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+            >
+              <option value="">카테고리 선택</option>
+              {/* use map method  */}
+              <option value="Database">Database</option>
+              <option value="Javascript">Javascript</option>
+              <option value="Network">Network</option>
+            </CategorySelect>
+            <Title
+              placeholder="제목"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
+          </>
+        ) : (
+          false
+        )}
       </CategoryAndTitleWrapper>
-      <MDEditor
-        value={content}
-        onChange={setContent}
-      ></MDEditor>
-      <StartDiscussionButton onClick={handleClick}>질문 작성</StartDiscussionButton>
+      <MDEditor value={content} onChange={setContent}></MDEditor>
+      <StartDiscussionWrapper>
+        <StartDiscussionButton onClick={handleClick}>
+          질문 작성
+        </StartDiscussionButton>
+      </StartDiscussionWrapper>
     </NewDiscussionContainer>
   );
 };
-
 
 export default Write;

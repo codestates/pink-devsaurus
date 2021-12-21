@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 // import { Link } from 'react-router-dom';
 
+const Body = styled.body`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+`;
+
 const LoginContainer = styled.div`
   width: 330px;
   background-color: var(--white);
@@ -84,11 +91,10 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleClick = () => {
-    
-  };
+  const handleClick = () => {};
 
   return (
+    <Body>
       <LoginContainer>
         <Form>
           <div className='title'>로그인</div>
@@ -101,7 +107,8 @@ const Login = () => {
           </ul>
         </Form>
       </LoginContainer>
+    </Body>
   );
-}
+};
 
 export default Login;
