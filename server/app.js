@@ -40,8 +40,8 @@ if (fs.existsSync("./privkey.pem") && fs.existsSync("./fullchain.pem")) {
   server = https
     .createServer(
       {
-        key: fs.readFileSync(__dirname + `/` + "privkey.pem", "utf-8"),
-        cert: fs.readFileSync(__dirname + `/` + "fullchain.pem", "utf-8"),
+        key: fs.readFileSync("/etc/letsencrypt/live/privkey.pem", "utf-8"),
+        cert: fs.readFileSync("/etc/letsencrypt/live/fullchain.pem", "utf-8"),
       },
       app
     )
