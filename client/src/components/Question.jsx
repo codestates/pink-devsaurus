@@ -116,7 +116,7 @@ const Question = ({ result, handleQuestionEdit }) => {
     if (editMode) return;
     let checkAuth;
     try {
-      checkAuth = await axios.get('http://39.122.166.33:8000/auth', {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
         withCredentials: true,
       });
     } catch (err) {

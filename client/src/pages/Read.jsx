@@ -33,11 +33,11 @@ const Read = () => {
     async function fetchData() {
       const parsed = location.pathname.split('/')[2];
       const fetchResult = await axios.get(
-        `http://39.122.166.33:8000/questions/${parsed}`,
+        `https://pinkdevsaurus.tk/questions/${parsed}`,
         { withCredentials: true }
       );
       const answerResult = await axios.get(
-        `http://39.122.166.33:8000/questions/answers/${parsed}`,
+        `https://pinkdevsaurus.tk/questions/answers/${parsed}`,
         { withCredentials: true }
       );
       const { answer: answers } = answerResult.data;
