@@ -5,23 +5,23 @@ import styled from 'styled-components';
 // 2021-12-20 13:06:07
 
 const StatusContainer = styled.div`
+  width: 100%;
+  right: 0;
+  padding: 1% 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px;
-  width: 75%;
-  margin-left: 25%;
   align-items: center;
   background-color: var(--white);
+  padding-top: 30px;
 `;
 
 const Image = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 15vmax;
+  height: 15vmax;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-right: 80px;
   border: 1px solid lightgray;
-  margin-right: 30px;
 `;
 
 const Status = styled.div`
@@ -31,7 +31,7 @@ const Status = styled.div`
 `;
 
 const UserName = styled.div`
-  font-size: 23px;
+  font-size: 2vmax;
   font-weight: bold;
   margin-bottom: 30px;
 `;
@@ -40,29 +40,30 @@ const UserData = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 8px;
 
   > .user-info {
-    font-size: 15px;
-    margin-bottom: 10px;
+    font-size: 1.5vmax;
+    margin-bottom: 1rem;
   }
 `;
 
 const Buttons = styled.div`
   button {
-    height: 35px;
-    width: 120px;
-    border-radius: 20px;
+    height: 4vmax;
+    width: 10vmax;
+    border-radius: 25px;
     color: var(--pure-white);
     background-color: var(--pink);
     font-weight: 500;
     border: none;
-    font-size: 13px;
-    padding: 10px;
+    font-size: 1.3vmax;
     cursor: pointer;
+    margin-bottom: 10px;
   }
 
   button:first-child {
+    margin-left: -23px;
     margin-right: 15px;
   }
 
