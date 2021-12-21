@@ -47,7 +47,6 @@ const Button = styled.div`
 const WrapperSign = styled.div`
   display: flex;
   margin-right: 1%;
-  min-width: 240px;
 `;
 
 const ButtonSignIn = styled.div`
@@ -56,7 +55,7 @@ const ButtonSignIn = styled.div`
   background-color: var(--white);
   border: 2px solid transparent;
   font-weight: 400;
-  min-width: 5vmax;
+  min-width: 75px;
   margin-left: 5px;
   border-radius: 10px;
 
@@ -73,7 +72,7 @@ const ButtonSignUp = styled.div`
   font-weight: 400;
   border-radius: 10px;
   border: 2px solid #ffd3c2;
-  min-width: 5vmax;
+  min-width: 90px;
   margin-left: 5px;
   border-radius: 10px;
 
