@@ -43,7 +43,7 @@ module.exports = async (req, res) => {
     });
     const updateSqls = pool.format(whereSql, { BOARD_ID: Number(boardId) });
 
-    console.log(updateSql);
+    console.log(updateSqls);
 
     const updateSql = `UPDATE BOARD_QA SET TITLE=${title}, CONTENT=${content} MODIFY_DATE = new() WHERE BOARD_ID = ${boardId}`;
 
