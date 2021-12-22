@@ -199,7 +199,7 @@ const App = () => {
           path="/login"
           element={
             <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
-              <Login />
+              <Login setIsLogin={setIsLogin} />
             </MainScreen>
           }
         />

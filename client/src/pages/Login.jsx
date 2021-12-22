@@ -121,8 +121,8 @@ const Login = ({ setIsLogin }) => {
       return;
     }
     if (result) {
-      setIsLogin(true);
       navigate('/');
+      setIsLogin(true);
     }
   };
 
@@ -134,8 +134,16 @@ const Login = ({ setIsLogin }) => {
       <LoginContainer>
         <Form>
           <div className="title">로그인</div>
-          <input type="text" placeholder="유저네임" onChange={handleUserName}></input>
-          <input type="password" placeholder="비밀번호" onChange={handlePassword}></input>
+          <input
+            type="text"
+            placeholder="유저네임"
+            onChange={handleUserName}
+          ></input>
+          <input
+            type="password"
+            placeholder="비밀번호"
+            onChange={handlePassword}
+          ></input>
           <button onClick={loginHandler}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
