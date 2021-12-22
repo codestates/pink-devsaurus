@@ -79,11 +79,11 @@ const AnswerNumber = styled.div`
 `;
 
 const Content = ({ data }) => {
-  const { board_id, title, likes, author, modified_at, answers, category } =
+  const { BOARD_ID, title, likes, author, modified_at, answers, category } =
     data;
 
   return (
-    <Link to={`/read/${board_id}`}>
+    <Link to={`/read/${BOARD_ID}`}>
       <Wrapper>
         <Icon>
           <img src={category}></img>
