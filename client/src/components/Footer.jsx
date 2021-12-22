@@ -8,7 +8,9 @@ const Foot = styled.footer`
   position: relative;
   color: var(--gray);
   bottom: 0;
-  width: 100%;
+  width: 90%;
+  left: 50%;
+  transform: translate(-50%, 0%);
   text-align: center;
   background-color: var(--white);
 `;
