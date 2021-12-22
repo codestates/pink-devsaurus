@@ -9,7 +9,11 @@ module.exports = {
   sendAccessToken: (code, res, accessToken, result) => {
     res
       .status(code)
-      .cookie("pinkcookie", accessToken, { httpOnly: true, secure: true })
+      .cookie("pinkcookie", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sign: true,
+      })
       .json({ result });
   },
   isAuthorized: (req) => {
