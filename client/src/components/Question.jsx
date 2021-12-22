@@ -14,7 +14,7 @@ import SimpleOKModal from './SimpleOKModal.jsx';
 
 const QuestionContainer = styled.div`
   /* background-color: #c77676; */
-  padding: 2rem 1.5rem;
+  padding: 3rem 3rem;
 `;
 
 const QuestionNameWrapper = styled.div`
@@ -105,7 +105,12 @@ const UserInfoWrapper = styled.div`
   padding: 1rem;
 `;
 
-const Question = ({ result, handleQuestionEdit, handleQuestionDelete }) => {
+const Question = ({
+  result,
+  handleQuestionEdit,
+  handleQuestionDelete,
+  handleQuestionLike,
+}) => {
   const [editMode, setEditMode] = useState(false);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
@@ -178,6 +183,41 @@ const Question = ({ result, handleQuestionEdit, handleQuestionDelete }) => {
     handleQuestionDelete(result.board_id);
   };
 
+  const handleLikeCount = async (e) => {
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('먼저 로그인 하세요.');
+      return setNoAuthDialog(true);
+    }
+
+    let likeCount;
+    try {
+      likeCount = await axios.put(
+        `https://pinkdevsaurus.tk/likes/questions/${result.board_id}`,
+        {},
+        { withCredentials: true }
+      );
+    } catch (err) {
+      try {
+        likeCount = await axios.delete(
+          `https://pinkdevsaurus.tk/likes/questions/${result.board_id}`,
+          { withCredentials: true }
+        );
+      } catch (err) {
+        setErrorMessage(
+          '게시물 좋아요에 오류가 발생했습니다. 관리자에게 문의하세요'
+        );
+        return setNoAuthDialog(true);
+      }
+    }
+
+    handleQuestionLike();
+  };
+
   return (
     <QuestionContainer>
       {confirmDropdown ? (
@@ -238,7 +278,9 @@ const Question = ({ result, handleQuestionEdit, handleQuestionDelete }) => {
       <AnwerAndLikesContainer>
         <AnswerCount>{result.answers.length} answers</AnswerCount>
         <AnswerAndLikesMiddleWrapper />
-        <LikesWrapper>❤️ {result.likes} likes</LikesWrapper>
+        <LikesWrapper onClick={handleLikeCount}>
+          ❤️ {result.likes} likes
+        </LikesWrapper>
       </AnwerAndLikesContainer>
     </QuestionContainer>
   );

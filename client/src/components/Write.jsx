@@ -11,7 +11,7 @@ import SimpleOKModal from './SimpleOKModal.jsx';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 const NewDiscussionContainer = styled.div`
-  padding: 1.2rem;
+  padding: 2rem 3rem;
 `;
 
 const NewDicussionName = styled.div`
