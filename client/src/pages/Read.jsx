@@ -67,10 +67,10 @@ const Read = () => {
       answers,
     });
 
-    console.dir({
-      ...fetchResult.data.result,
-      answers,
-    });
+    // console.dir({
+    //   ...fetchResult.data.result,
+    //   answers,
+    // });
 
     if (fetchResult.data.result.selected_answer_id) {
       setCanMarkAsAnswer(false);
@@ -242,6 +242,7 @@ const Read = () => {
         result={result}
         handleQuestionEdit={handleQuestionEdit}
         handleQuestionDelete={handleQuestionDelete}
+        handleQuestionLike={handleCheckAnswer}
       />
       <HorizontalLine bottom={1} />
       {result['answers']?.map((answer, index) => {
@@ -255,6 +256,7 @@ const Read = () => {
               canMarkAsAnswer={canMarkAsAnswer}
               handleCheckAnswer={handleCheckAnswer}
               handleAnswerDelete={handleAnswerDelete}
+              handleAnswerLike={handleCheckAnswer}
             />
             <HorizontalLine />
           </Left>

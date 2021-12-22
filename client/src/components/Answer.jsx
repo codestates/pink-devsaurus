@@ -14,7 +14,7 @@ import SimpleOKModal from './SimpleOKModal.jsx';
 
 const AnswerContainer = styled.div`
   margin-top: 1rem;
-  padding: 1rem;
+  padding: 1rem 3rem;
 `;
 
 const AnswerInfoWrapper = styled.div`
@@ -103,6 +103,7 @@ const Answer = ({
   canMarkAsAnswer,
   handleCheckAnswer,
   handleAnswerDelete,
+  handleAnswerLike,
 }) => {
   const [answerContent, setAnswerContent] = useState(result.answer_content);
   const [dropDownClick, setDropDownClick] = useState(false);
@@ -171,7 +172,7 @@ const Answer = ({
       return setNoAuthDialog(true);
     }
 
-    handleAnswerDelete( result.answer_id );
+    handleAnswerDelete(result.answer_id);
   };
 
   const markAsAnswerHandler = async (e) => {
@@ -192,6 +193,41 @@ const Answer = ({
     }
 
     handleCheckAnswer();
+  };
+
+  const handleLikeCount = async (e) => {
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('먼저 로그인 하세요.');
+      return setNoAuthDialog(true);
+    }
+
+    let likeCount;
+    try {
+      likeCount = await axios.put(
+        `https://pinkdevsaurus.tk/likes/answers/${result.answer_id}`,
+        {},
+        { withCredentials: true }
+      );
+    } catch (err) {
+      try {
+        likeCount = await axios.delete(
+          `https://pinkdevsaurus.tk/likes/answers/${result.answer_id}`,
+          { withCredentials: true }
+        );
+      } catch (err) {
+        setErrorMessage(
+          '답변글 좋아요에 오류가 발생했습니다. 관리자에게 문의하세요'
+        );
+        return setNoAuthDialog(true);
+      }
+    }
+
+    handleAnswerLike();
   };
 
   return (
@@ -249,7 +285,9 @@ const Answer = ({
           ✅ 답변으로 채택하기
         </SelectAsAnswer>
         <SelectAsAnswerAndLikesMiddleWrapper />
-        <LikesWrapper>❤️ {result.answer_likes} likes</LikesWrapper>
+        <LikesWrapper onClick={handleLikeCount}>
+          ❤️ {result.answer_likes} likes
+        </LikesWrapper>
       </SelectAsAnswerAndLikesContainer>
     </AnswerContainer>
   );
