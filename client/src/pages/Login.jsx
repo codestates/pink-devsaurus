@@ -128,19 +128,19 @@ const Login = ({ setIsLogin }) => {
 
   return (
     <Body>
-      <Link to='/'>
-        <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
+      <Link to="/">
+        <Icon src="https://ifh.cc/g/rO5WOi.png"></Icon>
       </Link>
       <LoginContainer>
         <Form>
-          <div className='title'>로그인</div>
-          <input placeholder='유저네임' onChange={handleUserName}></input>
-          <input placeholder='비밀번호' onChange={handlePassword}></input>
+          <div className="title">로그인</div>
+          <input placeholder="유저네임" onChange={handleUserName}></input>
+          <input placeholder="비밀번호" onChange={handlePassword}></input>
           <button onClick={loginHandler}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
-            <Link to='/signup'>
-              <li className='signup'>회원 가입</li>
+            <Link to="/signup">
+              <li className="signup">회원 가입</li>
             </Link>
           </ul>
         </Form>
