@@ -5,26 +5,21 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
+import axios from 'axios';
+
 import Userinfo from './UserInfo.jsx';
 import DropdownEditCancel from './DropdownEditCancel.jsx';
-
-// const fetchResult = {
-//   answer_username: 'rihanna',
-//   userprofile_img: 'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-//   answer_id: 1,
-//   answer_content: 'blah blah blah',
-//   created_date: '2020-04-01T00:00:00.000Z',
-//   modified_date: '2020-04-01T00:00:00.000Z',
-//   answer_likes: 12,
-//   selected: true,
-// };
+import DeleteConfirm from './DeleteConfirm.jsx';
+import SimpleOKModal from './SimpleOKModal.jsx';
 
 const AnswerContainer = styled.div`
+  margin-top: 1rem;
   padding: 1rem;
 `;
 
 const AnswerInfoWrapper = styled.div`
   display: flex;
+  margin-bottom: 1rem;
 `;
 
 const UserInfoWrapper = styled.div`
@@ -81,14 +76,28 @@ const LikesWrapper = styled.div`
 `;
 
 const Answer = ({ result, handleAnswerEdit }) => {
-
   const [answerContent, setAnswerContent] = useState(result.answer_content);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [confirmDropdown, setConfirmDropdown] = useState(false);
+  const [noAuthDialog, setNoAuthDialog] = useState(false);
 
-  const intoEditMode = (e) => {
+  const intoEditMode = async (e) => {
     setDropDownClick(false);
-    if( editMode ) return ;    
+    if (editMode) return;
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      return setNoAuthDialog(true);
+    }
+
+    if (checkAuth.data.result.username !== result.username) {
+      return setNoAuthDialog(true);
+    }
+
     setEditMode(true);
   };
 
@@ -108,13 +117,27 @@ const Answer = ({ result, handleAnswerEdit }) => {
   };
 
   const handleDelete = (e) => {
-    //need modal confirm
-    //fetch and delete content
     setDropDownClick(false);
+    setConfirmDropdown(true);
+  };
+
+  const handleDeleteConfirm = (result) => {
+    setConfirmDropdown(false);
+    if (!result) return;
+    //fetch and delete content
+    console.log('called');
   };
 
   return (
     <AnswerContainer>
+      {noAuthDialog ? (
+        <SimpleOKModal
+          handleOK={() => setNoAuthDialog(false)}
+          Message="요청하신 게시물을 수정할 권한이 없습니다."
+        />
+      ) : (
+        false
+      )}
       <AnswerInfoWrapper>
         <UserInfoWrapper>
           <Userinfo user={result} />
@@ -126,10 +149,19 @@ const Answer = ({ result, handleAnswerEdit }) => {
         </IsModifiedWrapper>
         <DropdownButtonWrapper>
           <DropdownButton onClick={handleDropDownClick}>...</DropdownButton>
-          { dropDownClick
-            ? <DropdownEditCancel handleModify={intoEditMode} handleDelete={handleDelete}/>
-            : false 
-          }
+          {dropDownClick ? (
+            <DropdownEditCancel
+              handleModify={intoEditMode}
+              handleDelete={handleDelete}
+            />
+          ) : (
+            false
+          )}
+          {confirmDropdown ? (
+            <DeleteConfirm handleDelete={handleDeleteConfirm}></DeleteConfirm>
+          ) : (
+            false
+          )}
         </DropdownButtonWrapper>
       </AnswerInfoWrapper>
       <EditorWrapper>

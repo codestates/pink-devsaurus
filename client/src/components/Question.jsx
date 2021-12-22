@@ -5,12 +5,15 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
+import axios from 'axios';
+
 import Userinfo from './UserInfo.jsx';
 import DropdownEditCancel from './DropdownEditCancel.jsx';
-import DeleteConfirm from './DeleteConfirm.jsx'
+import DeleteConfirm from './DeleteConfirm.jsx';
+import SimpleOKModal from './SimpleOKModal.jsx';
 
 const QuestionContainer = styled.div`
-  padding: 1rem;
+  padding: 2rem 1.5rem;
 `;
 
 const QuestionNameWrapper = styled.div`
@@ -20,6 +23,7 @@ const QuestionNameWrapper = styled.div`
 const QuestionName = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
+  color: rgba(0, 0, 0, 0.8);
   flex: 80 80 auto;
 `;
 
@@ -105,11 +109,25 @@ const Question = ({ result, handleQuestionEdit }) => {
   const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
   const [questionContent, setQuestionContent] = useState(result.content);
-  const [isOpen, setIsOpen] = useState(false);
+  const [confirmDropdown, setConfirmDropdown] = useState(false);
+  const [noAuthDialog, setNoAuthDialog] = useState(false);
 
-  const intoEditMode = (e) => {
+  const intoEditMode = async (e) => {
     setDropDownClick(false);
     if (editMode) return;
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      return setNoAuthDialog(true);
+    }
+
+    if (checkAuth.data.result.username !== result.username) {
+      return setNoAuthDialog(true);
+    }
+
     setEditMode(true);
   };
 
@@ -130,16 +148,32 @@ const Question = ({ result, handleQuestionEdit }) => {
   };
 
   const handleDelete = (result) => {
-    //need modal confirm
-    //fetch and delete content
-    setIsOpen(false);
+    setConfirmDropdown(true);
     setDropDownClick(false);
-    if (result === false) return;
+  };
+
+  const handleDeleteConfirm = (result) => {
+    setConfirmDropdown(false);
+    if (!result) return;
+    //fetch and delete content
+    console.log('called');
   };
 
   return (
     <QuestionContainer>
-      {isOpen ? <DeleteConfirm handleDelete={handleDelete}></DeleteConfirm> : null}
+      {confirmDropdown ? (
+        <DeleteConfirm handleDelete={handleDeleteConfirm}></DeleteConfirm>
+      ) : (
+        false
+      )}
+      {noAuthDialog ? (
+        <SimpleOKModal
+          handleOK={() => setNoAuthDialog(false)}
+          Message="요청하신 게시물을 수정할 권한이 없습니다."
+        />
+      ) : (
+        false
+      )}
       <QuestionNameWrapper>
         {editMode ? (
           <NameEditbox
@@ -162,7 +196,6 @@ const Question = ({ result, handleQuestionEdit }) => {
             <DropdownEditCancel
               handleModify={intoEditMode}
               handleDelete={handleDelete}
-              setIsOpen={setIsOpen}
             />
           ) : (
             false

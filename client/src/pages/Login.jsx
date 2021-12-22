@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
 
 const Body = styled.body`
   display: flex;
@@ -87,9 +90,10 @@ const Form = styled.div`
   }
 `;
 
-const Login = () => {
+const Login = ({ setIsLogin }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleUserName = (e) => {
     setUserName(e.target.value);
@@ -99,23 +103,52 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleClick = () => {};
+  const loginHandler = async () => {
+    if (!userName || !password) {
+      throw new Error('이메일과 비밀번호를 입력해주세요.');
+    }
+    let result;
+    try {
+      result = await axios.post(
+        'https://pinkdevsaurus.tk/login',
+        {
+          username: userName,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+    } catch (err) {
+      return;
+    }
+    if (result) {
+      navigate('/');
+      setIsLogin(true);
+    }
+  };
 
   return (
     <Body>
-      <Link to='/'>
-        <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
+      <Link to="/">
+        <Icon src="https://ifh.cc/g/rO5WOi.png"></Icon>
       </Link>
       <LoginContainer>
         <Form>
-          <div className='title'>로그인</div>
-          <input placeholder='유저네임' onChange={handleUserName}></input>
-          <input placeholder='비밀번호' onChange={handlePassword}></input>
-          <button onClick={handleClick}>로그인</button>
+          <div className="title">로그인</div>
+          <input
+            type="text"
+            placeholder="유저네임"
+            onChange={handleUserName}
+          ></input>
+          <input
+            type="password"
+            placeholder="비밀번호"
+            onChange={handlePassword}
+          ></input>
+          <button onClick={loginHandler}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
-            <Link to='/signup'>
-              <li className='signup'>회원 가입</li>
+            <Link to="/signup">
+              <li className="signup">회원 가입</li>
             </Link>
           </ul>
         </Form>

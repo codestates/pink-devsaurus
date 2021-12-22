@@ -2,14 +2,14 @@
 // 2021-12-17 17:37:46
 // copied sources from 김경봉
 
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const DropdownContents = styled.ul`
   margin-top: 0.5rem;
   position: absolute;
   font-size: 1rem;
-  right: 1rem;
+  right: 6vw;
   padding: 0.4rem 0.5rem;
   border-radius: 5px;
   background-color: lightpink;
@@ -41,14 +41,12 @@ const DropdownContent = styled.li`
   }
 `;
 
-const DropdownEditCancel = ({ handleModify, handleDelete, setIsOpen }) => {
+const DropdownEditCancel = ({ handleModify, handleDelete }) => {
   return (
     <DropdownContents>
       <Triangle />
       <DropdownContent onClick={handleModify}>수정</DropdownContent>
-      <DropdownContent onClick={handleDelete} onClick={() => setIsOpen(true)}>
-        삭제
-      </DropdownContent>
+      <DropdownContent onClick={handleDelete}>삭제</DropdownContent>
     </DropdownContents>
   );
 };

@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Content from './Content';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const ContentsWrapper = styled.div`
   width: 100%;
   right: 0;
   background-color: var(--white);
-  padding: 1% 5%;
+  padding: 4% 8% 2% 8%;
 
-  > div:nth-child(10) {
-    border-bottom: none;
+  > a:nth-child(10) > div {
+    border-bottom: none !important;
   }
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
-  padding: 0.2vmax 0;
+  padding: 1vmax 0;
 `;
 
 const Button = styled.button`
@@ -26,122 +27,25 @@ const Button = styled.button`
 `;
 
 const Contents = () => {
-  const dummy = {
-    result: [
-      {
-        board_id: 1,
-        title: '궁금한 점이 있어 질문',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 2,
-        title: 'How do you use coronaasdas',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 3,
-        title: 'How do you use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 4,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 5,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 6,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 7,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 8,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 9,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-      {
-        board_id: 10,
-        title: 'How do yadsfdou use coronasadassd',
-        likes: 3,
-        author: 'Nickname',
-        created_at: '2020-04-01T00:00:00.000Z',
-        answers: 4,
-        answered_user_id: 20,
-        category:
-          'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-      },
-    ],
-  };
-
+  const [contentList, setContentList] = useState([]);
   const [pagenation, setPagenation] = useState([1, 2, 3, 4, 5]);
+  const [page, setPage] = useState('1');
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://pinkdevsaurus.tk/questions${
+          page !== '1' ? '?page=' + page : ''
+        }`
+      )
+      .then((res) => {
+        setContentList(res.data.result);
+      });
+  }, [page]);
+
+  const selectPage = (e) => {
+    setPage(e.target.textContent);
+  };
 
   const goPreviousPage = () => {
     if (pagenation[0] !== 1) {
@@ -150,7 +54,6 @@ const Contents = () => {
   };
 
   const goNextPage = () => {
-    // 100에 마지막 페이지
     if (pagenation[4] !== 100) {
       setPagenation(pagenation.map((num) => num + 5));
     }
@@ -158,13 +61,13 @@ const Contents = () => {
 
   return (
     <ContentsWrapper>
-      {dummy.result.map((item, idx) => (
+      {contentList.map((item, idx) => (
         <Content key={idx} data={item}></Content>
       ))}
       <ButtonWrapper>
         <Button onClick={goPreviousPage}>&lt;</Button>
         {pagenation.map((num, idx) => (
-          <Button key={idx} onClick={''}>
+          <Button key={idx} onClick={selectPage}>
             {num}
           </Button>
         ))}

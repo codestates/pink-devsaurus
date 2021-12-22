@@ -1,9 +1,12 @@
 // 담당자 : 최민우 (Front-end)
 // 2021-12-17 17:11:36
 
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import MDEditor from '@uiw/react-md-editor';
+import axios from 'axios';
+
+import Loading from './Loading.jsx';
 
 const NewDiscussionContainer = styled.div`
   padding: 1.2rem;
@@ -72,13 +75,27 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [categoryList, setCategoryList] = useState(null);
 
   const handleClick = (e) => {
     // check and fetch
     // console.log( category, title, content );
-    if (isQuestion) handleWriteSuccess( category, title, content );
-    else handleWriteSuccess( content );
+    if (isQuestion) handleWriteSuccess(category, title, content);
+    else handleWriteSuccess(content);
   };
+
+  useLayoutEffect(() => {
+    async function fetchData() {
+      const fetchResult = await axios.get(
+        `https://pinkdevsaurus.tk/categories`,
+        { withCredentials: true }
+      );
+      setCategoryList(fetchResult.data.result);
+    }
+    fetchData();
+  }, []);
+
+  if (isQuestion && !categoryList) return <Loading />;
 
   return (
     <NewDiscussionContainer>
@@ -96,10 +113,13 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
               }}
             >
               <option value="">카테고리 선택</option>
-              {/* use map method  */}
-              <option value="Database">Database</option>
-              <option value="Javascript">Javascript</option>
-              <option value="Network">Network</option>
+              {categoryList.map(({ category_name: category }, index) => {
+                return (
+                  <option key={index} value={category}>
+                    {category}
+                  </option>
+                );
+              })}
             </CategorySelect>
             <Title
               placeholder="제목"
