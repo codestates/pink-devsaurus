@@ -14,56 +14,47 @@ import Write from './components/Write';
 import MyQuestions from './pages/MyQuestions';
 import './App.css';
 
-const OutlineWrapper = styled.div`
-  position: fixed;
-  background-color: #f1d2d3;
-  width: 100vw;
-  top: 0;
-  height: ${({ headerHeight }) => headerHeight.position}px;
-`;
+const categories = {
+  result: [
+    {
+      category_name: 'View all',
+      category_image:
+        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+    },
+    {
+      category_name: 'Database',
+      category_image:
+        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+    },
+    {
+      category_name: 'JavaScript',
+      category_image:
+        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
+    },
+  ],
+};
 
-const MainContainer = styled.div`
-  background-color: red;
-  height: 2.4vmax;
-  /* height: ${(props) =>
-    props.headerHeight.position - props.headerHeight.header}px; */
-`;
+const OutlineWrapper = styled.div``;
+
+const MainContainer = styled.div``;
 
 const MainScreen = styled.div`
   margin-top: ${({ headerHeight }) => headerHeight.header}px;
-  margin-left: ${({ headerHeight }) =>
-    headerHeight.sidebar + headerHeight.left}px;
-  margin-right: ${({ headerHeight }) => headerHeight.left}px;
+  margin-left: ${({ headerHeight }) => headerHeight.sidebar}px;
   background-color: var(--white);
 `;
 
 const App = () => {
-  const [headerSize, setHeaderSize] = useState({
-    header: 0,
-    sidebar: 0,
-    position: 0,
-    left: 0,
-  });
+  const [headerSize, setHeaderSize] = useState({ header: 0, sidebar: 0 });
   const [isLogin, setIsLogin] = useState(false);
-  const [categories, setCategories] = useState([]);
   const headerRef = useRef();
   const sidebarRef = useRef();
-
-  useEffect(() => {
-    axios.get('https://pinkdevsaurus.tk/categories').then((res) => {
-      setCategories(res.data.result);
-    });
-  }, []);
 
   useLayoutEffect(() => {
     function updateSize() {
       setHeaderSize({
         header: headerRef.current.firstChild.clientHeight,
         sidebar: sidebarRef.current.firstChild.clientWidth,
-        position:
-          headerRef.current.firstChild.offsetTop +
-          headerRef.current.firstChild.clientHeight,
-        left: sidebarRef.current.firstChild.offsetLeft,
       });
     }
     window.addEventListener('resize', updateSize);
@@ -72,14 +63,12 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <OutlineWrapper headerHeight={headerSize} />
-      <MainContainer headerHeight={headerSize} />
+    <OutlineWrapper>
       <Routes>
-        <Route path="/login" element={false} />
-        <Route path="/singup" element={false} />
+        <Route path='/login' element={false} />
+        <Route path='/singup' element={false} />
         <Route
-          path="/"
+          path='/'
           element={
             <div ref={headerRef}>
               <Header isLogin={isLogin} setIsLogin={setIsLogin} />
@@ -87,7 +76,7 @@ const App = () => {
           }
         />
         <Route
-          path="/mypage"
+          path='/mypage'
           element={
             <div ref={headerRef}>
               <Header isLogin={isLogin} setIsLogin={setIsLogin} />
@@ -95,7 +84,7 @@ const App = () => {
           }
         />
         <Route
-          path="/write"
+          path='/write'
           element={
             <div ref={headerRef}>
               <Header isLogin={isLogin} setIsLogin={setIsLogin} />
@@ -103,16 +92,16 @@ const App = () => {
           }
         />
         <Route
-          path="/myqna"
+          path='/myqna'
           element={
             <div ref={headerRef}>
               <Header isLogin={isLogin} setIsLogin={setIsLogin} />
             </div>
           }
         />
-        <Route path="/read">
+        <Route path='/read'>
           <Route
-            path=":id"
+            path=':id'
             element={
               <div ref={headerRef}>
                 <Header isLogin={isLogin} setIsLogin={setIsLogin} />
@@ -122,91 +111,96 @@ const App = () => {
         </Route>
       </Routes>
 
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <div ref={sidebarRef}>
-              <Sidebar list={categories}></Sidebar>
-            </div>
-          }
-        />
-        <Route path="/read">
+      <MainContainer>
+        <Routes>
           <Route
-            path=":id"
+            exact
+            path='/'
             element={
               <div ref={sidebarRef}>
-                <Sidebar list={categories}></Sidebar>
+                <Sidebar list={categories.result}></Sidebar>
               </div>
             }
           />
-        </Route>
-      </Routes>
+          <Route path='/read'>
+            <Route
+              path=':id'
+              element={
+                <div ref={sidebarRef}>
+                  <Sidebar list={categories.result}></Sidebar>
+                </div>
+              }
+            />
+          </Route>
+          {/* localhost:3000/read/30 */}
+        </Routes>
 
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <MainScreen headerHeight={headerSize}>
-              <Contents />
-            </MainScreen>
-          }
-        />
-        <Route
-          path="/mypage"
-          element={
-            <MainScreen headerHeight={headerSize}>
-              <MyPage />
-            </MainScreen>
-          }
-        />
-        <Route
-          path="/myqna"
-          element={
-            <MainScreen headerHeight={headerSize}>
-              <MyQuestions />
-            </MainScreen>
-          }
-        />
-        <Route path="/read">
+        <Routes>
           <Route
-            path=":id"
+            exact
+            path='/'
             element={
               <MainScreen headerHeight={headerSize}>
-                <Read />
+                <Contents />
               </MainScreen>
             }
           />
-        </Route>
-        <Route
-          path="/write"
-          element={
-            <MainScreen headerHeight={headerSize}>
-              <Write isQuestion={true} />
-            </MainScreen>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
-              <Login />
-            </MainScreen>
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
-              <Signup />
-            </MainScreen>
-          }
-        />
-      </Routes>
-      <Footer />
-    </>
+          <Route
+            path='/mypage'
+            element={
+              <MainScreen headerHeight={headerSize}>
+                <MyPage />
+              </MainScreen>
+            }
+          />
+          <Route
+            path='/myqna'
+            element={
+              <MainScreen headerHeight={headerSize}>
+                <MyQuestions />
+              </MainScreen>
+            }
+          />
+          <Route path='/read'>
+            <Route
+              path=':id'
+              element={
+                <MainScreen headerHeight={headerSize}>
+                  <Read />
+                </MainScreen>
+              }
+            />
+          </Route>
+          <Route
+            path='/write'
+            element={
+              <MainScreen
+                headerHeight={{ header: headerSize.header, sidebar: 0 }}
+              >
+                <Write />
+              </MainScreen>
+            }
+          />
+          <Route
+            path='/login'
+            element={
+              <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
+                <Login setIsLogin={setIsLogin} />
+              </MainScreen>
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
+                <Signup />
+              </MainScreen>
+            }
+          />
+        </Routes>
+        <Footer />
+      </MainContainer>
+    </OutlineWrapper>
   );
 };
 
