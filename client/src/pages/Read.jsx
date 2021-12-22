@@ -45,24 +45,78 @@ const Read = () => {
         ...fetchResult.data.result,
         answers,
       });
+      console.dir({
+        ...fetchResult.data.result,
+        answers,
+      });
     }
     fetchData();
   }, []);
 
-  const handleQuestionEdit = (questionName, newContent) => {
+  const handleQuestionEdit = async (questionName, newContent) => {
+    if (questionName === '') return alert('질문 이름을 입력해주세요.');
+    if (newContent === '') return alert('내용을 입력해주세요.');
+
+    let editResult;
+    try {
+      const payload = {
+        title: questionName,
+        content: newContent,
+      };
+      editResult = await axios.put(
+        `https://pinkdevsaurus.tk/questions/${location.pathname.split('/')[2]}`,
+        payload,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      return alert('질문글 수정에 실패했습니다. 관리자에게 문의해 주세요.');
+    }
+
+    console.dir(editResult);
     result.title = questionName;
     result.content = newContent;
-    //fetch new data
   };
 
-  const handleAnswerEdit = (newContent) => {
-    result.content = newContent;
-    //fetch new data
+  const handleAnswerEdit = async (newContent, answerID, answer_idx) => {
+    if (newContent === '') return alert('내용을 입력해주세요.');
+
+    let editResult;
+    try {
+      editResult = await axios.put(
+        `https://pinkdevsaurus.tk/answers/${answerID}`,
+        { content: newContent },
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      return alert('답변글 수정에 실패했습니다. 관리자에게 문의해 주세요.');
+    }
+
+    result.answers[answer_idx].answer_content = newContent;
   };
 
-  const handleNewAnswer = (newContent) => {
-    //fetch new data
-    console.log(newContent);
+  const handleNewAnswer = async (newContent) => {
+    if (newContent === '') return alert('내용을 입력해주세요.');
+
+    const payload = {
+      board_id: location.pathname.split('/')[2],
+      content: newContent,
+    };
+
+    let writeAnswerResult;
+    try {
+      writeAnswerResult = await axios.post(
+        `https://pinkdevsaurus.tk/answers`,
+        payload,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      return alert('답변글 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+    }
+
+    window.location.reload();
   };
 
   if (!result) return <Loading />;
@@ -75,8 +129,11 @@ const Read = () => {
           <Left key={index}>
             <Answer
               key={index}
+              answer_idx={index}
               result={answer}
+              answerSelected={result.selected_answer_id || 0}
               handleAnswerEdit={handleAnswerEdit}
+              authorID={result.user_id}
             />
             <HorizontalLine />
           </Left>

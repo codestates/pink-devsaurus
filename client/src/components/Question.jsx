@@ -124,7 +124,7 @@ const Question = ({ result, handleQuestionEdit }) => {
       return setNoAuthDialog(true);
     }
 
-    if (checkAuth.data.result.username !== result.username) {
+    if (checkAuth.data.result.user_id !== result.user_id) {
       return setNoAuthDialog(true);
     }
 

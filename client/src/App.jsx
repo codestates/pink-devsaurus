@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -48,6 +48,7 @@ const App = () => {
   const [categories, setCategories] = useState([]);
   const headerRef = useRef();
   const sidebarRef = useRef();
+  const natigate = useNavigate();
 
   useEffect(() => {
     axios.get('https://pinkdevsaurus.tk/categories').then((res) => {
@@ -70,6 +71,30 @@ const App = () => {
     updateSize();
     return () => window.removeEventListener('resize', updateSize);
   }, []);
+
+  const writeNewArticle = async (category, title, content) => {
+    const categoryInfo = category.split('|');
+
+    const payload = {
+      category_id: categoryInfo[1],
+      title,
+      content,
+    };
+
+    let writeResult;
+    try {
+      writeResult = await axios.post(
+        `https://pinkdevsaurus.tk/questions`,
+        payload,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      return alert('게시물 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+    }
+
+    natigate('/');
+  };
 
   return (
     <>
@@ -191,7 +216,7 @@ const App = () => {
                 left: headerSize.left,
               }}
             >
-              <Write isQuestion={true} />
+              <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
             </MainScreen>
           }
         />

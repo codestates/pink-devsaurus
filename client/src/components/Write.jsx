@@ -78,8 +78,10 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
   const [categoryList, setCategoryList] = useState(null);
 
   const handleClick = (e) => {
-    // check and fetch
-    // console.log( category, title, content );
+    if (isQuestion && !category) return alert('카테고리를 지정해 주세요.');
+    if (isQuestion && !title) return alert('질문 이름을 작성해 주세요.');
+    if (!content) return alert('게시물 내용을 작성해 주세요.');
+
     if (isQuestion) handleWriteSuccess(category, title, content);
     else handleWriteSuccess(content);
   };
@@ -115,7 +117,10 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
               <option value="">카테고리 선택</option>
               {categoryList.map(({ category_name: category }, index) => {
                 return (
-                  <option key={index} value={category}>
+                  <option
+                    key={index}
+                    value={category + '|' + (Number(index) + 1)}
+                  >
                     {category}
                   </option>
                 );
@@ -136,7 +141,7 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
       <MDEditor value={content} onChange={setContent}></MDEditor>
       <StartDiscussionWrapper>
         <StartDiscussionButton onClick={handleClick}>
-          질문 작성
+          작성하기
         </StartDiscussionButton>
       </StartDiscussionWrapper>
     </NewDiscussionContainer>

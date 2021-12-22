@@ -1,7 +1,7 @@
 // 담당자 : 최민우 (Front-end)
 // 2021-12-17 16:28:04
 
-import { useState } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
@@ -69,18 +69,61 @@ const EditorWrapper = styled.div`
   padding: 1rem;
 `;
 
-const LikesWrapper = styled.div`
-  font-weight: bold;
-  text-align: right;
-  margin-right: 1rem;
+const SelectAsAnswerAndLikesContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
 `;
 
-const Answer = ({ result, handleAnswerEdit }) => {
+const SelectAsAnswerAndLikesMiddleWrapper = styled.div`
+  flex: 80 80 auto;
+`;
+
+const SelectAsAnswer = styled.div`
+  visibility: ${({ canMarkAsAnswer }) =>
+    canMarkAsAnswer ? 'visible' : 'hidden'};
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  flex: 1 1 auto;
+`;
+
+const LikesWrapper = styled.div`
+  font-weight: bold;
+  flex: 1 1 auto;
+`;
+
+const Answer = ({
+  result,
+  handleAnswerEdit,
+  answer_idx,
+  answerSelected,
+  authorID,
+}) => {
   const [answerContent, setAnswerContent] = useState(result.answer_content);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [confirmDropdown, setConfirmDropdown] = useState(false);
   const [noAuthDialog, setNoAuthDialog] = useState(false);
+  const [canMarkAsAnswer, setCanMarkAsAnswer] = useState(false);
+
+  useLayoutEffect(() => {
+    async function checkInfo() {
+      let checkAuth;
+      try {
+        checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+          withCredentials: true,
+        });
+      } catch (err) {
+        setCanMarkAsAnswer(false);
+        return;
+      }
+
+      if (checkAuth.data.result.user_id === authorID) {
+        setCanMarkAsAnswer(true);
+      }
+    }
+    checkInfo();
+  }, []);
 
   const intoEditMode = async (e) => {
     setDropDownClick(false);
@@ -94,7 +137,7 @@ const Answer = ({ result, handleAnswerEdit }) => {
       return setNoAuthDialog(true);
     }
 
-    if (checkAuth.data.result.username !== result.username) {
+    if (checkAuth.data.result.user_id !== result.user_id) {
       return setNoAuthDialog(true);
     }
 
@@ -108,7 +151,7 @@ const Answer = ({ result, handleAnswerEdit }) => {
 
   const handleEditFinish = (newContent) => {
     setEditMode(false);
-    handleAnswerEdit(newContent);
+    handleAnswerEdit(newContent, result.answer_id, answer_idx);
     setAnswerContent(newContent);
   };
 
@@ -140,7 +183,7 @@ const Answer = ({ result, handleAnswerEdit }) => {
       )}
       <AnswerInfoWrapper>
         <UserInfoWrapper>
-          <Userinfo user={result} />
+          <Userinfo user={result} answerSelected={answerSelected} />
         </UserInfoWrapper>
         <IsModifiedWrapper>
           <IsModified cDate={result.created_date} mDate={result.modify_date}>
@@ -175,7 +218,13 @@ const Answer = ({ result, handleAnswerEdit }) => {
           <MDEditor.Markdown source={answerContent} />
         )}
       </EditorWrapper>
-      <LikesWrapper>❤️ {result.answer_likes} likes</LikesWrapper>
+      <SelectAsAnswerAndLikesContainer>
+        <SelectAsAnswer canMarkAsAnswer={canMarkAsAnswer}>
+          ✅ 답변으로 채택하기
+        </SelectAsAnswer>
+        <SelectAsAnswerAndLikesMiddleWrapper />
+        <LikesWrapper>❤️ {result.answer_likes} likes</LikesWrapper>
+      </SelectAsAnswerAndLikesContainer>
     </AnswerContainer>
   );
 };
