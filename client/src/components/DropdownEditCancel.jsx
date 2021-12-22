@@ -9,7 +9,7 @@ const DropdownContents = styled.ul`
   margin-top: 0.5rem;
   position: absolute;
   font-size: 1rem;
-  right: 1rem;
+  right: 6vw;
   padding: 0.4rem 0.5rem;
   border-radius: 5px;
   background-color: lightpink;
