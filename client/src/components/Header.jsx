@@ -15,10 +15,10 @@ const Head = styled.header`
   left: 50%;
   transform: translate(-50%, 0%);
   justify-content: space-between;
-  /* background-color: var(--white); */
   background-color: #fafafa;
   box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.15);
   border-radius: 30px 30px 0 0;
+  overflow: hidden;
   align-items: center;
   padding: 0.2vmax;
   z-index: 999;
@@ -33,7 +33,6 @@ const Img = styled.img`
 const Button = styled.div`
   color: var(--pure-white);
   min-width: 10vmax;
-  /* background-color: var(--pink); */
   background-color: #f1aaa9;
   padding: 0.8vmax 2.5vmax;
   border-radius: 40px;
@@ -61,7 +60,7 @@ const ButtonSignIn = styled.div`
   background-color: #fafafa;
   border: 1px solid transparent;
   font-weight: 400;
-  min-width: 75px;
+  white-space: nowrap;
   margin-left: 5px;
   border-radius: 10px;
 
@@ -79,7 +78,7 @@ const ButtonSignUp = styled.div`
   font-weight: 400;
   border-radius: 10px;
   border: 1px solid #f1aaa9;
-  min-width: 90px;
+  white-space: nowrap;
   margin-left: 5px;
   border-radius: 10px;
 
@@ -93,7 +92,7 @@ const ButtonSignUp = styled.div`
 const Header = ({ isLogin, setIsLogin }) => {
   return (
     <Head>
-      <Img src="https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png" />
+      <Img src="https://ifh.cc/g/rO5WOi.png" />
       <Link to="/">
         <Button>Q &amp; A' s</Button>
       </Link>
@@ -104,7 +103,6 @@ const Header = ({ isLogin, setIsLogin }) => {
       <Link to="/write">
         <Button>질문하기</Button>
       </Link>
-      {/* 로그인 했으면 프로필 아이콘 / 로그인 안했으면 로그인, 회원가입 버튼 */}
       {isLogin ? (
         <DropdownProfile setIsLogin={setIsLogin}></DropdownProfile>
       ) : (
