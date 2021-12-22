@@ -33,11 +33,6 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         comment: "작성자_FK",
       },
-      ANSWER_TITLE: {
-        type: DataTypes.STRING(30),
-        allowNull: false,
-        comment: "답변 제목",
-      },
       ANSWER_CONTENT: {
         type: DataTypes.STRING(1024),
         allowNull: false,
