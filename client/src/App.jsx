@@ -7,7 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Contents from './components/Contents';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
+import SignUp from './pages/SignUp';
 import MyPage from './pages/MyPage';
 import Read from './pages/Read';
 import Write from './components/Write';
@@ -207,7 +207,7 @@ const App = () => {
           path="/signup"
           element={
             <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
-              <Signup />
+              <SignUp />
             </MainScreen>
           }
         />
