@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   }
 
   // 정상적인 데이터를 받지 못한 경우 (필수 데이터가 없는 경우)
-  if (!req.body["board_id"] || !req.body["title"] || !req.body["content"]) {
+  if (!req.body["board_id"] || !req.body["content"]) {
     return res.status(400).send({ message: "It has an empty value" });
   }
   const { board_id, title, content } = req.body;
@@ -19,7 +19,6 @@ module.exports = async (req, res) => {
     ANSWER.create({
       BOARD_ID: board_id,
       USER_ID: accessTokenData.USER_ID,
-      ANSWER_TITLE: title,
       ANSWER_CONTENT: content,
     })
       .then((data) => {
