@@ -183,7 +183,14 @@ const App = () => {
         <Route
           path="/write"
           element={
-            <MainScreen headerHeight={headerSize}>
+            <MainScreen
+              headerHeight={{
+                header: headerSize.header,
+                sidebar: 0,
+                position: headerSize.position,
+                left: headerSize.left,
+              }}
+            >
               <Write isQuestion={true} />
             </MainScreen>
           }

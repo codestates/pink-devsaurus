@@ -13,7 +13,7 @@ import DeleteConfirm from './DeleteConfirm.jsx';
 import SimpleOKModal from './SimpleOKModal.jsx';
 
 const QuestionContainer = styled.div`
-  padding: 1rem;
+  padding: 2rem 1.5rem;
 `;
 
 const QuestionNameWrapper = styled.div`
@@ -23,6 +23,7 @@ const QuestionNameWrapper = styled.div`
 const QuestionName = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
+  color: rgba(0, 0, 0, 0.8);
   flex: 80 80 auto;
 `;
 

@@ -13,11 +13,13 @@ import DeleteConfirm from './DeleteConfirm.jsx';
 import SimpleOKModal from './SimpleOKModal.jsx';
 
 const AnswerContainer = styled.div`
+  margin-top: 1rem;
   padding: 1rem;
 `;
 
 const AnswerInfoWrapper = styled.div`
   display: flex;
+  margin-bottom: 1rem;
 `;
 
 const UserInfoWrapper = styled.div`
