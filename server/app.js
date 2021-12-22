@@ -5,6 +5,7 @@ const cors = require("cors");
 const http = require("http");
 const https = require("https");
 const fs = require("fs");
+const test = require("./test");
 
 /* SSL/TLS privateKey,certificate */
 const privateKey = fs.readFileSync(__dirname + "/privkey.pem");
@@ -27,9 +28,11 @@ const corsOption = {
   optionsSuccessStatus: 200,
   credentials: true,
 };
+
 /* middleware */
 app.use(cors(corsOption));
-app.use(express.json());
+// app.use(express.json());
+app.use(test);
 app.use(cookieParser());
 
 /* Route */

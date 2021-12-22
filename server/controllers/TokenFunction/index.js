@@ -11,8 +11,9 @@ module.exports = {
       .status(code)
       .cookie("pinkcookie", accessToken, {
         httpOnly: true,
-        secure: true,
         sign: true,
+        secure: true,
+        sameSite: "None",
       })
       .json({ result });
   },
