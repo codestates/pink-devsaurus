@@ -13,6 +13,7 @@ module.exports = {
         httpOnly: true,
         secure: true,
         sign: true,
+        sameSite: "None",
       })
       .json({ result });
   },
