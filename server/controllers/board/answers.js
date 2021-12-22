@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   }
   const { boardId } = req.params;
   try {
-    const answerSql = `SELECT USER_ID,ANSWER_ID, ANSWER_TITLE AS answer_title, ANSWER_CONTENT AS answer_content, CREATED_DATE AS created_date, MODIFY_DATE AS modify_date FROM ANSWER WHERE BOARD_ID = ${boardId};`;
+    const answerSql = `SELECT USER_ID,ANSWER_ID, ANSWER_CONTENT AS answer_content, CREATED_DATE AS created_date, MODIFY_DATE AS modify_date FROM ANSWER WHERE BOARD_ID = ${boardId};`;
     const answerUserSql = `SELECT USER_ID, USERNAME AS answer_username, PROFILE_IMG AS userporfile_img FROM USER WHERE USER_ID = ?;`;
     const answerLikeCountSql = `SELECT ANSWER_ID, COUNT(ANSWER_ID) AS LIKESCOUNT FROM LIKES_BOARD WHERE ANSWER_ID = ?;`;
 
@@ -47,6 +47,7 @@ module.exports = async (req, res) => {
           return promise.then((queryResult) => {
             // console.log(element);
             // console.log(queryResult);
+            element.asnwer_id = element.ANSWER_ID;
             element.user_id = element.USER_ID;
             element.answer_username = queryResult.answer_username;
             element.userporfile_img = queryResult.userporfile_img;
