@@ -24,6 +24,7 @@ module.exports = async (req, res) => {
       const boardUserSqls = pool.format(boardUserSql, boardResult.USER_ID);
 
       pool.query(boardUserSqls + boardLikeCountSql, (err, resultUserLike) => {
+        boardResult.user_id = boardResult.USER_ID;
         boardResult.username = resultUserLike[0][0].USERNAME;
         boardResult.userprofile_img = resultUserLike[0][0].PROFILE_IMG;
         boardResult.likes = resultUserLike[1][0].LIKESCOUNT;
