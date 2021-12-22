@@ -59,28 +59,57 @@ const DropdownButton = styled.span`
     background-color: lightgreen;
     color: black;
   }
-  /* &:active {
-    background-color: var(--pink);
-    color: black;
-  } */
 `;
 
 const EditorWrapper = styled.div`
   padding: 1rem;
 `;
 
-const LikesWrapper = styled.div`
-  font-weight: bold;
-  text-align: right;
-  margin-right: 1rem;
+const SelectAsAnswerAndLikesContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
 `;
 
-const Answer = ({ result, handleAnswerEdit }) => {
+const SelectAsAnswerAndLikesMiddleWrapper = styled.div`
+  flex: 80 80 auto;
+`;
+
+const SelectAsAnswer = styled.div`
+  visibility: ${({ canMarkAsAnswer }) =>
+    canMarkAsAnswer ? 'visible' : 'hidden'};
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  flex: 1 1 auto;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const LikesWrapper = styled.div`
+  font-weight: bold;
+  flex: 1 1 auto;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Answer = ({
+  result,
+  handleAnswerEdit,
+  answerSelected,
+  canMarkAsAnswer,
+  handleCheckAnswer,
+  handleAnswerDelete,
+}) => {
   const [answerContent, setAnswerContent] = useState(result.answer_content);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [confirmDropdown, setConfirmDropdown] = useState(false);
   const [noAuthDialog, setNoAuthDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const intoEditMode = async (e) => {
     setDropDownClick(false);
@@ -91,10 +120,12 @@ const Answer = ({ result, handleAnswerEdit }) => {
         withCredentials: true,
       });
     } catch (err) {
+      setErrorMessage('요청하신 게시물을 수정할 권한이 없습니다.');
       return setNoAuthDialog(true);
     }
 
-    if (checkAuth.data.result.username !== result.username) {
+    if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 수정할 권한이 없습니다.');
       return setNoAuthDialog(true);
     }
 
@@ -108,7 +139,7 @@ const Answer = ({ result, handleAnswerEdit }) => {
 
   const handleEditFinish = (newContent) => {
     setEditMode(false);
-    handleAnswerEdit(newContent);
+    handleAnswerEdit(newContent, result.answer_id);
     setAnswerContent(newContent);
   };
 
@@ -121,11 +152,46 @@ const Answer = ({ result, handleAnswerEdit }) => {
     setConfirmDropdown(true);
   };
 
-  const handleDeleteConfirm = (result) => {
+  const handleDeleteConfirm = async (confirm) => {
     setConfirmDropdown(false);
-    if (!result) return;
-    //fetch and delete content
-    console.log('called');
+    if (!confirm) return;
+
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    handleAnswerDelete( result.answer_id );
+  };
+
+  const markAsAnswerHandler = async (e) => {
+    console.dir(result);
+
+    let markAsAnswer;
+    try {
+      markAsAnswer = await axios.put(
+        `https://pinkdevsaurus.tk/answers/best-answer/${result.answer_id}`,
+        { selected_user_id: result.user_id },
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.dir(err);
+      setErrorMessage('답변 채택에 실패하였습니다. 관리자에게 문의하세요.');
+      setNoAuthDialog(true);
+      return;
+    }
+
+    handleCheckAnswer();
   };
 
   return (
@@ -133,14 +199,14 @@ const Answer = ({ result, handleAnswerEdit }) => {
       {noAuthDialog ? (
         <SimpleOKModal
           handleOK={() => setNoAuthDialog(false)}
-          Message="요청하신 게시물을 수정할 권한이 없습니다."
+          Message={errorMessage}
         />
       ) : (
         false
       )}
       <AnswerInfoWrapper>
         <UserInfoWrapper>
-          <Userinfo user={result} />
+          <Userinfo user={result} answerSelected={answerSelected} />
         </UserInfoWrapper>
         <IsModifiedWrapper>
           <IsModified cDate={result.created_date} mDate={result.modify_date}>
@@ -175,7 +241,16 @@ const Answer = ({ result, handleAnswerEdit }) => {
           <MDEditor.Markdown source={answerContent} />
         )}
       </EditorWrapper>
-      <LikesWrapper>❤️ {result.answer_likes} likes</LikesWrapper>
+      <SelectAsAnswerAndLikesContainer>
+        <SelectAsAnswer
+          canMarkAsAnswer={canMarkAsAnswer}
+          onClick={markAsAnswerHandler}
+        >
+          ✅ 답변으로 채택하기
+        </SelectAsAnswer>
+        <SelectAsAnswerAndLikesMiddleWrapper />
+        <LikesWrapper>❤️ {result.answer_likes} likes</LikesWrapper>
+      </SelectAsAnswerAndLikesContainer>
     </AnswerContainer>
   );
 };

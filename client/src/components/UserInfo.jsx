@@ -3,34 +3,6 @@
 
 import styled from 'styled-components';
 
-
-
-
-// const fetchResult = {
-//   result: {
-//     title: 'How do you use coronavirus API into action?',
-//     content: 'blah blah blah',
-//     likes: 10,
-//     username: 'johndoe',
-//     userprofile_img: 'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-//     created_date: '2020-04-01T00:00:00.000Z',
-//     modify_date: '2020-04-01T00:00:00.000Z',
-//     answers: [
-//       {
-//         answer_username: 'rihanna',
-//         userprofile_img:
-//           'https://avatars0.githubusercontent.com/u/1234?s=460&v=4',
-//         answer_id: 1,
-//         answer_content: 'blah blah blah',
-//         created_date: '2020-04-01T00:00:00.000Z',
-//         modified_date: '2020-04-01T00:00:00.000Z',
-//         answer_likes: 12,
-//       },
-//     ],
-//     answered: 0,
-//   },
-// };
-
 const UserinfoContainer = styled.div`
   width: 100%;
   display: flex;
@@ -46,7 +18,7 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   margin-right: 0.8rem;
   width: 3.5rem;
-  src: ${props => props.src};
+  src: ${(props) => props.src};
 `;
 
 const UserMetadataWrapper = styled.div`
@@ -56,7 +28,6 @@ const UserMetadataWrapper = styled.div`
 const UserName = styled.div`
   font-size: 1.1rem;
   font-weight: bold;
-
 `;
 
 const CreatedAt = styled.div`
@@ -70,7 +41,6 @@ const SelectedByUserWrapper = styled.div`
 `;
 
 const SelectedByUser = styled.span`
-  
   border-radius: 5px;
   background-color: lightgreen;
   font-weight: bold;
@@ -80,24 +50,21 @@ const SelectedByUser = styled.span`
   margin-left: 3rem;
 `;
 
-//const 
-
-const Userinfo = ({ user }) => {
-
+const Userinfo = ({ user, answerSelected }) => {
   const userInfo = {};
 
-  if( !user ) return <></>;
+  if (!user) return <></>;
 
-  if( user.hasOwnProperty('username') ) {
+  if (user.hasOwnProperty('username')) {
     userInfo.name = user.username;
     userInfo.image = user.userprofile_img;
     userInfo.createdAt = user.created_date;
     userInfo.selected = false;
-  } else if( user.hasOwnProperty('answer_username') ) {
+  } else if (user.hasOwnProperty('answer_username')) {
     userInfo.name = user.answer_username;
     userInfo.image = user.userprofile_img;
     userInfo.createdAt = user.created_date;
-    userInfo.selected = user.selected;
+    userInfo.selected = user.answer_id == answerSelected;
   }
 
   return (
@@ -107,10 +74,16 @@ const Userinfo = ({ user }) => {
       </ProfileImageWrapper>
       <UserMetadataWrapper>
         <UserName>{userInfo.name}</UserName>
-        <CreatedAt>{new Date(userInfo.createdAt).toLocaleDateString()}</CreatedAt>
+        <CreatedAt>
+          {new Date(userInfo.createdAt).toLocaleDateString()}
+        </CreatedAt>
       </UserMetadataWrapper>
       <SelectedByUserWrapper>
-        {userInfo.selected ? <SelectedByUser>답변으로 체크됨</SelectedByUser> : <></>}
+        {userInfo.selected ? (
+          <SelectedByUser>답변으로 체크됨</SelectedByUser>
+        ) : (
+          <></>
+        )}
       </SelectedByUserWrapper>
     </UserinfoContainer>
   );
