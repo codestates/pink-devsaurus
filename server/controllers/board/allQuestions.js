@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
   ON BQ.BOARD_ID = AW.BOARD_ID
   WHERE 1 ${
     categoryNum ? "AND BQ.CATEGORY_ID = " + categoryNum + " " : ""
-  }GROUP BY BQ.BOARD_ID
+  }GROUP BY BQ.BOARD_ID ORDER BY BQ.BOARD_ID DESC
   LIMIT ${offset},10;`;
 
   try {
