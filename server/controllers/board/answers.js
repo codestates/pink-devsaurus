@@ -47,9 +47,11 @@ module.exports = async (req, res) => {
           return promise.then((queryResult) => {
             // console.log(element);
             // console.log(queryResult);
+            element.user_id = element.USER_ID;
             element.answer_username = queryResult.answer_username;
             element.userporfile_img = queryResult.userporfile_img;
             element.answer_likes = queryResult.LIKESCOUNT;
+
             delete element.USER_ID;
             delete element.ANSWER_ID;
           });
