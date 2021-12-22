@@ -50,8 +50,6 @@ const SelectedByUser = styled.span`
   margin-left: 3rem;
 `;
 
-//const
-
 const Userinfo = ({ user, answerSelected }) => {
   const userInfo = {};
 
@@ -67,7 +65,6 @@ const Userinfo = ({ user, answerSelected }) => {
     userInfo.image = user.userprofile_img;
     userInfo.createdAt = user.created_date;
     userInfo.selected = user.answer_id == answerSelected;
-    console.log(`user_id: ${user.user_id}, answerSelected: ${answerSelected}`);
   }
 
   return (

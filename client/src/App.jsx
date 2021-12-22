@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -51,12 +51,21 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const headerRef = useRef();
   const sidebarRef = useRef();
-  const natigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('https://pinkdevsaurus.tk/categories').then((res) => {
-      setCategories(res.data.result);
-    });
+    axios
+      .get('https://pinkdevsaurus.tk/categories')
+      .then((res) => {
+        setCategories(res.data.result);
+      })
+      .catch((err) => {
+        console.dir(err);
+        setErrorMessage(
+          '카테고리 목록을 불러오지 못했습니다. 관리자에게 문의하세요.'
+        );
+        setWriteCanceledDialog(true);
+      });
   }, []);
 
   useLayoutEffect(() => {
@@ -98,7 +107,22 @@ const App = () => {
       return;
     }
 
-    natigate('/');
+    let queryResult;
+    try {
+      queryResult = await axios.get(
+        `https://pinkdevsaurus.tk/questions?page=1`,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage(
+        '게시물로 이동하는 데 오류가 발생했습니다. 관리자에게 문의해 주세요.'
+      );
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    navigate(`/read/${queryResult.data.result[0].BOARD_ID}`);
   };
 
   return (

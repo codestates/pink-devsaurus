@@ -1,7 +1,7 @@
 // 담당자 : 최민우 (Front-end)
 // 2021-12-17 16:28:04
 
-import { useState, useLayoutEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Editor from './Editor.jsx';
 import MDEditor from '@uiw/react-md-editor';
@@ -59,10 +59,6 @@ const DropdownButton = styled.span`
     background-color: lightgreen;
     color: black;
   }
-  /* &:active {
-    background-color: var(--pink);
-    color: black;
-  } */
 `;
 
 const EditorWrapper = styled.div`
@@ -103,9 +99,10 @@ const LikesWrapper = styled.div`
 const Answer = ({
   result,
   handleAnswerEdit,
-  answer_idx,
   answerSelected,
   canMarkAsAnswer,
+  handleCheckAnswer,
+  handleAnswerDelete,
 }) => {
   const [answerContent, setAnswerContent] = useState(result.answer_content);
   const [dropDownClick, setDropDownClick] = useState(false);
@@ -142,7 +139,7 @@ const Answer = ({
 
   const handleEditFinish = (newContent) => {
     setEditMode(false);
-    handleAnswerEdit(newContent, result.answer_id, answer_idx);
+    handleAnswerEdit(newContent, result.answer_id);
     setAnswerContent(newContent);
   };
 
@@ -155,11 +152,26 @@ const Answer = ({
     setConfirmDropdown(true);
   };
 
-  const handleDeleteConfirm = (result) => {
+  const handleDeleteConfirm = async (confirm) => {
     setConfirmDropdown(false);
-    if (!result) return;
-    //fetch and delete content
-    console.log('called');
+    if (!confirm) return;
+
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    handleAnswerDelete( result.answer_id );
   };
 
   const markAsAnswerHandler = async (e) => {
@@ -168,7 +180,7 @@ const Answer = ({
     let markAsAnswer;
     try {
       markAsAnswer = await axios.put(
-        `https://pinkdevsaurus.tk/best-answer/${result.answer_id}`,
+        `https://pinkdevsaurus.tk/answers/best-answer/${result.answer_id}`,
         { selected_user_id: result.user_id },
         { withCredentials: true }
       );
@@ -179,7 +191,7 @@ const Answer = ({
       return;
     }
 
-    window.location.reload();
+    handleCheckAnswer();
   };
 
   return (

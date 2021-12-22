@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import Loading from './Loading.jsx';
 import SimpleOKModal from './SimpleOKModal.jsx';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const NewDiscussionContainer = styled.div`
   padding: 1.2rem;
@@ -79,34 +80,52 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
   const [categoryList, setCategoryList] = useState(null);
   const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     if (isQuestion && !category) {
       setErrorMessage('카테고리를 선택해주세요.');
       setWriteCanceledDialog(true);
-      return ;
+      return;
     }
     if (isQuestion && !title) {
       setErrorMessage('질문 이름을 작성해 주세요.');
       setWriteCanceledDialog(true);
-      return ;
+      return;
     }
     if (!content) {
       setErrorMessage('게시물 내용을 작성해 주세요.');
       setWriteCanceledDialog(true);
-      return ;
+      return;
     }
-    
+
     if (isQuestion) handleWriteSuccess(category, title, content);
     else handleWriteSuccess(content);
   };
 
   useLayoutEffect(() => {
     async function fetchData() {
-      const fetchResult = await axios.get(
-        `https://pinkdevsaurus.tk/categories`,
-        { withCredentials: true }
-      );
+      try {
+        await axios.get('https://pinkdevsaurus.tk/auth');
+      } catch (err) {
+        navigate('/login');
+        return;
+      }
+
+      let fetchResult;
+      try {
+        fetchResult = await axios.get(`https://pinkdevsaurus.tk/categories`, {
+          withCredentials: true,
+        });
+      } catch (err) {
+        console.dir(err);
+        setErrorMessage(
+          '카테고리 목록을 불러오지 못했습니다. 관리자에게 문의하세요.'
+        );
+        setWriteCanceledDialog(true);
+        return;
+      }
+
       setCategoryList(fetchResult.data.result);
     }
     fetchData();

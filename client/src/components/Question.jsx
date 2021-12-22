@@ -13,6 +13,7 @@ import DeleteConfirm from './DeleteConfirm.jsx';
 import SimpleOKModal from './SimpleOKModal.jsx';
 
 const QuestionContainer = styled.div`
+  /* background-color: #c77676; */
   padding: 2rem 1.5rem;
 `;
 
@@ -60,10 +61,6 @@ const DropdownButton = styled.span`
     background-color: lightgreen;
     color: black;
   }
-  /* &:active {
-    background-color: var(--pink);
-    color: black;
-  } */
 `;
 
 const NameEditbox = styled.input`
@@ -108,13 +105,14 @@ const UserInfoWrapper = styled.div`
   padding: 1rem;
 `;
 
-const Question = ({ result, handleQuestionEdit }) => {
+const Question = ({ result, handleQuestionEdit, handleQuestionDelete }) => {
   const [editMode, setEditMode] = useState(false);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
   const [questionContent, setQuestionContent] = useState(result.content);
   const [confirmDropdown, setConfirmDropdown] = useState(false);
   const [noAuthDialog, setNoAuthDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const intoEditMode = async (e) => {
     setDropDownClick(false);
@@ -125,10 +123,12 @@ const Question = ({ result, handleQuestionEdit }) => {
         withCredentials: true,
       });
     } catch (err) {
+      setErrorMessage('요청하신 게시물을 수정할 권한이 없습니다.');
       return setNoAuthDialog(true);
     }
 
     if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 수정할 권한이 없습니다.');
       return setNoAuthDialog(true);
     }
 
@@ -156,11 +156,26 @@ const Question = ({ result, handleQuestionEdit }) => {
     setDropDownClick(false);
   };
 
-  const handleDeleteConfirm = (result) => {
+  const handleDeleteConfirm = async (confirm) => {
     setConfirmDropdown(false);
-    if (!result) return;
-    //fetch and delete content
-    console.log('called');
+    if (!confirm) return;
+
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    handleQuestionDelete(result.board_id);
   };
 
   return (
@@ -173,7 +188,7 @@ const Question = ({ result, handleQuestionEdit }) => {
       {noAuthDialog ? (
         <SimpleOKModal
           handleOK={() => setNoAuthDialog(false)}
-          Message="요청하신 게시물을 수정할 권한이 없습니다."
+          Message={errorMessage}
         />
       ) : (
         false

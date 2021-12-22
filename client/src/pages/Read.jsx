@@ -1,11 +1,8 @@
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import Sidebar from '../components/Sidebar.jsx';
-import Header from '../components/Header.jsx';
-import Footer from '../components/Footer.jsx';
 import Question from '../components/Question.jsx';
 import Answer from '../components/Answer.jsx';
 import Write from '../components/Write.jsx';
@@ -28,50 +25,80 @@ const Left = styled.div`
 
 const Read = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [result, setResult] = useState(null);
   const [canMarkAsAnswer, setCanMarkAsAnswer] = useState(false);
   const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [reload, setReload] = useState(false);
 
-  useLayoutEffect(() => {
-    async function fetchData() {
-      const boardID = location.pathname.split('/')[2];
-      const fetchResult = await axios.get(
+  async function fetchData() {
+    const boardID = location.pathname.split('/')[2];
+    let fetchResult;
+
+    try {
+      fetchResult = await axios.get(
         `https://pinkdevsaurus.tk/questions/${boardID}`,
         { withCredentials: true }
       );
-      const answerResult = await axios.get(
+    } catch (err) {
+      console.dir(err);
+      setErrorMessage('질문을 불러오지 못했습니다. 관리자에게 문의하세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    let answerResult;
+    try {
+      answerResult = await axios.get(
         `https://pinkdevsaurus.tk/questions/answers/${boardID}`,
         { withCredentials: true }
       );
-      const { answer: answers } = answerResult.data;
-      setResult({
-        ...fetchResult.data.result,
-        answers,
-      });
-
-      if (fetchResult.data.selected_answer_id) return;
-
-      let checkAuth;
-      try {
-        checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
-          withCredentials: true,
-        });
-      } catch (err) {
-        setCanMarkAsAnswer(false);
-        return;
-      }
-
-      if (checkAuth.data.result.user_id === fetchResult.data.result.user_id) {
-        setCanMarkAsAnswer(true);
-      }
-
-      //console.dir(checkAuth.data.result);
-      console.dir({
-        ...fetchResult.data.result,
-        answers,
-      });
+    } catch (err) {
+      console.dir(err);
+      setErrorMessage('답변을 불러오지 못했습니다. 관리자에게 문의하세요.');
+      setWriteCanceledDialog(true);
+      return;
     }
+
+    const { answer: answers } = answerResult.data;
+    setResult({
+      ...fetchResult.data.result,
+      answers,
+    });
+
+    console.dir({
+      ...fetchResult.data.result,
+      answers,
+    });
+
+    if (fetchResult.data.result.selected_answer_id) {
+      setCanMarkAsAnswer(false);
+      return;
+    }
+
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setCanMarkAsAnswer(false);
+      return;
+    }
+
+    if (checkAuth.data.result.user_id === fetchResult.data.result.user_id) {
+      setCanMarkAsAnswer(true);
+    }
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetchData();
+    }, 500);
+  }, [reload]);
+
+  useLayoutEffect(() => {
     fetchData();
   }, []);
 
@@ -105,11 +132,10 @@ const Read = () => {
       return;
     }
 
-    result.title = questionName;
-    result.content = newContent;
+    setReload(!reload);
   };
 
-  const handleAnswerEdit = async (newContent, answerID, answer_idx) => {
+  const handleAnswerEdit = async (newContent, answerID) => {
     if (newContent === '') {
       setErrorMessage('내용을 입력해주세요.');
       setWriteCanceledDialog(true);
@@ -130,7 +156,7 @@ const Read = () => {
       return;
     }
 
-    result.answers[answer_idx].answer_content = newContent;
+    setReload(!reload);
   };
 
   const handleNewAnswer = async (newContent) => {
@@ -159,10 +185,49 @@ const Read = () => {
       return;
     }
 
-    window.location.reload();
+    setReload(!reload);
+  };
+
+  const handleCheckAnswer = () => {
+    setReload(!reload);
+  };
+
+  const handleQuestionDelete = async (questionID) => {
+    let deleteResult;
+    try {
+      deleteResult = await axios.delete(
+        `https://pinkdevsaurus.tk/questions/${questionID}`,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage('질문글 삭제에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    navigate('/');
+  };
+
+  const handleAnswerDelete = async (answerID) => {
+    let deleteResult;
+    try {
+      deleteResult = await axios.delete(
+        `https://pinkdevsaurus.tk/answers/${answerID}`,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage('답변글 삭제에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    setReload(!reload);
   };
 
   if (!result) return <Loading />;
+
   return (
     <>
       {writeCanceledDialog ? (
@@ -173,18 +238,23 @@ const Read = () => {
       ) : (
         false
       )}
-      <Question result={result} handleQuestionEdit={handleQuestionEdit} />
+      <Question
+        result={result}
+        handleQuestionEdit={handleQuestionEdit}
+        handleQuestionDelete={handleQuestionDelete}
+      />
       <HorizontalLine bottom={1} />
       {result['answers']?.map((answer, index) => {
         return (
           <Left key={index}>
             <Answer
               key={index}
-              answer_idx={index}
               result={answer}
               answerSelected={result.selected_answer_id || 0}
               handleAnswerEdit={handleAnswerEdit}
               canMarkAsAnswer={canMarkAsAnswer}
+              handleCheckAnswer={handleCheckAnswer}
+              handleAnswerDelete={handleAnswerDelete}
             />
             <HorizontalLine />
           </Left>
