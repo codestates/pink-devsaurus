@@ -47,7 +47,7 @@ module.exports = async (req, res) => {
           return promise.then((queryResult) => {
             // console.log(element);
             // console.log(queryResult);
-            element.asnwer_id = element.ANSWER_ID;
+            element.answer_id = element.ANSWER_ID;
             element.user_id = element.USER_ID;
             element.answer_username = queryResult.answer_username;
             element.userporfile_img = queryResult.userporfile_img;
