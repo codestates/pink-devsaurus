@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
   const { boardId } = req.params;
 
   try {
-    const boardSql = `SELECT USER_ID, BOARD_ID AS board_id , TITLE AS title, CONTENT AS content, CREATED_DATE AS created_date, MODIFY_DATE AS modify_date FROM BOARD_QA WHERE BOARD_ID = ${boardId};`;
+    const boardSql = `SELECT SELECTED_BREPLY_ID AS selected_answer_id, USER_ID, BOARD_ID AS board_id , TITLE AS title, CONTENT AS content, CREATED_DATE AS created_date, MODIFY_DATE AS modify_date FROM BOARD_QA WHERE BOARD_ID = ${boardId};`;
     const boardUserSql = `SELECT * FROM USER WHERE USER_ID = ?;`;
     const boardLikeCountSql = `SELECT COUNT(BOARD_ID) AS LIKESCOUNT FROM LIKES_BOARD WHERE BOARD_ID = ${boardId}`;
 
