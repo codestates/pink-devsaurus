@@ -41,7 +41,11 @@ module.exports = async (req, res) => {
       TITLE: title,
       CONTENT: content,
     });
-    const updateSql = pool.format(whereSql, { BOARD_ID: Number(boardId) });
+    const updateSqls = pool.format(whereSql, { BOARD_ID: Number(boardId) });
+
+    console.log(updateSql);
+
+    const updateSql = `UPDATE BOARD_QA SET TITLE=${title}, CONTENT=${content} MODIFY_DATE = new() WHERE BOARD_ID = ${boardId}`;
 
     pool.query(updateSql, (err, result) => {
       if (err) {
