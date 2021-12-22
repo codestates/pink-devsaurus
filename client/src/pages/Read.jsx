@@ -10,6 +10,7 @@ import Question from '../components/Question.jsx';
 import Answer from '../components/Answer.jsx';
 import Write from '../components/Write.jsx';
 import Loading from '../components/Loading.jsx';
+import SimpleOKModal from '../components/SimpleOKModal.jsx';
 
 const HorizontalLine = styled.div`
   border-left-width: 0;
@@ -28,16 +29,19 @@ const Left = styled.div`
 const Read = () => {
   const location = useLocation();
   const [result, setResult] = useState(null);
+  const [canMarkAsAnswer, setCanMarkAsAnswer] = useState(false);
+  const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useLayoutEffect(() => {
     async function fetchData() {
-      const parsed = location.pathname.split('/')[2];
+      const boardID = location.pathname.split('/')[2];
       const fetchResult = await axios.get(
-        `https://pinkdevsaurus.tk/questions/${parsed}`,
+        `https://pinkdevsaurus.tk/questions/${boardID}`,
         { withCredentials: true }
       );
       const answerResult = await axios.get(
-        `https://pinkdevsaurus.tk/questions/answers/${parsed}`,
+        `https://pinkdevsaurus.tk/questions/answers/${boardID}`,
         { withCredentials: true }
       );
       const { answer: answers } = answerResult.data;
@@ -45,6 +49,24 @@ const Read = () => {
         ...fetchResult.data.result,
         answers,
       });
+
+      if (fetchResult.data.selected_answer_id) return;
+
+      let checkAuth;
+      try {
+        checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+          withCredentials: true,
+        });
+      } catch (err) {
+        setCanMarkAsAnswer(false);
+        return;
+      }
+
+      if (checkAuth.data.result.user_id === fetchResult.data.result.user_id) {
+        setCanMarkAsAnswer(true);
+      }
+
+      //console.dir(checkAuth.data.result);
       console.dir({
         ...fetchResult.data.result,
         answers,
@@ -54,8 +76,16 @@ const Read = () => {
   }, []);
 
   const handleQuestionEdit = async (questionName, newContent) => {
-    if (questionName === '') return alert('질문 이름을 입력해주세요.');
-    if (newContent === '') return alert('내용을 입력해주세요.');
+    if (questionName === '') {
+      setErrorMessage('질문 이름을 입력해주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
+    if (newContent === '') {
+      setErrorMessage('내용을 입력해주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
 
     let editResult;
     try {
@@ -70,16 +100,21 @@ const Read = () => {
       );
     } catch (err) {
       console.log(err);
-      return alert('질문글 수정에 실패했습니다. 관리자에게 문의해 주세요.');
+      setErrorMessage('질문글 수정에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
     }
 
-    console.dir(editResult);
     result.title = questionName;
     result.content = newContent;
   };
 
   const handleAnswerEdit = async (newContent, answerID, answer_idx) => {
-    if (newContent === '') return alert('내용을 입력해주세요.');
+    if (newContent === '') {
+      setErrorMessage('내용을 입력해주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
 
     let editResult;
     try {
@@ -90,14 +125,20 @@ const Read = () => {
       );
     } catch (err) {
       console.log(err);
-      return alert('답변글 수정에 실패했습니다. 관리자에게 문의해 주세요.');
+      setErrorMessage('답변글 수정에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
     }
 
     result.answers[answer_idx].answer_content = newContent;
   };
 
   const handleNewAnswer = async (newContent) => {
-    if (newContent === '') return alert('내용을 입력해주세요.');
+    if (newContent === '') {
+      setErrorMessage('내용을 입력해주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
 
     const payload = {
       board_id: location.pathname.split('/')[2],
@@ -113,7 +154,9 @@ const Read = () => {
       );
     } catch (err) {
       console.log(err);
-      return alert('답변글 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+      setErrorMessage('답변글 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
     }
 
     window.location.reload();
@@ -122,6 +165,14 @@ const Read = () => {
   if (!result) return <Loading />;
   return (
     <>
+      {writeCanceledDialog ? (
+        <SimpleOKModal
+          handleOK={() => setWriteCanceledDialog(false)}
+          Message={errorMessage}
+        />
+      ) : (
+        false
+      )}
       <Question result={result} handleQuestionEdit={handleQuestionEdit} />
       <HorizontalLine bottom={1} />
       {result['answers']?.map((answer, index) => {
@@ -133,7 +184,7 @@ const Read = () => {
               result={answer}
               answerSelected={result.selected_answer_id || 0}
               handleAnswerEdit={handleAnswerEdit}
-              authorID={result.user_id}
+              canMarkAsAnswer={canMarkAsAnswer}
             />
             <HorizontalLine />
           </Left>

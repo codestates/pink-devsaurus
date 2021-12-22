@@ -7,6 +7,7 @@ import MDEditor from '@uiw/react-md-editor';
 import axios from 'axios';
 
 import Loading from './Loading.jsx';
+import SimpleOKModal from './SimpleOKModal.jsx';
 
 const NewDiscussionContainer = styled.div`
   padding: 1.2rem;
@@ -76,12 +77,26 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [categoryList, setCategoryList] = useState(null);
+  const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleClick = (e) => {
-    if (isQuestion && !category) return alert('카테고리를 지정해 주세요.');
-    if (isQuestion && !title) return alert('질문 이름을 작성해 주세요.');
-    if (!content) return alert('게시물 내용을 작성해 주세요.');
-
+    if (isQuestion && !category) {
+      setErrorMessage('카테고리를 선택해주세요.');
+      setWriteCanceledDialog(true);
+      return ;
+    }
+    if (isQuestion && !title) {
+      setErrorMessage('질문 이름을 작성해 주세요.');
+      setWriteCanceledDialog(true);
+      return ;
+    }
+    if (!content) {
+      setErrorMessage('게시물 내용을 작성해 주세요.');
+      setWriteCanceledDialog(true);
+      return ;
+    }
+    
     if (isQuestion) handleWriteSuccess(category, title, content);
     else handleWriteSuccess(content);
   };
@@ -101,6 +116,14 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
 
   return (
     <NewDiscussionContainer>
+      {writeCanceledDialog ? (
+        <SimpleOKModal
+          handleOK={() => setWriteCanceledDialog(false)}
+          Message={errorMessage}
+        />
+      ) : (
+        false
+      )}
       <NewDicussionName>
         {isQuestion ? '질문' : '답변'} 작성하기
       </NewDicussionName>

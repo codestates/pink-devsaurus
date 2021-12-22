@@ -98,6 +98,10 @@ const AnswerAndLikesMiddleWrapper = styled.div`
 const LikesWrapper = styled.div`
   font-weight: bold;
   flex: 1 1 auto;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const UserInfoWrapper = styled.div`

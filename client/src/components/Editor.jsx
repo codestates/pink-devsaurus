@@ -12,7 +12,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const OkayButton = styled.button`
-  margin-right : 0.5rem;
+  margin-right: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
 
@@ -26,10 +26,10 @@ const OkayButton = styled.button`
   }
   &:active {
     background-color: #ff6d88;
-
+  }
 `;
-const CancelButton = styled.button`
 
+const CancelButton = styled.button`
   font-size: 1rem;
   font-weight: bold;
 
@@ -43,6 +43,7 @@ const CancelButton = styled.button`
   }
   &:active {
     background-color: #ff6d88;
+  }
 `;
 
 const Editor = ({ text, handleEditFinish, handleCancel }) => {

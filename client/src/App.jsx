@@ -12,6 +12,7 @@ import MyPage from './pages/MyPage';
 import Read from './pages/Read';
 import Write from './components/Write';
 import MyQuestions from './pages/MyQuestions';
+import SimpleOKModal from './components/SimpleOKModal';
 import './App.css';
 
 const OutlineWrapper = styled.div`
@@ -46,6 +47,8 @@ const App = () => {
   });
   const [isLogin, setIsLogin] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const headerRef = useRef();
   const sidebarRef = useRef();
   const natigate = useNavigate();
@@ -90,7 +93,9 @@ const App = () => {
       );
     } catch (err) {
       console.log(err);
-      return alert('게시물 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+      setErrorMessage('게시물 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
     }
 
     natigate('/');
@@ -100,6 +105,14 @@ const App = () => {
     <>
       <OutlineWrapper headerHeight={headerSize} />
       <MainContainer headerHeight={headerSize} />
+      {writeCanceledDialog ? (
+        <SimpleOKModal
+          handleOK={() => setWriteCanceledDialog(false)}
+          Message={errorMessage}
+        />
+      ) : (
+        false
+      )}
       <Routes>
         <Route path="/login" element={false} />
         <Route path="/singup" element={false} />
