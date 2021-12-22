@@ -7,12 +7,8 @@ const https = require("https");
 const fs = require("fs");
 
 /* SSL/TLS privateKey,certificate */
-const privateKey = fs.readFileSync(
-  "/etc/letsencrypt/live/pinkdevsaurus.tk/privkey.pem"
-);
-const certificate = fs.readFileSync(
-  "/etc/letsencrypt/live/pinkdevsaurus.tk/fullchain.pem"
-);
+const privateKey = fs.readFileSync(__dirname + "/privkey.pem");
+const certificate = fs.readFileSync(__dirname + "/fullchain.pem");
 const credentials = { key: privateKey, cert: certificate };
 
 /* route config */
@@ -48,9 +44,9 @@ app.use("/likes", likeRouter);
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(8080, () => {
-  console.log("http Server - http://pinkdevsaurus.tk/:8080");
+httpServer.listen(80, () => {
+  console.log("http Server - http://pinkdevsaurus.tk:8080");
 });
-httpsServer.listen(8443, () => {
-  console.log("https Server - https://pinkdevsaurus.tk/8443");
+httpsServer.listen(443, () => {
+  console.log("https Server - https://pinkdevsaurus.tk:8443");
 });
