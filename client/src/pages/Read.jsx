@@ -17,7 +17,7 @@ const HorizontalLine = styled.div`
   border-top-width: 0;
   border-bottom-width: 0.15px;
   border-style: solid;
-  border-color: var(--gray);
+  border-color: rgba(0, 0, 0, 0.3);
   margin-bottom: ${({ bottom }) => (bottom ? bottom : 0)}rem;
 `;
 
@@ -69,7 +69,7 @@ const Read = () => {
   return (
     <>
       <Question result={result} handleQuestionEdit={handleQuestionEdit} />
-      <HorizontalLine bottom={1.5} />
+      <HorizontalLine bottom={1} />
       {result['answers']?.map((answer, index) => {
         return (
           <Left key={index}>
