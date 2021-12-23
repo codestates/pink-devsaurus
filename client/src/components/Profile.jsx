@@ -4,15 +4,13 @@ import axios from 'axios';
 import SimpleOKModal from './SimpleOKModal';
 
 const ProfileContainer = styled.div`
-  /* top: 5.4vmax; */
-  /* left: 27%; */
-  /* display: flex;
+  left: 27%;
+  display: flex;
   flex-direction: column;
-  align-items: center; */
-  background: pink;
+  align-items: center;
   width: 100%;
-  right: 0;
-  padding: 4% 8% 2% 8%;
+  height: 100vh;
+  padding: 4em 0px;
 `;
 
 const MyImage = styled.div`
@@ -22,10 +20,10 @@ const MyImage = styled.div`
   align-items: center;
 
   > img {
-    width: 10vmax;
-    height: 10vmax;
+    width: 10em;
+    height: 10em;
     border-radius: 50%;
-    margin-bottom: 2vmax;
+    margin-bottom: 1rem;
     border: 1px solid lightgray;
   }
 
@@ -38,8 +36,8 @@ const MyImage = styled.div`
     display: flex;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.5vmax;
-    margin-bottom: 2vmax;
+    font-size: 1rem;
+    margin-bottom: 2em;
     cursor: pointer;
 
     :hover {
@@ -56,23 +54,25 @@ const MyInfo = styled.ul`
   li {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2vmax;
+    margin-bottom: 1em;
   }
 `;
 
 const Title = styled.span`
-  margin-bottom: 0.5vmax;
+  margin-bottom: 0.5em;
   font-weight: bold;
+  font-size: 1em;
 `;
 
 const EditInput = styled.input`
-  width: 30vmax;
-  height: 3vmax;
+  width: 17em;
+  height: 2em;
   border: 1px solid lightgray;
   border-radius: 5px;
   outline: none;
-  padding-left: 1vmax;
-  font-size: 1.5vmax;
+  padding-left: 3px;
+  font-size: 1em;
+  padding: 10px;
 `;
 
 const ErrorMsg = styled.div`
@@ -84,16 +84,17 @@ const ErrorMsg = styled.div`
 `;
 
 const Button = styled.button`
-  height: 35px;
-  width: 100px;
+  height: 2em;
+  width: 5em;
   border-radius: 5px;
   background-color: var(--pink);
   color: var(--pure-white);
   font-weight: bold;
   border: none;
+  font-size: 1.5em;
+  padding: 2px;
+  /* margin-bottom: 3em; */
   cursor: pointer;
-  font-size: 15px;
-  margin-bottom: 3vmax;
 
   &:hover {
     opacity: 0.8;
@@ -105,7 +106,7 @@ const Profile = ({ userInfo }) => {
   const [password, setPassword] = useState('');
   const [passwordMsg, setPasswordMsg] = useState('');
   const [confirmPasswordMsg, setConfirmPasswordMsg] = useState('');
-  const [isOk, setIsOk] = useState(false)
+  const [isOk, setIsOk] = useState(false);
 
   const handleImage = (e) => {
     const validExtensions = ['image/jpeg', 'image/peg', 'image/png'];
@@ -169,10 +170,12 @@ const Profile = ({ userInfo }) => {
 
   return (
     <ProfileContainer>
-      {isOk ? <SimpleOKModal
+      {isOk ? (
+        <SimpleOKModal
           handleOK={() => setIsOk(false)}
           Message={'수정되었습니다.'}
-        /> : null}
+        />
+      ) : null}
       <MyImage>
         <img src={profileImg} alt="" id="" className="" />
         <input
