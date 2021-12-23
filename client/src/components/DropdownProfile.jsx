@@ -64,7 +64,9 @@ const DropdownProfile = ({ setIsLogin, username }) => {
 
   const logOut = () => {
     axios
-      .get('https://pinkdevsaurus.tk/logout')
+      .get('https://pinkdevsaurus.tk/logout', {
+        withCredentials: true,
+      })
       .then(() => {
         setIsLogin(false);
         navigate('/');
