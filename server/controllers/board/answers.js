@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   const { boardId } = req.params;
   try {
     const answerSql = `SELECT USER_ID,ANSWER_ID, ANSWER_CONTENT AS answer_content, CREATED_DATE AS created_date, MODIFY_DATE AS modify_date FROM ANSWER WHERE BOARD_ID = ${boardId};`;
-    const answerUserSql = `SELECT USER_ID, USERNAME AS answer_username, PROFILE_IMG AS userporfile_img FROM USER WHERE USER_ID = ?;`;
+    const answerUserSql = `SELECT USER_ID, USERNAME AS answer_username, PROFILE_IMG AS userprofile_img FROM USER WHERE USER_ID = ?;`;
     const answerLikeCountSql = `SELECT ANSWER_ID, COUNT(ANSWER_ID) AS LIKESCOUNT FROM LIKES_BOARD WHERE ANSWER_ID = ?;`;
 
     pool.query(answerSql, (err, result) => {
@@ -33,13 +33,13 @@ module.exports = async (req, res) => {
                 console.error(err);
                 return res.status(501).json({ message: "DB Query Fail" });
               }
-              const { USER_ID, answer_username, userporfile_img } = rows[0][0];
+              const { USER_ID, answer_username, userprofile_img } = rows[0][0];
               const { ANSWER_ID, LIKESCOUNT } = rows[1][0];
 
               resolve({
                 USER_ID,
                 answer_username,
-                userporfile_img,
+                userprofile_img,
                 LIKESCOUNT,
               });
             }); // end pool.query
@@ -50,7 +50,7 @@ module.exports = async (req, res) => {
             element.answer_id = element.ANSWER_ID;
             element.user_id = element.USER_ID;
             element.answer_username = queryResult.answer_username;
-            element.userporfile_img = queryResult.userporfile_img;
+            element.userprofile_img = queryResult.userprofile_img;
             element.answer_likes = queryResult.LIKESCOUNT;
 
             delete element.USER_ID;
