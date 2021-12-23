@@ -37,18 +37,19 @@ module.exports = async (req, res) => {
       }
       // check_409_Sql Error
       if (result[2].length > 0) {
-        return res.status(403).json({ message: "Confilict" });
+        return res.status(409).json({ message: "Confilict" });
       }
     });
-    const transaction = await models.sequelize.transaction(async (t) => {
-      const created_LIKES_BOARD = LIKES_BOARD.findOrCreate({
-        where: { USER_ID: accessTokenData.USER_ID, BOARD_ID: boardId },
-        defaults: {
-          USER_ID: accessTokenData.USER_ID,
-          BOARD_ID: boardId,
-          ANSWER_ID: null,
-        },
-      });
+    const created_LIKES_BOARD = LIKES_BOARD.findOrCreate({
+      where: { USER_ID: accessTokenData.USER_ID, BOARD_ID: boardId },
+      defaults: {
+        USER_ID: accessTokenData.USER_ID,
+        BOARD_ID: boardId,
+        ANSWER_ID: null,
+      },
+    });
+    created_LIKES_BOARD.then((data) => {
+      res.status(201).json();
     });
   } catch (err) {
     console.error(err);
