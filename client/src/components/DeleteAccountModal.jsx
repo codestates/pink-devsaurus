@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 
 const ModalWrapper = styled.div`
   position: fixed !important;
@@ -14,7 +14,7 @@ const ModalWrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-`;
+`
 
 const ModalContainer = styled.div`
   position: relative;
@@ -23,14 +23,14 @@ const ModalContainer = styled.div`
   background-color: var(--pure-white);
   border-radius: 10px;
   padding: 50px 50px;
-`;
+`
 
 const Title = styled.p`
   font-size: 20px;
   text-align: center;
   font-weight: bold;
   margin-bottom: 30px;
-`;
+`
 
 const Form = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const Form = styled.div`
     padding-left: 7px;
     margin-bottom: 30px;
   }
-`;
+`
 
 const ErrorMsg = styled.div`
   color: red;
@@ -59,7 +59,7 @@ const ErrorMsg = styled.div`
   font-weight: bold;
   margin-top: -30px;
   margin-bottom: 30px;
-`;
+`
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -82,7 +82,7 @@ const ButtonWrapper = styled.div`
   button:hover {
     opacity: 0.8;
   }
-`;
+`
 
 const Close = styled.div`
   position: absolute;
@@ -90,46 +90,46 @@ const Close = styled.div`
   right: 20px;
   font-size: 30px;
   cursor: pointer;
-`;
+`
 
 const DeleteAccountModal = ({ userName, userId, modalHandler }) => {
-  const [errorMsg, setErrorMsg] = useState("");
-  const [username, setUserid] = useState("");
-  const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState('')
+  const [username, setUserid] = useState('')
+  const [password, setPassword] = useState('')
   const changeUserId = (e) => {
-    setUserid(e.target.value);
-  };
+    setUserid(e.target.value)
+  }
   const changePassword = (e) => {
-    setPassword(e.target.value);
-  };
-  const navigate = useNavigate();
+    setPassword(e.target.value)
+  }
+  const navigate = useNavigate()
 
   const deleteUserHandler = () => {
     if (userName !== username) {
-      setErrorMsg("아이디가 다릅니다.");
+      setErrorMsg('아이디가 다릅니다.')
     } else {
       fetch(`https://pinkdevsaurus.tk/users/${userId}`, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-type": "application/json",
+          'Content-type': 'application/json',
         },
-        credentials: "include",
+        credentials: 'include',
         body: JSON.stringify({
           password: password,
         }),
       })
         .then((data) => {
           if (data.status === 204) {
-            navigate("/");
+            navigate('/')
           } else {
-            setErrorMsg("삭제에 실패 했습니다.");
+            setErrorMsg('삭제에 실패 했습니다.')
           }
         })
         .catch((err) => {
-          console.error(err);
-        });
+          console.error(err)
+        })
     }
-  };
+  }
   return (
     <ModalWrapper>
       <ModalContainer>
@@ -149,7 +149,7 @@ const DeleteAccountModal = ({ userName, userId, modalHandler }) => {
         </ButtonWrapper>
       </ModalContainer>
     </ModalWrapper>
-  );
-};
+  )
+}
 
-export default DeleteAccountModal;
+export default DeleteAccountModal

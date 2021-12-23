@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Profile from "../components/Profile";
-import Sidebar from "../components/Sidebar";
-import DeleteAccountModal from "../components/DeleteAccountModal";
-import axios from "axios";
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import Profile from '../components/Profile'
+import Sidebar from '../components/Sidebar'
+import DeleteAccountModal from '../components/DeleteAccountModal'
+import axios from 'axios'
 
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-`;
+`
 
 const SpeechBubbleWrapper = styled.div`
   position: relative;
@@ -19,7 +19,7 @@ const SpeechBubbleWrapper = styled.div`
   &:hover {
     visibility: visible;
   }
-`;
+`
 
 const SpeechBubble = styled.div`
   position: fixed;
@@ -40,7 +40,7 @@ const SpeechBubble = styled.div`
   z-index: 999;
 
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     bottom: -25px;
     left: 50%;
@@ -48,7 +48,7 @@ const SpeechBubble = styled.div`
     border: 15px solid transparent;
     border-top: 15px solid #70a6ff;
   }
-`;
+`
 
 const Icon = styled.img`
   visibility: visible;
@@ -58,39 +58,39 @@ const Icon = styled.img`
   height: 4em;
   width: 4em;
   cursor: pointer;
-`;
+`
 
 const MyPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState();
+  const [isOpen, setIsOpen] = useState(false)
+  const [userInfo, setUserInfo] = useState()
 
   useEffect(() => {
     axios
-      .get("https://pinkdevsaurus.tk/auth", {
+      .get('https://pinkdevsaurus.tk/auth', {
         withCredentials: true,
       })
       .then((res) => {
-        setUserInfo(res.data.result);
-        console.log(userInfo);
+        setUserInfo(res.data.result)
+        console.log(userInfo)
       })
       .catch((err) => {
-        return;
-      });
-  }, []);
+        return
+      })
+  }, [])
 
   const modalHandler = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
 
   return (
     <Wrapper>
       <Sidebar
-        list={[{ category_name: "나의 정보" }, { category_name: "My Q & A" }]}
+        list={[{ category_name: '나의 정보' }, { category_name: 'My Q & A' }]}
       />
       {isOpen ? (
         <DeleteAccountModal
-          userName={userInfo["username"]}
-          userId={userInfo["user_id"]}
+          userName={userInfo['username']}
+          userId={userInfo['user_id']}
           modalHandler={modalHandler}
         />
       ) : null}
@@ -103,7 +103,7 @@ const MyPage = () => {
         />
       </SpeechBubbleWrapper>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default MyPage;
+export default MyPage
