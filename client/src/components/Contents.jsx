@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Content from './Content';
 import styled from 'styled-components';
-import axios from 'axios';
 
 const ContentsWrapper = styled.div`
   width: 100%;
@@ -29,23 +28,6 @@ const Button = styled.button`
 
 const Contents = ({ contentList, setPage }) => {
   const [pagenation, setPagenation] = useState([1, 2, 3, 4, 5]);
-  const [page, setPage] = useState('1');
-
-  useEffect(() => {
-    axios
-      .get(
-        `https://pinkdevsaurus.tk/questions${
-          page !== '1' ? '?page=' + page : ''
-        }`
-      )
-      .then((res) => {
-        setContentList(res.data.result);
-      });
-  }, [page]);
-
-  const selectPage = (e) => {
-    setPage(e.target.textContent);
-  };
 
   const selectPage = (e) => {
     setPage(e.target.textContent);

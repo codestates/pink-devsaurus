@@ -74,12 +74,6 @@ const DropdownProfile = ({ setIsLogin, username }) => {
       });
   };
 
-  const logOut = () => {
-    axios.get('https://pinkdevsaurus.tk/logout').then(() => {
-      setIsLogin(false);
-    });
-  };
-
   return (
     <Dropdown>
       <Profile
