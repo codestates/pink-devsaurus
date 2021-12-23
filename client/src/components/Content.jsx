@@ -79,14 +79,14 @@ const AnswerNumber = styled.div`
 `;
 
 const Content = ({ data }) => {
-  const { BOARD_ID, title, likes, author, modified_at, answers, category } =
+  const { BOARD_ID, title, likes, author, modified_at, answers, category_img } =
     data;
 
   return (
     <Link to={`/read/${BOARD_ID}`}>
       <Wrapper>
         <Icon>
-          <img src={category}></img>
+          <img src={category_img}></img>
         </Icon>
         <Title>
           <div>{title}</div>
