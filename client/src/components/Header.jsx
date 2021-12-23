@@ -21,12 +21,16 @@ const Head = styled.header`
   align-items: center;
   padding: 0.2vmax;
   z-index: 999;
+
+  > a:first-child {
+    width: 5vmax;
+    margin-left: 3%;
+  }
 `;
 
 const Img = styled.img`
-  width: 6%;
+  width: 3%;
   min-width: 5vmax;
-  margin-left: 3%;
 `;
 
 const Button = styled.div`
@@ -88,14 +92,18 @@ const ButtonSignUp = styled.div`
   }
 `;
 
-const Header = ({ isLogin, setIsLogin }) => {
+const Header = ({ isLogin, setIsLogin, username }) => {
   return (
     <Head>
-      <Img src="https://ifh.cc/g/rO5WOi.png" />
+      <Link to="/">
+        <div>
+          <Img src="https://ifh.cc/g/rO5WOi.png" />
+        </div>
+      </Link>
       <Link to="/">
         <Button>Q &amp; A' s</Button>
       </Link>
-      <Link to="/myqna">
+      <Link to={isLogin ? '/myqna' : '/login'}>
         <Button>My Q &amp; A</Button>
       </Link>
       <SearchBar></SearchBar>
@@ -103,7 +111,10 @@ const Header = ({ isLogin, setIsLogin }) => {
         <Button>질문하기</Button>
       </Link>
       {isLogin ? (
-        <DropdownProfile setIsLogin={setIsLogin}></DropdownProfile>
+        <DropdownProfile
+          username={username}
+          setIsLogin={setIsLogin}
+        ></DropdownProfile>
       ) : (
         <WrapperSign>
           <Link to="/login">
