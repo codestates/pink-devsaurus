@@ -275,54 +275,69 @@ const App = () => {
           exact
           path="/"
           element={
-            <MainScreen headerHeight={headerSize}>
-              <Contents
-                setPage={setPage}
-                contentList={contentList}
-                selectedCategory={selectedCategory}
-              />
-            </MainScreen>
+            <>
+              <MainScreen headerHeight={headerSize}>
+                <Contents
+                  setPage={setPage}
+                  contentList={contentList}
+                  selectedCategory={selectedCategory}
+                />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route
           path="/mypage"
           element={
-            <MainScreen headerHeight={headerSize}>
-              <MyPage />
-            </MainScreen>
+            <>
+              <MainScreen headerHeight={headerSize}>
+                <MyPage />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route
           path="/myqna"
           element={
-            <MainScreen headerHeight={headerSize}>
-              <MyQuestions setPage={setPage} contentList={contentList} />
-            </MainScreen>
+            <>
+              <MainScreen headerHeight={headerSize}>
+                <MyQuestions setPage={setPage} contentList={contentList} />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route path="/read">
           <Route
             path=":id"
             element={
-              <MainScreen headerHeight={headerSize}>
-                <Read />
-              </MainScreen>
+              <>
+                <MainScreen headerHeight={headerSize}>
+                  <Read />
+                </MainScreen>
+                <Footer />
+              </>
             }
           />
         </Route>
         <Route
           path="/write"
           element={
-            <MainScreen
-              headerHeight={{
-                header: headerSize.header,
-                sidebar: 0,
-                position: headerSize.position,
-                left: headerSize.left,
-              }}
-            >
-              <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
-            </MainScreen>
+            <>
+              <MainScreen
+                headerHeight={{
+                  header: headerSize.header,
+                  sidebar: 0,
+                  position: headerSize.position,
+                  left: headerSize.left,
+                }}
+              >
+                <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route
@@ -342,7 +357,6 @@ const App = () => {
           }
         />
       </Routes>
-      <Footer />
     </>
   );
 };

@@ -57,13 +57,13 @@ const Userinfo = ({ user, answerSelected }) => {
 
   if (user.hasOwnProperty('username')) {
     userInfo.name = user.username;
-    userInfo.image = user.userprofile_img;
     userInfo.createdAt = user.created_date;
+    userInfo.image = user.userprofile_img;
     userInfo.selected = false;
   } else if (user.hasOwnProperty('answer_username')) {
     userInfo.name = user.answer_username;
-    userInfo.image = user.userprofile_img;
     userInfo.createdAt = user.created_date;
+    userInfo.image = user.userporfile_img;
     userInfo.selected = user.answer_id == answerSelected;
   }
 

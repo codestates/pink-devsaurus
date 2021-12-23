@@ -16,7 +16,6 @@ const SpeechBubbleWrapper = styled.div`
   visibility: hidden;
   background-color: grey;
   z-index: 999;
-
   &:hover {
     visibility: visible;
   }
@@ -24,8 +23,8 @@ const SpeechBubbleWrapper = styled.div`
 
 const SpeechBubble = styled.div`
   position: fixed;
-  bottom: 3vmax;
-  left: 7vmax;
+  bottom: 4em;
+  left: 2em;
   margin: 1.5em 0;
   padding: 0 5px;
   width: 90px;
@@ -54,10 +53,10 @@ const SpeechBubble = styled.div`
 const Icon = styled.img`
   visibility: visible;
   position: fixed;
-  bottom: 8px;
-  left: 7vmax;
-  height: 80px;
-  width: 80px;
+  bottom: 1px;
+  left: 30px;
+  height: 4em;
+  width: 4em;
   cursor: pointer;
 `;
 
@@ -66,13 +65,16 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState();
 
   useEffect(() => {
-    axios.get('https://pinkdevsaurus.tk/auth', {
+    axios
+      .get('https://pinkdevsaurus.tk/auth', {
         withCredentials: true,
-      }).then(res => {
+      })
+      .then((res) => {
         setUserInfo(res.data.result);
-    }).catch(err => {
-      return;
-    });
+      })
+      .catch((err) => {
+        return;
+      });
   }, []);
 
   const modalHandler = () => {
