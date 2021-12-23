@@ -3,13 +3,14 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
-
-const Body = styled.body`
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   height: 100vh;
   align-items: center;
+  background-color: #f1d2d3;
 `;
 
 const Icon = styled.img`
@@ -25,6 +26,7 @@ const LoginContainer = styled.div`
   background-color: var(--white);
   padding: 35px;
   border-radius: 15px;
+  z-index: 100;
 `;
 
 const Form = styled.div`
@@ -51,6 +53,14 @@ const Form = styled.div`
 
   input:last-child {
     margin-bottom: 0;
+  }
+
+  span {
+    color: red;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: -27px;
+    margin-bottom: 30px;
   }
 
   button {
@@ -93,6 +103,7 @@ const Form = styled.div`
 const Login = ({ setIsLogin }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
   const navigate = useNavigate();
 
   const handleUserName = (e) => {
@@ -118,7 +129,7 @@ const Login = ({ setIsLogin }) => {
         { withCredentials: true }
       );
     } catch (err) {
-      return;
+      setErrMsg('유저네임과 비밀번호가 일치하지 않습니다.')
     }
     if (result) {
       navigate('/');
@@ -127,7 +138,7 @@ const Login = ({ setIsLogin }) => {
   };
 
   return (
-    <Body>
+    <Container>
       <Link to="/">
         <Icon src="https://ifh.cc/g/rO5WOi.png"></Icon>
       </Link>
@@ -144,6 +155,7 @@ const Login = ({ setIsLogin }) => {
             placeholder="비밀번호"
             onChange={handlePassword}
           ></input>
+          <span>{errMsg}</span>
           <button onClick={loginHandler}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
@@ -153,7 +165,7 @@ const Login = ({ setIsLogin }) => {
           </ul>
         </Form>
       </LoginContainer>
-    </Body>
+    </Container>
   );
 };
 

@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Body = styled.body`
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  height: 100vh;
   align-items: center;
+  background-color: #f1d2d3;
 `;
 
 const Icon = styled.img`
@@ -25,6 +27,7 @@ const SignupContainer = styled.div`
   padding: 35px;
   border-radius: 15px;
   background-color: var(--white);
+  z-index: 100;
 `;
 
 const Form = styled.div`
@@ -195,7 +198,7 @@ export default function Login() {
 
   return (
     <>
-      <Body>
+      <Container>
         <Link to='/'>
           <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
         </Link>
@@ -233,7 +236,7 @@ export default function Login() {
             <button onClick={signUpHandler}>가입하기</button>
           </Form>
         </SignupContainer>
-      </Body>
+      </Container>
     </>
   );
 }
