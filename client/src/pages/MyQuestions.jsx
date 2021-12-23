@@ -1,12 +1,11 @@
 import React, { useLayoutEffect, useState } from 'react';
-import styled from 'styled-components';
 import Contents from '../components/Contents';
 import MyStatus from '../components/MyStatus';
 import Sidebar from '../components/Sidebar';
 import axios from 'axios';
 import Loading from '../components/Loading';
 
-const MyQuestions = () => {
+const MyQuestions = ({ setPage, contentList }) => {
   const [userInfo, setUserInfo] = useState();
 
   useLayoutEffect(() => {
@@ -81,7 +80,7 @@ const MyQuestions = () => {
     calculateCheckedAnswerRate();
   }, []);
 
-  if( !userInfo ) return <Loading />;
+  if (!userInfo) return <Loading />;
 
   return (
     <>
@@ -89,7 +88,7 @@ const MyQuestions = () => {
         list={[{ category_name: '나의 정보' }, { category_name: 'My Q & A' }]}
       />
       <MyStatus userInfo={userInfo} />
-      <Contents />
+      <Contents setPage={setPage} contentList={contentList} />
     </>
   );
 };
