@@ -67,10 +67,10 @@ const Read = () => {
       answers,
     });
 
-    // console.dir({
-    //   ...fetchResult.data.result,
-    //   answers,
-    // });
+    console.dir({
+      ...fetchResult.data.result,
+      answers,
+    });
 
     if (fetchResult.data.result.selected_answer_id) {
       setCanMarkAsAnswer(false);
@@ -92,11 +92,11 @@ const Read = () => {
     }
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetchData();
-    }, 500);
-  }, [reload]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     fetchData();
+  //   }, 500);
+  // }, [reload]);
 
   useLayoutEffect(() => {
     fetchData();
@@ -132,6 +132,7 @@ const Read = () => {
       return;
     }
 
+    fetchData();
     setReload(!reload);
   };
 
@@ -156,6 +157,7 @@ const Read = () => {
       return;
     }
 
+    fetchData();
     setReload(!reload);
   };
 
@@ -185,10 +187,12 @@ const Read = () => {
       return;
     }
 
+    fetchData();
     setReload(!reload);
   };
 
   const handleCheckAnswer = () => {
+    fetchData();
     setReload(!reload);
   };
 
@@ -223,6 +227,7 @@ const Read = () => {
       return;
     }
 
+    fetchData();
     setReload(!reload);
   };
 
