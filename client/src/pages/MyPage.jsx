@@ -69,11 +69,9 @@ const MyPage = () => {
     axios.get('https://pinkdevsaurus.tk/auth', {
         withCredentials: true,
       }).then(res => {
-        console.log(res.data.result);
         setUserInfo(res.data.result);
     }).catch(err => {
-      console.dir(err);
-      console.log('error');
+      return;
     });
   }, []);
 
