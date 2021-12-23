@@ -13,7 +13,7 @@ const StatusContainer = styled.div`
   align-items: center;
   align-items: center;
   background-color: var(--white);
-  padding-top: 30px;
+  padding-top: 8rem;
 `;
 
 const Image = styled.img`
@@ -57,7 +57,7 @@ const Buttons = styled.div`
     background-color: var(--pink);
     font-weight: 500;
     border: none;
-    font-size: 1.3vmax;
+    font-size: 1.2vmax;
     cursor: pointer;
     margin-bottom: 10px;
   }
@@ -72,17 +72,17 @@ const Buttons = styled.div`
   }
 `;
 
-const Mystatus = () => {
+const MyStatus = ({userInfo}) => {
   return (
     <StatusContainer>
       <Image src='https://ifh.cc/g/rO5WOi.png' />
       <Status>
-        <UserName>{`유저네임 : hello`}</UserName>
+        <UserName>유저네임 : {userInfo?.username}</UserName>
         <UserData>
-          <div className='user-info'>{`나의 질문 수 : 0 개`}</div>
-          <div className='user-info'>{`나의 답변 수 : 0 개`}</div>
-          <div className='user-info'>{`채택된 답변 : 0 개`}</div>
-          <div className='user-info'>{`채택율 : 0 %`}</div>
+          <div className='user-info'>나의 질문 수 : {userInfo?.questions} 개</div>
+          <div className='user-info'>나의 답변 수 : {userInfo?.answer} 개</div>
+          <div className='user-info'>채택된 답변 : {userInfo?.numOfCheckedAnswers} 개</div>
+          <div className='user-info'>채택율 : {userInfo?.answeredRate} %</div>
         </UserData>
         <Buttons>
           <button>나의 질문 보기</button>
@@ -93,4 +93,4 @@ const Mystatus = () => {
   );
 };
 
-export default Mystatus;
+export default MyStatus;
