@@ -4,20 +4,27 @@ import Profile from '../components/Profile';
 import Sidebar from '../components/Sidebar';
 import DeleteAccountModal from '../components/DeleteAccountModal';
 
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+
 const SpeechBubbleWrapper = styled.div`
+  position: relative;
   visibility: hidden;
   background-color: grey;
-  
+  z-index: 999;
+
   &:hover {
     visibility: visible;
   }
 `;
 
 const SpeechBubble = styled.div`
-  display: inline-block;
   position: fixed;
-  bottom: 75px;
-  left: 40px;
+  bottom: 3vmax;
+  left: 7vmax;
   margin: 1.5em 0;
   padding: 0 5px;
   width: 90px;
@@ -30,6 +37,7 @@ const SpeechBubble = styled.div`
   background: #70a6ff;
   border-radius: 50%;
   box-sizing: border-box;
+  z-index: 999;
 
   &:before {
     content: '';
@@ -39,7 +47,6 @@ const SpeechBubble = styled.div`
     margin-left: -15px;
     border: 15px solid transparent;
     border-top: 15px solid #70a6ff;
-    z-index: 0;
   }
 `;
 
@@ -47,7 +54,7 @@ const Icon = styled.img`
   visibility: visible;
   position: fixed;
   bottom: 8px;
-  left: 30px;
+  left: 7vmax;
   height: 80px;
   width: 80px;
   cursor: pointer;
@@ -71,7 +78,7 @@ const MyPage = () => {
         <SpeechBubble>탈퇴하기</SpeechBubble>
         <Icon
           onClick={modalHandler}
-          src='https://uploda1.ysklog.net/uploda/e17e09ad58.png'
+          src="https://uploda1.ysklog.net/uploda/e17e09ad58.png"
         />
       </SpeechBubbleWrapper>
     </>

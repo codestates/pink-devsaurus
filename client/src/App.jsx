@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -12,6 +12,7 @@ import MyPage from './pages/MyPage';
 import Read from './pages/Read';
 import Write from './components/Write';
 import MyQuestions from './pages/MyQuestions';
+import SimpleOKModal from './components/SimpleOKModal';
 import './App.css';
 
 const OutlineWrapper = styled.div`
@@ -46,13 +47,25 @@ const App = () => {
   });
   const [isLogin, setIsLogin] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const headerRef = useRef();
   const sidebarRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('https://pinkdevsaurus.tk/categories').then((res) => {
-      setCategories(res.data.result);
-    });
+    axios
+      .get('https://pinkdevsaurus.tk/categories')
+      .then((res) => {
+        setCategories(res.data.result);
+      })
+      .catch((err) => {
+        console.dir(err);
+        setErrorMessage(
+          '카테고리 목록을 불러오지 못했습니다. 관리자에게 문의하세요.'
+        );
+        setWriteCanceledDialog(true);
+      });
   }, []);
 
   useLayoutEffect(() => {
@@ -71,10 +84,59 @@ const App = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const writeNewArticle = async (category, title, content) => {
+    const categoryInfo = category.split('|');
+
+    const payload = {
+      category_id: categoryInfo[1],
+      title,
+      content,
+    };
+
+    let writeResult;
+    try {
+      writeResult = await axios.post(
+        `https://pinkdevsaurus.tk/questions`,
+        payload,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage('게시물 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    let queryResult;
+    try {
+      queryResult = await axios.get(
+        `https://pinkdevsaurus.tk/questions?page=1`,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage(
+        '게시물로 이동하는 데 오류가 발생했습니다. 관리자에게 문의해 주세요.'
+      );
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    navigate(`/read/${queryResult.data.result[0].BOARD_ID}`);
+  };
+
   return (
     <>
       <OutlineWrapper headerHeight={headerSize} />
       <MainContainer headerHeight={headerSize} />
+      {writeCanceledDialog ? (
+        <SimpleOKModal
+          handleOK={() => setWriteCanceledDialog(false)}
+          Message={errorMessage}
+        />
+      ) : (
+        false
+      )}
       <Routes>
         <Route path="/login" element={false} />
         <Route path="/singup" element={false} />
@@ -191,7 +253,7 @@ const App = () => {
                 left: headerSize.left,
               }}
             >
-              <Write isQuestion={true} />
+              <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
             </MainScreen>
           }
         />

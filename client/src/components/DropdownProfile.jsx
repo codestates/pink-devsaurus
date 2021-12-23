@@ -4,16 +4,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const Dropdown = styled.div`
-  position: relative;
   display: inline-block;
-  margin-right: 3%;
+  margin-right: 3vmax;
 `;
 
 const Profile = styled.button`
-  width: 5vmax;
-  height: 5vmax;
+  width: 4vmax;
+  height: 4vmax;
   background-color: pink;
   border-radius: 100%;
   border: none;
@@ -23,10 +23,10 @@ const Profile = styled.button`
 const DropdownContents = styled.ul`
   display: ${(props) => (props.show ? 'block' : 'none')};
   background-color: #f9f9f9;
-  font-size: 1.3rem;
+  font-size: 1.3vmax;
   position: absolute;
-  right: 1%;
-  width: 240px;
+  right: 3vmax;
+  width: 15vmax;
   padding: 10px 0;
   border-radius: 20px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -35,7 +35,7 @@ const DropdownContents = styled.ul`
     content: '';
     position: absolute;
     top: -10%;
-    right: 10%;
+    right: 6%;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     border-bottom: 20px solid #f9f9f9;
@@ -61,6 +61,12 @@ const DropdownContent = styled.li`
 const DropdownProfile = ({ setIsLogin }) => {
   const [show, setShow] = useState(false);
 
+  const logOut = () => {
+    axios.get('https://pinkdevsaurus.tk/logout').then(() => {
+      setIsLogin(false);
+    });
+  };
+
   return (
     <Dropdown>
       <Profile
@@ -72,7 +78,7 @@ const DropdownProfile = ({ setIsLogin }) => {
         <Link to="/mypage">
           <DropdownContent>마이페이지</DropdownContent>
         </Link>
-        <DropdownContent onClick={() => setIsLogin(false)}>로그아웃</DropdownContent>
+        <DropdownContent onClick={logOut}>로그아웃</DropdownContent>
       </DropdownContents>
     </Dropdown>
   );

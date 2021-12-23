@@ -13,7 +13,8 @@ import DeleteConfirm from './DeleteConfirm.jsx';
 import SimpleOKModal from './SimpleOKModal.jsx';
 
 const QuestionContainer = styled.div`
-  padding: 2rem 1.5rem;
+  /* background-color: #c77676; */
+  padding: 3rem 3rem;
 `;
 
 const QuestionNameWrapper = styled.div`
@@ -60,10 +61,6 @@ const DropdownButton = styled.span`
     background-color: lightgreen;
     color: black;
   }
-  /* &:active {
-    background-color: var(--pink);
-    color: black;
-  } */
 `;
 
 const NameEditbox = styled.input`
@@ -98,19 +95,29 @@ const AnswerAndLikesMiddleWrapper = styled.div`
 const LikesWrapper = styled.div`
   font-weight: bold;
   flex: 1 1 auto;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const UserInfoWrapper = styled.div`
   padding: 1rem;
 `;
 
-const Question = ({ result, handleQuestionEdit }) => {
+const Question = ({
+  result,
+  handleQuestionEdit,
+  handleQuestionDelete,
+  handleQuestionLike,
+}) => {
   const [editMode, setEditMode] = useState(false);
   const [dropDownClick, setDropDownClick] = useState(false);
   const [questionName, setQuestionName] = useState(result.title);
   const [questionContent, setQuestionContent] = useState(result.content);
   const [confirmDropdown, setConfirmDropdown] = useState(false);
   const [noAuthDialog, setNoAuthDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const intoEditMode = async (e) => {
     setDropDownClick(false);
@@ -121,10 +128,12 @@ const Question = ({ result, handleQuestionEdit }) => {
         withCredentials: true,
       });
     } catch (err) {
+      setErrorMessage('요청하신 게시물을 수정할 권한이 없습니다.');
       return setNoAuthDialog(true);
     }
 
-    if (checkAuth.data.result.username !== result.username) {
+    if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 수정할 권한이 없습니다.');
       return setNoAuthDialog(true);
     }
 
@@ -152,11 +161,61 @@ const Question = ({ result, handleQuestionEdit }) => {
     setDropDownClick(false);
   };
 
-  const handleDeleteConfirm = (result) => {
+  const handleDeleteConfirm = async (confirm) => {
     setConfirmDropdown(false);
-    if (!result) return;
-    //fetch and delete content
-    console.log('called');
+    if (!confirm) return;
+
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    if (checkAuth.data.result.user_id !== result.user_id) {
+      setErrorMessage('요청하신 게시물을 삭제할 권한이 없습니다.');
+      return setNoAuthDialog(true);
+    }
+
+    handleQuestionDelete(result.board_id);
+  };
+
+  const handleLikeCount = async (e) => {
+    let checkAuth;
+    try {
+      checkAuth = await axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      });
+    } catch (err) {
+      setErrorMessage('먼저 로그인 하세요.');
+      return setNoAuthDialog(true);
+    }
+
+    let likeCount;
+    try {
+      likeCount = await axios.put(
+        `https://pinkdevsaurus.tk/likes/questions/${result.board_id}`,
+        {},
+        { withCredentials: true }
+      );
+    } catch (err) {
+      try {
+        likeCount = await axios.delete(
+          `https://pinkdevsaurus.tk/likes/questions/${result.board_id}`,
+          { withCredentials: true }
+        );
+      } catch (err) {
+        setErrorMessage(
+          '게시물 좋아요에 오류가 발생했습니다. 관리자에게 문의하세요'
+        );
+        return setNoAuthDialog(true);
+      }
+    }
+
+    handleQuestionLike();
   };
 
   return (
@@ -169,7 +228,7 @@ const Question = ({ result, handleQuestionEdit }) => {
       {noAuthDialog ? (
         <SimpleOKModal
           handleOK={() => setNoAuthDialog(false)}
-          Message="요청하신 게시물을 수정할 권한이 없습니다."
+          Message={errorMessage}
         />
       ) : (
         false
@@ -219,7 +278,9 @@ const Question = ({ result, handleQuestionEdit }) => {
       <AnwerAndLikesContainer>
         <AnswerCount>{result.answers.length} answers</AnswerCount>
         <AnswerAndLikesMiddleWrapper />
-        <LikesWrapper>❤️ {result.likes} likes</LikesWrapper>
+        <LikesWrapper onClick={handleLikeCount}>
+          ❤️ {result.likes} likes
+        </LikesWrapper>
       </AnwerAndLikesContainer>
     </QuestionContainer>
   );

@@ -18,7 +18,6 @@ const Head = styled.header`
   background-color: #fafafa;
   box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.15);
   border-radius: 30px 30px 0 0;
-  overflow: hidden;
   align-items: center;
   padding: 0.2vmax;
   z-index: 999;
