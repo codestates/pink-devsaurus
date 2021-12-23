@@ -8,13 +8,16 @@ import SearchBar from './SearchBar';
 import DropdownProfile from './DropdownProfile';
 
 const Head = styled.header`
-  width: 100%;
+  width: 90%;
   display: flex;
   position: fixed;
-  top: 0;
+  top: 3vmax;
+  left: 50%;
+  transform: translate(-50%, 0%);
   justify-content: space-between;
-  background-color: var(--white);
-  border-bottom: 1px solid rgba(168, 168, 168, 0.7);
+  background-color: #fafafa;
+  box-shadow: 0px 10px 10px -5px rgba(0, 0, 0, 0.15);
+  border-radius: 30px 30px 0 0;
   align-items: center;
   padding: 0.2vmax;
   z-index: 999;
@@ -23,61 +26,64 @@ const Head = styled.header`
 const Img = styled.img`
   width: 6%;
   min-width: 5vmax;
-  margin-left: 1%;
+  margin-left: 3%;
 `;
 
 const Button = styled.div`
   color: var(--pure-white);
-  min-width: 14vmax;
-  background-color: var(--pink);
-  padding: 1.2vmax 3vmax;
+  min-width: 10vmax;
+  background-color: #f1aaa9;
+  padding: 0.8vmax 2.5vmax;
   border-radius: 40px;
-  font-size: 1.6vmax;
+  font-size: 1.2vmax;
   white-space: nowrap;
   font-weight: 700;
   text-align: center;
   flex: 0.1 0 0;
 
   :hover {
-    opacity: 0.8;
+    background-color: #f1d2d3;
     cursor: pointer;
   }
 `;
 
 const WrapperSign = styled.div`
   display: flex;
-  margin-right: 1%;
+  margin-right: 3%;
+  font-size: 1vmax;
 `;
 
 const ButtonSignIn = styled.div`
   color: #fa7570;
   padding: 0.8vmax 1.5vmax;
-  background-color: var(--white);
-  border: 2px solid transparent;
+  background-color: #fafafa;
+  border: 1px solid transparent;
   font-weight: 400;
-  min-width: 75px;
+  white-space: nowrap;
   margin-left: 5px;
   border-radius: 10px;
 
   :hover {
-    background-color: #ffd3c2;
+    color: var(--pure-white);
+    background-color: #f1aaa9;
     cursor: pointer;
   }
 `;
 
 const ButtonSignUp = styled.div`
   padding: 0.8vmax 1.5vmax;
-  background-color: var(--white);
+  background-color: #fafafa;
   color: #fa7570;
   font-weight: 400;
   border-radius: 10px;
-  border: 2px solid #ffd3c2;
-  min-width: 90px;
+  border: 1px solid #f1aaa9;
+  white-space: nowrap;
   margin-left: 5px;
   border-radius: 10px;
 
   :hover {
-    background-color: #ffd3c2;
+    background-color: #f1aaa9;
+    color: var(--pure-white);
     cursor: pointer;
   }
 `;
@@ -85,7 +91,7 @@ const ButtonSignUp = styled.div`
 const Header = ({ isLogin, setIsLogin }) => {
   return (
     <Head>
-      <Img src="https://raw.githubusercontent.com/exxocism/exxo-file-share/master/Wireframe/pinkDevelopSaurus.png" />
+      <Img src="https://ifh.cc/g/rO5WOi.png" />
       <Link to="/">
         <Button>Q &amp; A' s</Button>
       </Link>
@@ -96,9 +102,8 @@ const Header = ({ isLogin, setIsLogin }) => {
       <Link to="/write">
         <Button>질문하기</Button>
       </Link>
-      {/* 로그인 했으면 프로필 아이콘 / 로그인 안했으면 로그인, 회원가입 버튼 */}
       {isLogin ? (
-        <DropdownProfile setIsLogin={setIsLogin} ></DropdownProfile>
+        <DropdownProfile setIsLogin={setIsLogin}></DropdownProfile>
       ) : (
         <WrapperSign>
           <Link to="/login">

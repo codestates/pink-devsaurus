@@ -12,7 +12,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const OkayButton = styled.button`
-  margin-right : 0.5rem;
+  margin-right: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
 
@@ -26,10 +26,10 @@ const OkayButton = styled.button`
   }
   &:active {
     background-color: #ff6d88;
-
+  }
 `;
+
 const CancelButton = styled.button`
-
   font-size: 1rem;
   font-weight: bold;
 
@@ -43,20 +43,23 @@ const CancelButton = styled.button`
   }
   &:active {
     background-color: #ff6d88;
+  }
 `;
 
-const Editor = ({text, handleEditFinish, handleCancel}) => {
-
+const Editor = ({ text, handleEditFinish, handleCancel }) => {
   const [value, setValue] = useState(text);
 
   return (
     <>
-      <MDEditor
-        value={value}
-        onChange={setValue}
-      />
+      <MDEditor value={value} onChange={setValue} />
       <ButtonWrapper>
-        <OkayButton onClick={()=>{ handleEditFinish(value) }}>수정</OkayButton>
+        <OkayButton
+          onClick={() => {
+            handleEditFinish(value);
+          }}
+        >
+          수정
+        </OkayButton>
         <CancelButton onClick={handleCancel}>취소</CancelButton>
       </ButtonWrapper>
       {/* <MDEditor.Markdown source={value} /> */}

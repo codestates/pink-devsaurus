@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+const ModalWrapper = styled.div`
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 10000 !important;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+`;
+
 const ModalContainer = styled.div`
+  position: relative;
   width: 530px;
   height: 330px;
   background-color: var(--pure-white);
@@ -68,21 +83,32 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const DeleteAccountModal = () => {
+const Close = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+`;
+
+const DeleteAccountModal = ({ modalHandler }) => {
   const [errorMsg, setErrorMsg] = useState('');
 
   return (
-    <ModalContainer>
-      <Title>계정을 삭제하시면 다시는 복구할 수 없습니다.</Title>
-      <Form>
-        <input type='text' placeholder='유저네임' />
-        <input type='password' placeholder='비밀번호' />
-        {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : <></>}
-      </Form>
-      <ButtonWrapper>
-        <button>계정 삭제</button>
-      </ButtonWrapper>
-    </ModalContainer>
+    <ModalWrapper>
+      <ModalContainer>
+        <Title>계정을 삭제하시면 다시는 복구할 수 없습니다.</Title>
+        <Form>
+          <input type='text' placeholder='유저네임' />
+          <input type='password' placeholder='비밀번호' />
+          {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : <></>}
+        </Form>
+        <ButtonWrapper>
+          <button>계정 삭제</button>
+          <Close onClick={() => modalHandler()}>&times;</Close>
+        </ButtonWrapper>
+      </ModalContainer>
+    </ModalWrapper>
   );
 };
 

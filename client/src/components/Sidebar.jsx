@@ -3,50 +3,37 @@ import styled from 'styled-components';
 
 const Side = styled.ul`
   position: fixed;
-  top: 6vmax;
-  left: 0;
-  width: 25%;
+  top: 8.5vmax;
+  left: 5.02%;
+  width: 22%;
   height: 100%;
-  background-color: var(--white);
+  background-color: #fafafa;
+  border-radius: 0 0 0 40px;
   overflow-x: hidden;
   white-space: nowrap;
-  padding: 2% 2%;
+  padding: 2.3% 1%;
+  z-index: 10;
+  box-shadow: 7px 0px 7px 0px rgba(209, 209, 209, 0.9);
 `;
 
 const Item = styled.li`
   display: flex;
-  color: var(--pure-white);
-  font-weight: 500;
-  font-size: 1.8vmax;
+  color: #f1aaa9;
+  font-weight: 700;
+  font-size: 1.4vmax;
   border-radius: 20px;
-  margin-bottom: 10%;
-  padding: 1vmax 0;
-  background-color: var(--pink);
+  margin-bottom: 5%;
+  padding: 0.1vmax 0;
 
   :hover {
-    background-color: var(--hover-pink);
-  }
-`;
-
-const CircleWrapper = styled.div`
-  position: relative;
-  margin-left: 15%;
-
-  > div {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 2.5vmax;
-    height: 2.5vmax;
-    border-radius: 100%;
-    background-color: ${(props) => (props.selected ? '#A3250C' : 'white')};
-    background-image: ${(props) => props.src};
-    line-height: 40px;
+    color: #6d6f73;
+    font-size: 1.5vmax;
+    cursor: pointer;
   }
 `;
 
 const Text = styled.div`
-  margin-left: 15%;
+  margin-left: 10%;
   line-height: 40px;
   text-align: left;
 `;
@@ -61,11 +48,8 @@ const Sidebar = ({ list = [] }) => {
           <Item
             key={idx}
             onClick={() => setSelectedIdx(idx)}
-            src={item.category_image}
+            selected={idx === selectedIdx}
           >
-            <CircleWrapper selected={idx === selectedIdx}>
-              <div></div>
-            </CircleWrapper>
             <Text>{item.category_name}</Text>
           </Item>
         );

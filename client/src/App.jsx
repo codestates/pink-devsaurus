@@ -1,60 +1,82 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Contents from './components/Contents';
 import Login from './pages/Login';
-import Signup from './pages/Signup';
+import SignUp from './pages/SignUp';
 import MyPage from './pages/MyPage';
 import Read from './pages/Read';
 import Write from './components/Write';
 import MyQuestions from './pages/MyQuestions';
+import SimpleOKModal from './components/SimpleOKModal';
 import './App.css';
 
-const categories = {
-  result: [
-    {
-      category_name: 'View all',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-    {
-      category_name: 'Database',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-    {
-      category_name: 'JavaScript',
-      category_image:
-        'https://github.githubassets.com/images/icons/emoji/unicode/1f4f1.png',
-    },
-  ],
-};
+const OutlineWrapper = styled.div`
+  position: fixed;
+  background-color: #f1d2d3;
+  width: 100vw;
+  top: 0;
+  height: ${({ headerHeight }) => headerHeight.position}px;
+`;
 
-const OutlineWrapper = styled.div``;
-
-const MainContainer = styled.div``;
+const MainContainer = styled.div`
+  background-color: red;
+  height: 2.4vmax;
+  /* height: ${(props) =>
+    props.headerHeight.position - props.headerHeight.header}px; */
+`;
 
 const MainScreen = styled.div`
   margin-top: ${({ headerHeight }) => headerHeight.header}px;
-  margin-left: ${({ headerHeight }) => headerHeight.sidebar}px;
+  margin-left: ${({ headerHeight }) =>
+    headerHeight.sidebar + headerHeight.left}px;
+  margin-right: ${({ headerHeight }) => headerHeight.left}px;
   background-color: var(--white);
 `;
 
 const App = () => {
-  const [headerSize, setHeaderSize] = useState({ header: 0, sidebar: 0 });
+  const [headerSize, setHeaderSize] = useState({
+    header: 0,
+    sidebar: 0,
+    position: 0,
+    left: 0,
+  });
   const [isLogin, setIsLogin] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const headerRef = useRef();
   const sidebarRef = useRef();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get('https://pinkdevsaurus.tk/categories')
+      .then((res) => {
+        setCategories(res.data.result);
+      })
+      .catch((err) => {
+        console.dir(err);
+        setErrorMessage(
+          '카테고리 목록을 불러오지 못했습니다. 관리자에게 문의하세요.'
+        );
+        setWriteCanceledDialog(true);
+      });
+  }, []);
 
   useLayoutEffect(() => {
     function updateSize() {
       setHeaderSize({
         header: headerRef.current.firstChild.clientHeight,
         sidebar: sidebarRef.current.firstChild.clientWidth,
+        position:
+          headerRef.current.firstChild.offsetTop +
+          headerRef.current.firstChild.clientHeight,
+        left: sidebarRef.current.firstChild.offsetLeft,
       });
     }
     window.addEventListener('resize', updateSize);
@@ -62,8 +84,59 @@ const App = () => {
     return () => window.removeEventListener('resize', updateSize);
   }, []);
 
+  const writeNewArticle = async (category, title, content) => {
+    const categoryInfo = category.split('|');
+
+    const payload = {
+      category_id: categoryInfo[1],
+      title,
+      content,
+    };
+
+    let writeResult;
+    try {
+      writeResult = await axios.post(
+        `https://pinkdevsaurus.tk/questions`,
+        payload,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage('게시물 작성에 실패했습니다. 관리자에게 문의해 주세요.');
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    let queryResult;
+    try {
+      queryResult = await axios.get(
+        `https://pinkdevsaurus.tk/questions?page=1`,
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+      setErrorMessage(
+        '게시물로 이동하는 데 오류가 발생했습니다. 관리자에게 문의해 주세요.'
+      );
+      setWriteCanceledDialog(true);
+      return;
+    }
+
+    navigate(`/read/${queryResult.data.result[0].BOARD_ID}`);
+  };
+
   return (
-    <OutlineWrapper>
+    <>
+      <OutlineWrapper headerHeight={headerSize} />
+      <MainContainer headerHeight={headerSize} />
+      {writeCanceledDialog ? (
+        <SimpleOKModal
+          handleOK={() => setWriteCanceledDialog(false)}
+          Message={errorMessage}
+        />
+      ) : (
+        false
+      )}
       <Routes>
         <Route path="/login" element={false} />
         <Route path="/singup" element={false} />
@@ -101,105 +174,108 @@ const App = () => {
         />
         <Route path="/read">
           <Route
-              path=":id"
-              element={
-                <div ref={headerRef}>
-                  <Header isLogin={isLogin} setIsLogin={setIsLogin} />
-                </div>
-              } />
-        </Route>
-
-      </Routes>
-
-      <MainContainer>
-        <Routes>
-          <Route
-            exact
-            path="/"
+            path=":id"
             element={
-              <div ref={sidebarRef}>
-                <Sidebar list={categories.result}></Sidebar>
+              <div ref={headerRef}>
+                <Header isLogin={isLogin} setIsLogin={setIsLogin} />
               </div>
             }
           />
-          <Route path="/read">
-            <Route
-              path=":id"
-              element={
-                <div ref={sidebarRef}>
-                  <Sidebar list={categories.result}></Sidebar>
-                </div>
-              } />
-          </Route>
-          {/* localhost:3000/read/30 */}
-        </Routes>
+        </Route>
+      </Routes>
 
-        <Routes>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <div ref={sidebarRef}>
+              <Sidebar list={categories}></Sidebar>
+            </div>
+          }
+        />
+        <Route path="/read">
           <Route
-            exact
-            path="/"
+            path=":id"
+            element={
+              <div ref={sidebarRef}>
+                <Sidebar list={categories}></Sidebar>
+              </div>
+            }
+          />
+        </Route>
+      </Routes>
+
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <MainScreen headerHeight={headerSize}>
+              <Contents />
+            </MainScreen>
+          }
+        />
+        <Route
+          path="/mypage"
+          element={
+            <MainScreen headerHeight={headerSize}>
+              <MyPage />
+            </MainScreen>
+          }
+        />
+        <Route
+          path="/myqna"
+          element={
+            <MainScreen headerHeight={headerSize}>
+              <MyQuestions />
+            </MainScreen>
+          }
+        />
+        <Route path="/read">
+          <Route
+            path=":id"
             element={
               <MainScreen headerHeight={headerSize}>
-                <Contents />
+                <Read />
               </MainScreen>
             }
           />
-          <Route
-            path="/mypage"
-            element={
-              <MainScreen headerHeight={headerSize}>
-                <MyPage />
-              </MainScreen>
-            }
-          />
-          <Route
-            path="/myqna"
-            element={
-              <MainScreen headerHeight={headerSize}>
-                <MyQuestions />
-              </MainScreen>
-            }
-          />
-          <Route path="/read">
-            <Route
-              path=":id"
-              element={
-                <MainScreen headerHeight={headerSize}>
-                  <Read />
-                </MainScreen>
-              }
-            />
-          </Route>
-          <Route
-            path="/write"
-            element={
-              <MainScreen
-                headerHeight={{ header: headerSize.header, sidebar: 0 }}
-              >
-                <Write />
-              </MainScreen>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
-                <Login />
-              </MainScreen>
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
-                <Signup />
-              </MainScreen>
-            }
-          />
-        </Routes>
-        <Footer />
-      </MainContainer>
-    </OutlineWrapper>
+        </Route>
+        <Route
+          path="/write"
+          element={
+            <MainScreen
+              headerHeight={{
+                header: headerSize.header,
+                sidebar: 0,
+                position: headerSize.position,
+                left: headerSize.left,
+              }}
+            >
+              <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
+            </MainScreen>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
+              <Login setIsLogin={setIsLogin} />
+            </MainScreen>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <MainScreen headerHeight={{ header: 0, sidebar: 0 }}>
+              <SignUp />
+            </MainScreen>
+          }
+        />
+      </Routes>
+      <Footer />
+    </>
   );
 };
 

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Body = styled.body`
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   height: 100vh;
   align-items: center;
+  background-color: #f1d2d3;
 `;
 
 const Icon = styled.img`
@@ -22,6 +26,7 @@ const LoginContainer = styled.div`
   background-color: var(--white);
   padding: 35px;
   border-radius: 15px;
+  z-index: 100;
 `;
 
 const Form = styled.div`
@@ -48,6 +53,14 @@ const Form = styled.div`
 
   input:last-child {
     margin-bottom: 0;
+  }
+
+  span {
+    color: red;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: -27px;
+    margin-bottom: 30px;
   }
 
   button {
@@ -87,9 +100,11 @@ const Form = styled.div`
   }
 `;
 
-const Login = () => {
+const Login = ({ setIsLogin }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleUserName = (e) => {
     setUserName(e.target.value);
@@ -99,28 +114,58 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleClick = () => {};
+  const loginHandler = async () => {
+    if (!userName || !password) {
+      throw new Error('이메일과 비밀번호를 입력해주세요.');
+    }
+    let result;
+    try {
+      result = await axios.post(
+        'https://pinkdevsaurus.tk/login',
+        {
+          username: userName,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+    } catch (err) {
+      setErrMsg('유저네임과 비밀번호가 일치하지 않습니다.')
+    }
+    if (result) {
+      navigate('/');
+      setIsLogin(true);
+    }
+  };
 
   return (
-    <Body>
-      <Link to='/'>
-        <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
+    <Container>
+      <Link to="/">
+        <Icon src="https://ifh.cc/g/rO5WOi.png"></Icon>
       </Link>
       <LoginContainer>
         <Form>
-          <div className='title'>로그인</div>
-          <input placeholder='유저네임' onChange={handleUserName}></input>
-          <input placeholder='비밀번호' onChange={handlePassword}></input>
-          <button onClick={handleClick}>로그인</button>
+          <div className="title">로그인</div>
+          <input
+            type="text"
+            placeholder="유저네임"
+            onChange={handleUserName}
+          ></input>
+          <input
+            type="password"
+            placeholder="비밀번호"
+            onChange={handlePassword}
+          ></input>
+          <span>{errMsg}</span>
+          <button onClick={loginHandler}>로그인</button>
           <ul>
             <li>아직 회원이 아니세요?</li>
-            <Link to='/signup'>
-              <li className='signup'>회원 가입</li>
+            <Link to="/signup">
+              <li className="signup">회원 가입</li>
             </Link>
           </ul>
         </Form>
       </LoginContainer>
-    </Body>
+    </Container>
   );
 };
 

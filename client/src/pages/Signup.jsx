@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Body = styled.body`
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  height: 100vh;
   align-items: center;
+  background-color: #f1d2d3;
 `;
 
 const Icon = styled.img`
@@ -24,6 +27,7 @@ const SignupContainer = styled.div`
   padding: 35px;
   border-radius: 15px;
   background-color: var(--white);
+  z-index: 100;
 `;
 
 const Form = styled.div`
@@ -106,14 +110,16 @@ export default function Login() {
   const [emailMsg, setEmailMsg] = useState('');
   const [passwordMsg, setPasswordMsg] = useState('');
   const [confirmPasswordMsg, setConfirmPasswordMsg] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const navigate = useNavigate();
 
   const isValidUserName = (userName) => {
-    const regExp = new RegExp(/^[a-z0-9_-]{5,20}$/);
+    const regExp = new RegExp(/^[a-z0-9_-]{3,30}$/);
     if (regExp.test(userName)) {
       setUserNameMsg('');
     } else {
       setUserNameMsg(
-        '5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.'
+        '3~30자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.'
       );
     }
   };
@@ -169,11 +175,30 @@ export default function Login() {
     }
   };
 
-  const handleClick = () => {};
+  const signUpHandler = async() => {
+    if(!userName || !email || !password) {
+      setErrMsg('모든 항목은 필수입니다');
+      return;
+    }
+
+    let result;
+    try {
+      result = await axios.post('https://pinkdevsaurus.tk/sign-up', {
+        email: email,
+        password: password,
+        username: userName,
+      });
+    }catch(err){
+      return;
+    }
+    if(result.status === 201) {
+      navigate('/login')
+    }
+  };
 
   return (
     <>
-      <Body>
+      <Container>
         <Link to='/'>
           <Icon src='https://ifh.cc/g/rO5WOi.png'></Icon>
         </Link>
@@ -208,10 +233,10 @@ export default function Login() {
             ) : (
               <></>
             )}
-            <button onClick={handleClick}>가입하기</button>
+            <button onClick={signUpHandler}>가입하기</button>
           </Form>
         </SignupContainer>
-      </Body>
+      </Container>
     </>
   );
 }
