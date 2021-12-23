@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Side = styled.ul`
   position: fixed;
@@ -18,7 +19,7 @@ const Side = styled.ul`
 
 const Item = styled.li`
   display: flex;
-  color: #f1aaa9;
+  color: ${(props) => (props.selected ? '#6d6f73' : '#f1aaa9')};
   font-weight: 700;
   font-size: 1.4vmax;
   border-radius: 20px;
@@ -38,16 +39,31 @@ const Text = styled.div`
   text-align: left;
 `;
 
-const Sidebar = ({ list = [] }) => {
+const Sidebar = ({ list = [], setSelectedCategory = () => {} }) => {
   const [selectedIdx, setSelectedIdx] = useState(0);
+
+  const filterCategory = (idx) => {
+    setSelectedIdx(idx);
+    setSelectedCategory(idx);
+  };
 
   return (
     <Side>
       {list.map((item, idx) => {
-        return (
+        return list.length === 2 ? (
+          <Link to={idx === 0 ? '/mypage' : '/myqna'}>
+            <Item
+              key={idx}
+              onClick={() => filterCategory(idx)}
+              selected={idx === selectedIdx}
+            >
+              <Text>{item.category_name}</Text>
+            </Item>
+          </Link>
+        ) : (
           <Item
             key={idx}
-            onClick={() => setSelectedIdx(idx)}
+            onClick={() => filterCategory(idx)}
             selected={idx === selectedIdx}
           >
             <Text>{item.category_name}</Text>

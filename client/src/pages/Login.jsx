@@ -129,7 +129,7 @@ const Login = ({ setIsLogin }) => {
         { withCredentials: true }
       );
     } catch (err) {
-      setErrMsg('유저네임과 비밀번호가 일치하지 않습니다.')
+      setErrMsg('유저네임과 비밀번호가 일치하지 않습니다.');
     }
     if (result) {
       navigate('/');

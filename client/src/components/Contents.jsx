@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Content from './Content';
 import styled from 'styled-components';
-import axios from 'axios';
 
 const ContentsWrapper = styled.div`
   width: 100%;
+  min-height: 90vh;
   right: 0;
   background-color: var(--white);
   padding: 4% 8% 2% 8%;
@@ -26,22 +26,8 @@ const Button = styled.button`
   padding: 0 0.4vmax;
 `;
 
-const Contents = () => {
-  const [contentList, setContentList] = useState([]);
+const Contents = ({ contentList, setPage }) => {
   const [pagenation, setPagenation] = useState([1, 2, 3, 4, 5]);
-  const [page, setPage] = useState('1');
-
-  useEffect(() => {
-    axios
-      .get(
-        `https://pinkdevsaurus.tk/questions${
-          page !== '1' ? '?page=' + page : ''
-        }`
-      )
-      .then((res) => {
-        setContentList(res.data.result);
-      });
-  }, [page]);
 
   const selectPage = (e) => {
     setPage(e.target.textContent);
