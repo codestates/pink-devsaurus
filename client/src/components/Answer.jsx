@@ -214,12 +214,14 @@ const Answer = ({
         { withCredentials: true }
       );
     } catch (err) {
+      console.dir(err);
       try {
         likeCount = await axios.delete(
           `https://pinkdevsaurus.tk/likes/answers/${result.answer_id}`,
           { withCredentials: true }
         );
       } catch (err) {
+        console.dir(err);
         setErrorMessage(
           '답변글 좋아요에 오류가 발생했습니다. 관리자에게 문의하세요'
         );

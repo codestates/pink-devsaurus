@@ -2,7 +2,7 @@
 // 2021-12-17 15:10:14
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -58,8 +58,21 @@ const DropdownContent = styled.li`
   }
 `;
 
-const DropdownProfile = ({ setIsLogin }) => {
+const DropdownProfile = ({ setIsLogin, username }) => {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+
+  const logOut = () => {
+    axios
+      .get('https://pinkdevsaurus.tk/logout')
+      .then(() => {
+        setIsLogin(false);
+        navigate('/');
+      })
+      .catch((err) => {
+        console.dir(err);
+      });
+  };
 
   const logOut = () => {
     axios.get('https://pinkdevsaurus.tk/logout').then(() => {
@@ -74,7 +87,7 @@ const DropdownProfile = ({ setIsLogin }) => {
         onBlur={() => setShow(false)}
       ></Profile>
       <DropdownContents show={show} onMouseDown={(e) => e.preventDefault()}>
-        <DropdownLable>{`Signed in as ${'유저'}`}</DropdownLable>
+        <DropdownLable>{`Signed in as ${username}`}</DropdownLable>
         <Link to="/mypage">
           <DropdownContent>마이페이지</DropdownContent>
         </Link>

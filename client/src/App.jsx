@@ -49,9 +49,33 @@ const App = () => {
   const [categories, setCategories] = useState([]);
   const [writeCanceledDialog, setWriteCanceledDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [contentList, setContentList] = useState([]);
+  const [username, setUsername] = useState('');
+  const [page, setPage] = useState('1');
   const headerRef = useRef();
   const sidebarRef = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://pinkdevsaurus.tk/questions?page=${
+          page + (selectedCategory ? '&category=' + (selectedCategory + 1) : '')
+        }
+        `
+      )
+      .then((res) => {
+        setContentList(res.data.result);
+      })
+      .catch((err) => {
+        console.dir(err);
+        setErrorMessage(
+          '글 목록을 불러오지 못했습니다. 관리자에게 문의하세요.'
+        );
+        setWriteCanceledDialog(true);
+      });
+  }, [selectedCategory, page]);
 
   useEffect(() => {
     axios
@@ -65,6 +89,20 @@ const App = () => {
           '카테고리 목록을 불러오지 못했습니다. 관리자에게 문의하세요.'
         );
         setWriteCanceledDialog(true);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setUsername(res.data.result.username);
+        setIsLogin(true);
+      })
+      .catch((err) => {
+        return;
       });
   }, []);
 
@@ -144,7 +182,11 @@ const App = () => {
           path="/"
           element={
             <div ref={headerRef}>
-              <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+              <Header
+                username={username}
+                isLogin={isLogin}
+                setIsLogin={setIsLogin}
+              />
             </div>
           }
         />
@@ -152,7 +194,11 @@ const App = () => {
           path="/mypage"
           element={
             <div ref={headerRef}>
-              <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+              <Header
+                username={username}
+                isLogin={isLogin}
+                setIsLogin={setIsLogin}
+              />
             </div>
           }
         />
@@ -160,7 +206,11 @@ const App = () => {
           path="/write"
           element={
             <div ref={headerRef}>
-              <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+              <Header
+                username={username}
+                isLogin={isLogin}
+                setIsLogin={setIsLogin}
+              />
             </div>
           }
         />
@@ -168,7 +218,11 @@ const App = () => {
           path="/myqna"
           element={
             <div ref={headerRef}>
-              <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+              <Header
+                username={username}
+                isLogin={isLogin}
+                setIsLogin={setIsLogin}
+              />
             </div>
           }
         />
@@ -177,7 +231,11 @@ const App = () => {
             path=":id"
             element={
               <div ref={headerRef}>
-                <Header isLogin={isLogin} setIsLogin={setIsLogin} />
+                <Header
+                  username={username}
+                  isLogin={isLogin}
+                  setIsLogin={setIsLogin}
+                />
               </div>
             }
           />
@@ -190,7 +248,10 @@ const App = () => {
           path="/"
           element={
             <div ref={sidebarRef}>
-              <Sidebar list={categories}></Sidebar>
+              <Sidebar
+                list={categories}
+                setSelectedCategory={setSelectedCategory}
+              />
             </div>
           }
         />
@@ -199,7 +260,10 @@ const App = () => {
             path=":id"
             element={
               <div ref={sidebarRef}>
-                <Sidebar list={categories}></Sidebar>
+                <Sidebar
+                  list={categories}
+                  setSelectedCategory={setSelectedCategory}
+                />
               </div>
             }
           />
@@ -211,50 +275,69 @@ const App = () => {
           exact
           path="/"
           element={
-            <MainScreen headerHeight={headerSize}>
-              <Contents />
-            </MainScreen>
+            <>
+              <MainScreen headerHeight={headerSize}>
+                <Contents
+                  setPage={setPage}
+                  contentList={contentList}
+                  selectedCategory={selectedCategory}
+                />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route
           path="/mypage"
           element={
-            <MainScreen headerHeight={headerSize}>
-              <MyPage />
-            </MainScreen>
+            <>
+              <MainScreen headerHeight={headerSize}>
+                <MyPage />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route
           path="/myqna"
           element={
-            <MainScreen headerHeight={headerSize}>
-              <MyQuestions />
-            </MainScreen>
+            <>
+              <MainScreen headerHeight={headerSize}>
+                <MyQuestions setPage={setPage} contentList={contentList} />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route path="/read">
           <Route
             path=":id"
             element={
-              <MainScreen headerHeight={headerSize}>
-                <Read />
-              </MainScreen>
+              <>
+                <MainScreen headerHeight={headerSize}>
+                  <Read />
+                </MainScreen>
+                <Footer />
+              </>
             }
           />
         </Route>
         <Route
           path="/write"
           element={
-            <MainScreen
-              headerHeight={{
-                header: headerSize.header,
-                sidebar: 0,
-                position: headerSize.position,
-                left: headerSize.left,
-              }}
-            >
-              <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
-            </MainScreen>
+            <>
+              <MainScreen
+                headerHeight={{
+                  header: headerSize.header,
+                  sidebar: 0,
+                  position: headerSize.position,
+                  left: headerSize.left,
+                }}
+              >
+                <Write isQuestion={true} handleWriteSuccess={writeNewArticle} />
+              </MainScreen>
+              <Footer />
+            </>
           }
         />
         <Route
@@ -274,7 +357,6 @@ const App = () => {
           }
         />
       </Routes>
-      <Footer />
     </>
   );
 };
