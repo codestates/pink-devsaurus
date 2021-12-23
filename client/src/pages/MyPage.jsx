@@ -87,7 +87,13 @@ const MyPage = () => {
       <Sidebar
         list={[{ category_name: "나의 정보" }, { category_name: "My Q & A" }]}
       />
-      {isOpen ? <DeleteAccountModal userName={userInfo['username']} userId={userInfo['user_id']} modalHandler={modalHandler} /> : null}
+      {isOpen ? (
+        <DeleteAccountModal
+          userName={userInfo["username"]}
+          userId={userInfo["user_id"]}
+          modalHandler={modalHandler}
+        />
+      ) : null}
       <Profile userInfo={userInfo} />
       <SpeechBubbleWrapper>
         <SpeechBubble>탈퇴하기</SpeechBubble>

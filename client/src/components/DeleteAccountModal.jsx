@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 const ModalWrapper = styled.div`
   position: fixed !important;
@@ -92,52 +92,55 @@ const Close = styled.div`
   cursor: pointer;
 `;
 
-const DeleteAccountModal = ({userName, userId, modalHandler }) => {
-  const [errorMsg, setErrorMsg] = useState('');
-  const [username, setUserid] = useState('');
-  const [password, setPassword] = useState('');
+const DeleteAccountModal = ({ userName, userId, modalHandler }) => {
+  const [errorMsg, setErrorMsg] = useState("");
+  const [username, setUserid] = useState("");
+  const [password, setPassword] = useState("");
   const changeUserId = (e) => {
-    setUserid(e.target.value)
-  }
+    setUserid(e.target.value);
+  };
   const changePassword = (e) => {
-    setPassword(e.target.value)
-  }
+    setPassword(e.target.value);
+  };
   const navigate = useNavigate();
-  
+
   const deleteUserHandler = () => {
-    if(userName !== username){
-      setErrorMsg('아이디가 다릅니다.')
-    }else {
-      fetch(`https://pinkdevsaurus.tk/users/${userId}`,{
-        method:"DELETE",
+    if (userName !== username) {
+      setErrorMsg("아이디가 다릅니다.");
+    } else {
+      fetch(`https://pinkdevsaurus.tk/users/${userId}`, {
+        method: "DELETE",
         headers: {
-          'Content-type': 'application/json'
+          "Content-type": "application/json",
         },
-        credentials:'include',
+        credentials: "include",
         body: JSON.stringify({
-          password: password
+          password: password,
+        }),
+      })
+        .then((data) => {
+          if (data.status === 204) {
+            navigate("/");
+          } else {
+            setErrorMsg("삭제에 실패 했습니다.");
+          }
         })
-      })
-      .then(data => {
-        if(data.status === 204){
-          navigate('/')
-        }
-        else{
-          setErrorMsg('삭제에 실패 했습니다.')
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-  }
+  };
   return (
     <ModalWrapper>
       <ModalContainer>
         <Title>계정을 삭제하시면 다시는 복구할 수 없습니다.</Title>
         <Form>
-          <input type='text' onChange={changeUserId} placeholder='유저네임' />
-          <input type='password'onChange={changePassword} placeholder='비밀번호' />
+          <input type="text" onChange={changeUserId} placeholder="유저네임" />
+          <input
+            type="password"
+            onChange={changePassword}
+            placeholder="비밀번호"
+          />
           {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : <></>}
         </Form>
         <ButtonWrapper>
