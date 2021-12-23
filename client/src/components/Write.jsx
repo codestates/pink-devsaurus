@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import Loading from './Loading.jsx';
 import SimpleOKModal from './SimpleOKModal.jsx';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const NewDiscussionContainer = styled.div`
   padding: 2rem 3rem;
@@ -106,7 +106,10 @@ const Write = ({ isQuestion, handleWriteSuccess }) => {
   useLayoutEffect(() => {
     async function fetchData() {
       try {
-        await axios.get('https://pinkdevsaurus.tk/auth');
+        if (isQuestion)
+          await axios.get('https://pinkdevsaurus.tk/auth', {
+            withCredentials: true,
+          });
       } catch (err) {
         navigate('/login');
         return;
