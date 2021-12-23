@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import SimpleOKModal from './SimpleOKModal';
 
 const ProfileContainer = styled.div`
   /* top: 5.4vmax; */
@@ -98,13 +100,12 @@ const Button = styled.button`
   }
 `;
 
-const Profile = () => {
+const Profile = ({ userInfo }) => {
   const [profileImg, setprofileImg] = useState('https://ifh.cc/g/rO5WOi.png');
-  const [email, setEmail] = useState('test@gmail.com');
-  const [password, setPassword] = useState('Test1234?');
+  const [password, setPassword] = useState('');
   const [passwordMsg, setPasswordMsg] = useState('');
-  const [emailMsg, setEmailMsg] = useState('');
   const [confirmPasswordMsg, setConfirmPasswordMsg] = useState('');
+  const [isOk, setIsOk] = useState(false)
 
   const handleImage = (e) => {
     const validExtensions = ['image/jpeg', 'image/peg', 'image/png'];
@@ -120,17 +121,6 @@ const Profile = () => {
     }
   };
 
-  const isValidEmail = (email) => {
-    const regExp = new RegExp(
-      /^([\w!#$%&'*+\-\/=?^`{|}~]+(\.[\w!#$%&'*+\-\/=?^`{|}~]+)*|"([\w!#$%&'*+\-\/=?^`{|}~. ()<>\[\]:;@,]|\\[\\"])+")@(([a-zA-Z\d\-]+\.)+[a-zA-Z]+|\[(\d{1,3}(\.\d{1,3}){3}|IPv6:[\da-fA-F]{0,4}(:[\da-fA-F]{0,4}){1,5}(:\d{1,3}(\.\d{1,3}){3}|(:[\da-fA-F]{0,4}){0,2}))\])$/
-    );
-    if (regExp.test(email)) {
-      setEmailMsg('');
-    } else {
-      setEmailMsg('올바른 이메일 형식이 아닙니다.');
-    }
-  };
-
   const isValidPassword = (password) => {
     const regExp = new RegExp(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/
@@ -142,12 +132,6 @@ const Profile = () => {
         '8자 이상이어야 하며, 숫자/대문자/소문자/특수문자를 모두 포함해야 합니다.'
       );
     }
-  };
-
-  const handleEmail = (e) => {
-    const text = e.target.value;
-    setEmail(text);
-    isValidEmail(text);
   };
 
   const handlePassword = (e) => {
@@ -165,10 +149,30 @@ const Profile = () => {
     }
   };
 
-  const handleBtn = () => {};
+  const modifyHandler = async () => {
+    let result;
+    try {
+      result = await axios.put(
+        `https://pinkdevsaurus.tk/users/${userInfo?.user_id}`,
+        {
+          new_password: password,
+        },
+        { withCredentials: true }
+      );
+      if (result) {
+        setIsOk(true);
+      }
+    } catch (err) {
+      return;
+    }
+  };
 
   return (
     <ProfileContainer>
+      {isOk ? <SimpleOKModal
+          handleOK={() => setIsOk(false)}
+          Message={'수정되었습니다.'}
+        /> : null}
       <MyImage>
         <img src={profileImg} alt="" id="" className="" />
         <input
@@ -184,18 +188,17 @@ const Profile = () => {
       <MyInfo passwordMsg={passwordMsg}>
         <li>
           <Title>유저네임</Title>
-          <EditInput type="text" value="test" />
+          <EditInput type="text" value={userInfo?.username} />
         </li>
         <li>
           <Title>이메일</Title>
-          <EditInput type="email" defaultValue={email} onChange={handleEmail} />
-          {emailMsg ? <ErrorMsg>{emailMsg}</ErrorMsg> : <></>}
+          <EditInput type="email" value={userInfo?.email} />
         </li>
         <li>
           <Title>비밀번호</Title>
           <EditInput
             type="password"
-            defaultValue={password}
+            value={password}
             onChange={handlePassword}
           />
           {passwordMsg ? <ErrorMsg>{passwordMsg}</ErrorMsg> : <></>}
@@ -210,7 +213,7 @@ const Profile = () => {
           )}
         </li>
       </MyInfo>
-      <Button onClick={handleBtn}>변경하기</Button>
+      <Button onClick={modifyHandler}>변경하기</Button>
     </ProfileContainer>
   );
 };

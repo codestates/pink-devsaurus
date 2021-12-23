@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Profile from '../components/Profile';
 import Sidebar from '../components/Sidebar';
 import DeleteAccountModal from '../components/DeleteAccountModal';
+import axios from 'axios';
 
 const Wrapper = styled.div`
   display: flex;
@@ -62,18 +63,31 @@ const Icon = styled.img`
 
 const MyPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState();
+
+  useEffect(() => {
+    axios.get('https://pinkdevsaurus.tk/auth', {
+        withCredentials: true,
+      }).then(res => {
+        console.log(res.data.result);
+        setUserInfo(res.data.result);
+    }).catch(err => {
+      console.dir(err);
+      console.log('error');
+    });
+  }, []);
 
   const modalHandler = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <>
+    <Wrapper>
       <Sidebar
         list={[{ category_name: '나의 정보' }, { category_name: 'My Q & A' }]}
       />
       {isOpen ? <DeleteAccountModal modalHandler={modalHandler} /> : null}
-      <Profile />
+      <Profile userInfo={userInfo} />
       <SpeechBubbleWrapper>
         <SpeechBubble>탈퇴하기</SpeechBubble>
         <Icon
@@ -81,7 +95,7 @@ const MyPage = () => {
           src="https://uploda1.ysklog.net/uploda/e17e09ad58.png"
         />
       </SpeechBubbleWrapper>
-    </>
+    </Wrapper>
   );
 };
 
