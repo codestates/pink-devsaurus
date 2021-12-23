@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ModalWrapper = styled.div`
@@ -91,20 +92,59 @@ const Close = styled.div`
   cursor: pointer;
 `;
 
-const DeleteAccountModal = ({ modalHandler }) => {
+const DeleteAccountModal = ({ userName, userId, modalHandler }) => {
   const [errorMsg, setErrorMsg] = useState('');
+  const [username, setUserid] = useState('');
+  const [password, setPassword] = useState('');
+  const changeUserId = (e) => {
+    setUserid(e.target.value);
+  };
+  const changePassword = (e) => {
+    setPassword(e.target.value);
+  };
+  const navigate = useNavigate();
 
+  const deleteUserHandler = () => {
+    if (userName !== username) {
+      setErrorMsg('아이디가 다릅니다.');
+    } else {
+      fetch(`https://pinkdevsaurus.tk/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          password: password,
+        }),
+      })
+        .then((data) => {
+          if (data.status === 204) {
+            navigate('/');
+          } else {
+            setErrorMsg('삭제에 실패 했습니다.');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  };
   return (
     <ModalWrapper>
       <ModalContainer>
         <Title>계정을 삭제하시면 다시는 복구할 수 없습니다.</Title>
         <Form>
-          <input type='text' placeholder='유저네임' />
-          <input type='password' placeholder='비밀번호' />
+          <input type="text" onChange={changeUserId} placeholder="유저네임" />
+          <input
+            type="password"
+            onChange={changePassword}
+            placeholder="비밀번호"
+          />
           {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : <></>}
         </Form>
         <ButtonWrapper>
-          <button>계정 삭제</button>
+          <button onClick={deleteUserHandler}>계정 삭제</button>
           <Close onClick={() => modalHandler()}>&times;</Close>
         </ButtonWrapper>
       </ModalContainer>
