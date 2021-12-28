@@ -56,39 +56,39 @@ INSERT INTO USER VALUES (null,'testUser3@test.com','testUser3','test12!@',defaul
 INSERT INTO USER VALUES (null,'testUser4@test.com','testUser4','test12!@',default,default);
 
 ## Answer INSERT
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title01', 'test_answer_content01', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title02', 'test_answer_content02', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title03', 'test_answer_content03', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 2, 'test_answer_title04', 'test_answer_content04', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 3, 'test_answer_title05', 'test_answer_content05', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 4, 'test_answer_title06', 'test_answer_content06', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title07', 'test_answer_content07', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title08', 'test_answer_content08', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title09', 'test_answer_content09', default, default);
-INSERT INTO ANSWER VALUES (null, 1, 2, 'test_answer_title10', 'test_answer_content10', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 3, 'test_answer_title11', 'test_answer_content11', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 4, 'test_answer_title12', 'test_answer_content12', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_title13', 'test_answer_content13', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_title14', 'test_answer_content14', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_title15', 'test_answer_content15', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 2, 'test_answer_title16', 'test_answer_content16', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 3, 'test_answer_title17', 'test_answer_content17', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 4, 'test_answer_title18', 'test_answer_content18', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_title19', 'test_answer_content19', default, default);
-INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_title20', 'test_answer_content20', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 2, 'test_answer_title21', 'test_answer_content21', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 3, 'test_answer_title22', 'test_answer_content22', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 4, 'test_answer_title23', 'test_answer_content23', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_title24', 'test_answer_content14', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_title25', 'test_answer_content15', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 2, 'test_answer_title26', 'test_answer_content16', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 3, 'test_answer_title27', 'test_answer_content17', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 4, 'test_answer_title28', 'test_answer_content18', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_title29', 'test_answer_content19', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_title30', 'test_answer_content20', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 2, 'test_answer_title31', 'test_answer_content21', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 3, 'test_answer_title32', 'test_answer_content22', default, default);
-INSERT INTO ANSWER VALUES (null, 3, 4, 'test_answer_title33', 'test_answer_content23', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_content01', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_content02', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_content03', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 2, 'test_answer_content04', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 3, 'test_answer_content05', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 4, 'test_answer_content06', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_content07', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_content08', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_content09', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 2, 'test_answer_content10', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 3, 'test_answer_content11', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 4, 'test_answer_content12', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_content13', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_content14', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_content15', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 2, 'test_answer_content16', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 3, 'test_answer_content17', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 4, 'test_answer_content18', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_content19', default, default);
+INSERT INTO ANSWER VALUES (null, 2, 1, 'test_answer_content20', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 2, 'test_answer_content21', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 3, 'test_answer_content22', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 4, 'test_answer_content23', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_content14', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_content15', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 2, 'test_answer_content16', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 3, 'test_answer_content17', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 4, 'test_answer_content18', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_content19', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 1, 'test_answer_content20', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 2, 'test_answer_content21', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 3, 'test_answer_content22', default, default);
+INSERT INTO ANSWER VALUES (null, 3, 4, 'test_answer_content23', default, default);
 
 ## Category INSERT
 INSERT INTO CATEGORY_QA VALUES (null, 'category_1', null);
@@ -111,11 +111,11 @@ INSERT LIKES_BOARD VALUES (4,null,1);
 
 ## 게시글 삭제 더미데이터
 INSERT INTO BOARD_QA VALUES (null,1,1,'delete_test','test_content',default,default,null,null);
-INSERT INTO ANSWER VALUES (null, 14, 1, 'test_answer_title1', 'test_answer_content1', default, default);
+INSERT INTO ANSWER VALUES (null, 14, 1, 1', 'test_answer_content1', default, default);
 INSERT LIKES_BOARD VALUES (4,14,null);
 
 ## 답변글 삭제 더미데이터
-INSERT INTO ANSWER VALUES (null, 1, 1, 'test_answer_title1', 'test_answer_content1', default, default);
+INSERT INTO ANSWER VALUES (null, 1, 1, 1', 'test_answer_content1', default, default);
 INSERT LIKES_BOARD VALUES (1,null,18);
 INSERT LIKES_BOARD VALUES (2,null,18);
 INSERT LIKES_BOARD VALUES (3,null,18);

@@ -1,18 +1,18 @@
-const pool = require("../../DB/mysql");
-const models = require("../../models");
-const { LIKES_BOARD } = require("../../models");
-const { isAuthorized } = require("../TokenFunction");
+const pool = require('../../DB/mysql');
+const models = require('../../models');
+const { LIKES_BOARD } = require('../../models');
+const { isAuthorized } = require('../TokenFunction');
 
 module.exports = async (req, res) => {
-  console.log("./controllers/like/answersLikeDown");
+  console.log('./controllers/like/answersLikeDown');
   const accessTokenData = isAuthorized(req);
   // 잘못된 accessToken을 받았을 경우
   if (!accessTokenData) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(401).send({ message: 'Unauthorized' });
   }
   // 정상적인 데이터를 받지 못한 경우 (필수 데이터가 없는 경우)
   if (!req.params.answerId || isNaN(Number(req.params.answerId))) {
-    return res.status(400).send({ message: "Bad Request" });
+    return res.status(400).send({ message: 'Bad Request' });
   }
 
   const { answerId } = req.params;
@@ -50,10 +50,10 @@ module.exports = async (req, res) => {
       return res.status(204).json();
     } else {
       await unManagedTransaction.rollback();
-      return res.status(404).json({ message: "Not found" });
+      return res.status(404).json({ message: 'Not found' });
     }
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 };

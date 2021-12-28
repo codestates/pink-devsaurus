@@ -1,11 +1,11 @@
-const pool = require("../../DB/mysql");
+const pool = require('../../DB/mysql');
 
 module.exports = async (req, res) => {
-  console.log("./controllers/board/answers");
+  console.log('./controllers/board/answers');
 
   // 정상적인 데이터를 받지 못한 경우 (필수 데이터가 없는 경우)
-  if (!req.params["boardId"]) {
-    return res.status(400).send({ message: "It has an empty value" });
+  if (!req.params['boardId']) {
+    return res.status(400).send({ message: 'It has an empty value' });
   }
   const { boardId } = req.params;
   try {
@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
     pool.query(answerSql, (err, result) => {
       if (err) {
         console.error(err);
-        return res.status(501).json({ message: "DB Query Fail" });
+        return res.status(501).json({ message: 'DB Query Fail' });
       }
       // console.log(result);
       Promise.all(
@@ -31,8 +31,9 @@ module.exports = async (req, res) => {
             pool.query(answerUserSqls + answerLikeCountSqls, (err, rows) => {
               if (err) {
                 console.error(err);
-                return res.status(501).json({ message: "DB Query Fail" });
+                return res.status(501).json({ message: 'DB Query Fail' });
               }
+              console.log(rows);
               const { USER_ID, answer_username, userprofile_img } = rows[0][0];
               const { ANSWER_ID, LIKESCOUNT } = rows[1][0];
 
@@ -66,6 +67,6 @@ module.exports = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
