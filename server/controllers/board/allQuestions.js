@@ -24,15 +24,12 @@ module.exports = async (req, res) => {
   US.USERNAME AS author,
   BQ.MODIFY_DATE AS modified_at,
   COUNT(AW.BOARD_ID) as answers,
-  BQ.SELECTED_USER_ID AS answered_user_id,
-  CQ.CATEGORY_IMG AS category_img
+  BQ.SELECTED_USER_ID AS answered_user_id
   FROM BOARD_QA BQ
   LEFT JOIN USER AS US
   ON BQ.USER_ID = US.USER_ID
   LEFT JOIN ANSWER AS AW
   ON BQ.BOARD_ID = AW.BOARD_ID
-  LEFT JOIN CATEGORY_QA AS CQ
-  ON BQ.CATEGORY_ID = CQ.CATEGORY_ID
   WHERE 1 ${
     categoryNum ? "AND BQ.CATEGORY_ID = " + categoryNum + " " : ""
   }GROUP BY BQ.BOARD_ID ORDER BY BQ.BOARD_ID DESC

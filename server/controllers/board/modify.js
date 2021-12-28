@@ -45,13 +45,11 @@ module.exports = async (req, res) => {
 
     console.log(updateSqls);
 
-    // const updateSql = `UPDATE BOARD_QA SET TITLE='${title}', CONTENT='${content}', MODIFY_DATE = now() WHERE BOARD_ID = ${boardId}`;
-    const updateSql = `UPDATE BOARD_QA SET TITLE= ?, CONTENT= ?, MODIFY_DATE = now() WHERE BOARD_ID = ?`;
-    const updateData = [title, content, boardId];
+    const updateSql = `UPDATE BOARD_QA SET TITLE='${title}', CONTENT='${content}', MODIFY_DATE = now() WHERE BOARD_ID = ${boardId}`;
 
-    pool.query(updateSql, updateData, (err, result) => {
+    pool.query(updateSql, (err, result) => {
       if (err) {
-        console.error(result);
+        console.error(err);
         return res.status(501).json({ message: "DB Query Fail" });
       }
       return res.status(204).json();

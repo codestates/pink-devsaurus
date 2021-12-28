@@ -2,10 +2,15 @@ const pool = require("../../DB/mysql");
 
 module.exports = async (req, res) => {
   console.log("./controllers/session/logOut");
+
   res
     .status(201)
-    .clearCookie("pinkcookie", {
-      path: "/",
+    .cookie("pinkcookie", "", {
+      httpOnly: true,
+      sign: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 0,
     })
-    .json({ message: "logOut Access" });
+    .end();
 };
