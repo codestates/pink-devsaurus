@@ -1,0 +1,7 @@
+cert/
+node_modules/
+images
+
+.env
+*.swp
+

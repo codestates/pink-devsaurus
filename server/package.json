@@ -1,0 +1,25 @@
+{
+  "name": "dummyserver",
+  "version": "1.0.0",
+  "description": "a simple dummy server.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "nodemon app.js"
+  },
+  "keywords": [
+    "dummy",
+    "server"
+  ],
+  "author": "Charlie",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "helmet": "^4.6.0",
+    "http2-express-bridge": "^1.0.7",
+    "multer": "^1.4.4"
+  }
+}
