@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bf43ffcf.css",
+    "main.js": "/static/js/main.fdcdd27f.js",
+    "static/media/pinkDevelopSaurus.png": "/static/media/pinkDevelopSaurus.3f2a663550fbf767906f.png",
+    "index.html": "/index.html",
+    "main.bf43ffcf.css.map": "/static/css/main.bf43ffcf.css.map",
+    "main.fdcdd27f.js.map": "/static/js/main.fdcdd27f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bf43ffcf.css",
+    "static/js/main.fdcdd27f.js"
+  ]
+}

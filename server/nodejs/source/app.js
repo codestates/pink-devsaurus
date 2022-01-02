@@ -3,20 +3,21 @@ const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+let app, readFileSync, http2Express, https, options;
 
-// HTTP 1.1
-// const app = express();
-
-// HTTP 2.0 Test
-const { readFileSync } = require('fs');
-const http2Express = require('http2-express-bridge');
-const http2 = require('http2');
-const app = http2Express(express);
-const options = {
-  key: readFileSync('./cert/privkey.pem'),
-  cert: readFileSync('./cert/fullchain.pem'),
-  allowHTTP1: true,
-};
+// HTTP Version check
+if( process.env.HTTP_VERSION === 1.1 ) app = express();
+else {
+  readFileSync = require('fs').readFileSync;
+  http2Express = require('http2-express-bridge');
+  http2 = require('http2');
+  app = http2Express(express);
+  options = {
+    key: readFileSync('/etc/nginx/cert/key.pem'),
+    cert: readFileSync('/etc/nginx/cert/cert.pem'),
+    allowHTTP1: true,
+  };
+}
 
 // Security First
 app.use(helmet.hidePoweredBy());
@@ -55,7 +56,7 @@ app.use(cors(corsOptions));
 
 
 // Current SERVER MODE 
-var PREFIX = '/api';
+const PREFIX = '/api';
 const point = (URL) => `${PREFIX}${URL}`;
 
 // USE DUMMY Routing
@@ -64,7 +65,6 @@ app.use(require('./dummies')(PREFIX));
 // MVC pattern - Routes
 const controller = require('./controller/');
 // deployment
-app.post(point('/deploy'), controller.deploy);
 app.post(point('/upload'), controller.upload);
 
 //Not Found : show Available routes
@@ -72,13 +72,15 @@ app.use((req, res, next) => {
   res.status(404).send('404 Not Found');
 });
 
-// open port : HTTP/2
-const server = http2.createSecureServer(options, app);
-server.listen(3333, () => {
-  console.log('Server is running on port 3333');
-});
 
-// open port : HTTP/1.1
-// app.listen(3333, () => {
-//   console.log('Server is running on port 3333');
-// });
+// HTTP Version check
+if( process.env.HTTP_VERSION === 1.1 ) {
+  app.listen(3333, () => {
+    console.log('HTTP/1.1 Server is running on port 3333');
+  });
+} else {
+  const server = http2.createSecureServer(options, app);
+  server.listen(3333, () => {
+    console.log('HTTP/2.0 Server is running on port 3333');
+  });
+}

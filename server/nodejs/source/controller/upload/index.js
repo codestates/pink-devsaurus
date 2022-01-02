@@ -3,7 +3,7 @@ module.exports = async (req, res) => {
 };
 
 // const multer = require('multer');
-// const upload = multer({ dest: 'images/' });
+// const upload = multer({ dest: '/html/images' });
 // app.post('/api/upload', upload.single('image'), (req, res) => {
 //   console.log('file upload success');
 //   console.dir(req.file);
