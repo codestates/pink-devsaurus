@@ -53,3 +53,21 @@ pink-devsaurus는 개발자의 궁금증을 해결할 수 있는 사이트 입�
 | 오카무라카에 | Front-end  | [kaehehehe](https://github.com/kaehehehe)   |
 | 최민석       | Back-end   | [AbyulStudy](https://github.com/AbyulStudy) |
 | 최민우       | Full-stack | [exxocism](https://github.com/exxocism)     |
+
+# 시연 GIF
+
+### 회원가입, 로그인, 회원탈퇴
+![](https://github.com/krim45/devsaurus/blob/main/Gif/signup.gif)
+![](https://github.com/krim45/devsaurus/blob/main/Gif/login.gif)
+![](https://github.com/krim45/devsaurus/blob/main/Gif/unregister.gif)
+
+### 게시판
+![](https://github.com/krim45/devsaurus/blob/main/Gif/board.gif)
+
+### 게시글 (CRUD)
+![](https://github.com/krim45/devsaurus/blob/main/Gif/write.gif)
+![](https://github.com/krim45/devsaurus/blob/main/Gif/modify.gif)
+
+### 좋아요, 댓글(CRUD)
+![](https://github.com/krim45/devsaurus/blob/main/Gif/like.gif)
+![](https://github.com/krim45/devsaurus/blob/main/Gif/answeranddelete.gif)
